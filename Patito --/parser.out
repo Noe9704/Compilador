@@ -1,0 +1,3926 @@
+Created by PLY version 3.11 (http://www.dabeaz.com/ply)
+
+Unused terminals:
+
+    CTE_C
+    PRINT
+
+Grammar
+
+Rule 0     S' -> program
+Rule 1     program -> PROGRAM ID COLON auxVar auxFuncion MAIN bloque
+Rule 2     auxVar -> var auxVar
+Rule 3     auxVar -> empty
+Rule 4     var -> VAR tipo COLON lista_ids auxLista_idsVar SEMICOLON
+Rule 5     tipo -> INT
+Rule 6     tipo -> FLOAT
+Rule 7     tipo -> CHAR
+Rule 8     auxLista_idsVar -> COMA lista_ids auxLista_idsVar
+Rule 9     auxLista_idsVar -> empty
+Rule 10    lista_ids -> ID casilla casilla
+Rule 11    casilla -> L_BRACKET casillaVar R_BRACKET
+Rule 12    casilla -> empty
+Rule 13    casillaVar -> CTE_I
+Rule 14    casillaVar -> ID
+Rule 15    casillaVar -> exp
+Rule 16    auxFuncion -> funcion auxFuncion
+Rule 17    auxFuncion -> empty
+Rule 18    funcion -> FUNCION tipoFuncion ID L_PARENT auxParametro R_PARENT COLON auxVar bloque
+Rule 19    funcion -> empty
+Rule 20    tipoFuncion -> tipo
+Rule 21    tipoFuncion -> VOID
+Rule 22    auxParametro -> tipo ID
+Rule 23    auxParametro -> tipo ID COMA auxParametro
+Rule 24    auxParametro -> empty
+Rule 25    bloque -> L_KEY auxEstatuto R_KEY
+Rule 26    auxEstatuto -> estatuto auxEstatuto
+Rule 27    auxEstatuto -> empty
+Rule 28    estatuto -> asignacion
+Rule 29    estatuto -> llamada SEMICOLON
+Rule 30    estatuto -> retorno
+Rule 31    estatuto -> lectura
+Rule 32    estatuto -> escritura
+Rule 33    estatuto -> decision
+Rule 34    estatuto -> repeticion
+Rule 35    asignacion -> lista_ids EQUAL exp SEMICOLON
+Rule 36    exp -> t auxExp
+Rule 37    auxExp -> PLUS exp
+Rule 38    auxExp -> MINUS exp
+Rule 39    auxExp -> empty
+Rule 40    t -> f auxT
+Rule 41    auxT -> MULT t
+Rule 42    auxT -> DIV t
+Rule 43    auxT -> MONEY t
+Rule 44    auxT -> EXCLAMATION t
+Rule 45    auxT -> QUESTION t
+Rule 46    auxT -> empty
+Rule 47    f -> m auxF
+Rule 48    auxF -> LESSTHAN f
+Rule 49    auxF -> GREATERTHAN f
+Rule 50    auxF -> LESSEQUALTHAN f
+Rule 51    auxF -> GREATEREQUALTHAN f
+Rule 52    auxF -> EQUALX2 f
+Rule 53    auxF -> empty
+Rule 54    m -> x auxM
+Rule 55    auxM -> OR m
+Rule 56    auxM -> empty
+Rule 57    x -> z auxX
+Rule 58    auxX -> AND z
+Rule 59    auxX -> empty
+Rule 60    z -> var_cte
+Rule 61    z -> L_PARENT exp R_PARENT
+Rule 62    z -> lista_ids
+Rule 63    z -> llamada
+Rule 64    z -> empty
+Rule 65    var_cte -> ID
+Rule 66    var_cte -> CTE_I
+Rule 67    var_cte -> CTE_F
+Rule 68    llamada -> ID L_PARENT auxLlamada R_PARENT
+Rule 69    auxLlamada -> exp
+Rule 70    auxLlamada -> exp COMA auxLlamada
+Rule 71    retorno -> RETURN L_PARENT exp R_PARENT SEMICOLON
+Rule 72    lectura -> READ L_PARENT auxLectura R_PARENT SEMICOLON
+Rule 73    auxLectura -> lista_ids
+Rule 74    auxLectura -> lista_ids COMA auxLectura
+Rule 75    escritura -> WRITE L_PARENT auxEscritura R_PARENT SEMICOLON
+Rule 76    auxEscritura -> auxString
+Rule 77    auxEscritura -> auxExpEscritura
+Rule 78    auxString -> CTE_STRING
+Rule 79    auxString -> CTE_STRING COMA auxEscritura
+Rule 80    auxExpEscritura -> exp
+Rule 81    auxExpEscritura -> exp COMA auxExpEscritura
+Rule 82    decision -> IF L_PARENT exp R_PARENT SO bloque auxDecision
+Rule 83    auxDecision -> ELSE bloque
+Rule 84    auxDecision -> empty
+Rule 85    repeticion -> condicional
+Rule 86    repeticion -> nocondicional
+Rule 87    condicional -> WHILE L_PARENT exp R_PARENT DO bloque
+Rule 88    nocondicional -> FROM lista_ids EQUAL exp TO exp DO bloque
+Rule 89    empty -> <empty>
+
+Terminals, with rules where they appear
+
+AND                  : 58
+CHAR                 : 7
+COLON                : 1 4 18
+COMA                 : 8 23 70 74 79 81
+CTE_C                : 
+CTE_F                : 67
+CTE_I                : 13 66
+CTE_STRING           : 78 79
+DIV                  : 42
+DO                   : 87 88
+ELSE                 : 83
+EQUAL                : 35 88
+EQUALX2              : 52
+EXCLAMATION          : 44
+FLOAT                : 6
+FROM                 : 88
+FUNCION              : 18
+GREATEREQUALTHAN     : 51
+GREATERTHAN          : 49
+ID                   : 1 10 14 18 22 23 65 68
+IF                   : 82
+INT                  : 5
+LESSEQUALTHAN        : 50
+LESSTHAN             : 48
+L_BRACKET            : 11
+L_KEY                : 25
+L_PARENT             : 18 61 68 71 72 75 82 87
+MAIN                 : 1
+MINUS                : 38
+MONEY                : 43
+MULT                 : 41
+OR                   : 55
+PLUS                 : 37
+PRINT                : 
+PROGRAM              : 1
+QUESTION             : 45
+READ                 : 72
+RETURN               : 71
+R_BRACKET            : 11
+R_KEY                : 25
+R_PARENT             : 18 61 68 71 72 75 82 87
+SEMICOLON            : 4 29 35 71 72 75
+SO                   : 82
+TO                   : 88
+VAR                  : 4
+VOID                 : 21
+WHILE                : 87
+WRITE                : 75
+error                : 
+
+Nonterminals, with rules where they appear
+
+asignacion           : 28
+auxDecision          : 82
+auxEscritura         : 75 79
+auxEstatuto          : 25 26
+auxExp               : 36
+auxExpEscritura      : 77 81
+auxF                 : 47
+auxFuncion           : 1 16
+auxLectura           : 72 74
+auxLista_idsVar      : 4 8
+auxLlamada           : 68 70
+auxM                 : 54
+auxParametro         : 18 23
+auxString            : 76
+auxT                 : 40
+auxVar               : 1 2 18
+auxX                 : 57
+bloque               : 1 18 82 83 87 88
+casilla              : 10 10
+casillaVar           : 11
+condicional          : 85
+decision             : 33
+empty                : 3 9 12 17 19 24 27 39 46 53 56 59 64 84
+escritura            : 32
+estatuto             : 26
+exp                  : 15 35 37 38 61 69 70 71 80 81 82 87 88 88
+f                    : 40 48 49 50 51 52
+funcion              : 16
+lectura              : 31
+lista_ids            : 4 8 35 62 73 74 88
+llamada              : 29 63
+m                    : 47 55
+nocondicional        : 86
+program              : 0
+repeticion           : 34
+retorno              : 30
+t                    : 36 41 42 43 44 45
+tipo                 : 4 20 22 23
+tipoFuncion          : 18
+var                  : 2
+var_cte              : 60
+x                    : 54
+z                    : 57 58
+
+Parsing method: LALR
+
+state 0
+
+    (0) S' -> . program
+    (1) program -> . PROGRAM ID COLON auxVar auxFuncion MAIN bloque
+
+    PROGRAM         shift and go to state 2
+
+    program                        shift and go to state 1
+
+state 1
+
+    (0) S' -> program .
+
+
+
+state 2
+
+    (1) program -> PROGRAM . ID COLON auxVar auxFuncion MAIN bloque
+
+    ID              shift and go to state 3
+
+
+state 3
+
+    (1) program -> PROGRAM ID . COLON auxVar auxFuncion MAIN bloque
+
+    COLON           shift and go to state 4
+
+
+state 4
+
+    (1) program -> PROGRAM ID COLON . auxVar auxFuncion MAIN bloque
+    (2) auxVar -> . var auxVar
+    (3) auxVar -> . empty
+    (4) var -> . VAR tipo COLON lista_ids auxLista_idsVar SEMICOLON
+    (89) empty -> .
+
+    VAR             shift and go to state 8
+    FUNCION         reduce using rule 89 (empty -> .)
+    MAIN            reduce using rule 89 (empty -> .)
+
+    auxVar                         shift and go to state 5
+    var                            shift and go to state 6
+    empty                          shift and go to state 7
+
+state 5
+
+    (1) program -> PROGRAM ID COLON auxVar . auxFuncion MAIN bloque
+    (16) auxFuncion -> . funcion auxFuncion
+    (17) auxFuncion -> . empty
+    (18) funcion -> . FUNCION tipoFuncion ID L_PARENT auxParametro R_PARENT COLON auxVar bloque
+    (19) funcion -> . empty
+    (89) empty -> .
+
+  ! shift/reduce conflict for FUNCION resolved as shift
+    FUNCION         shift and go to state 12
+    MAIN            reduce using rule 89 (empty -> .)
+
+  ! FUNCION         [ reduce using rule 89 (empty -> .) ]
+
+    auxFuncion                     shift and go to state 9
+    funcion                        shift and go to state 10
+    empty                          shift and go to state 11
+
+state 6
+
+    (2) auxVar -> var . auxVar
+    (2) auxVar -> . var auxVar
+    (3) auxVar -> . empty
+    (4) var -> . VAR tipo COLON lista_ids auxLista_idsVar SEMICOLON
+    (89) empty -> .
+
+    VAR             shift and go to state 8
+    FUNCION         reduce using rule 89 (empty -> .)
+    MAIN            reduce using rule 89 (empty -> .)
+    L_KEY           reduce using rule 89 (empty -> .)
+
+    var                            shift and go to state 6
+    auxVar                         shift and go to state 13
+    empty                          shift and go to state 7
+
+state 7
+
+    (3) auxVar -> empty .
+
+    FUNCION         reduce using rule 3 (auxVar -> empty .)
+    MAIN            reduce using rule 3 (auxVar -> empty .)
+    L_KEY           reduce using rule 3 (auxVar -> empty .)
+
+
+state 8
+
+    (4) var -> VAR . tipo COLON lista_ids auxLista_idsVar SEMICOLON
+    (5) tipo -> . INT
+    (6) tipo -> . FLOAT
+    (7) tipo -> . CHAR
+
+    INT             shift and go to state 15
+    FLOAT           shift and go to state 16
+    CHAR            shift and go to state 17
+
+    tipo                           shift and go to state 14
+
+state 9
+
+    (1) program -> PROGRAM ID COLON auxVar auxFuncion . MAIN bloque
+
+    MAIN            shift and go to state 18
+
+
+state 10
+
+    (16) auxFuncion -> funcion . auxFuncion
+    (16) auxFuncion -> . funcion auxFuncion
+    (17) auxFuncion -> . empty
+    (18) funcion -> . FUNCION tipoFuncion ID L_PARENT auxParametro R_PARENT COLON auxVar bloque
+    (19) funcion -> . empty
+    (89) empty -> .
+
+  ! shift/reduce conflict for FUNCION resolved as shift
+    FUNCION         shift and go to state 12
+    MAIN            reduce using rule 89 (empty -> .)
+
+  ! FUNCION         [ reduce using rule 89 (empty -> .) ]
+
+    funcion                        shift and go to state 10
+    auxFuncion                     shift and go to state 19
+    empty                          shift and go to state 11
+
+state 11
+
+    (17) auxFuncion -> empty .
+    (19) funcion -> empty .
+
+  ! reduce/reduce conflict for MAIN resolved using rule 17 (auxFuncion -> empty .)
+    MAIN            reduce using rule 17 (auxFuncion -> empty .)
+    FUNCION         reduce using rule 19 (funcion -> empty .)
+
+  ! MAIN            [ reduce using rule 19 (funcion -> empty .) ]
+
+
+state 12
+
+    (18) funcion -> FUNCION . tipoFuncion ID L_PARENT auxParametro R_PARENT COLON auxVar bloque
+    (20) tipoFuncion -> . tipo
+    (21) tipoFuncion -> . VOID
+    (5) tipo -> . INT
+    (6) tipo -> . FLOAT
+    (7) tipo -> . CHAR
+
+    VOID            shift and go to state 22
+    INT             shift and go to state 15
+    FLOAT           shift and go to state 16
+    CHAR            shift and go to state 17
+
+    tipoFuncion                    shift and go to state 20
+    tipo                           shift and go to state 21
+
+state 13
+
+    (2) auxVar -> var auxVar .
+
+    FUNCION         reduce using rule 2 (auxVar -> var auxVar .)
+    MAIN            reduce using rule 2 (auxVar -> var auxVar .)
+    L_KEY           reduce using rule 2 (auxVar -> var auxVar .)
+
+
+state 14
+
+    (4) var -> VAR tipo . COLON lista_ids auxLista_idsVar SEMICOLON
+
+    COLON           shift and go to state 23
+
+
+state 15
+
+    (5) tipo -> INT .
+
+    COLON           reduce using rule 5 (tipo -> INT .)
+    ID              reduce using rule 5 (tipo -> INT .)
+
+
+state 16
+
+    (6) tipo -> FLOAT .
+
+    COLON           reduce using rule 6 (tipo -> FLOAT .)
+    ID              reduce using rule 6 (tipo -> FLOAT .)
+
+
+state 17
+
+    (7) tipo -> CHAR .
+
+    COLON           reduce using rule 7 (tipo -> CHAR .)
+    ID              reduce using rule 7 (tipo -> CHAR .)
+
+
+state 18
+
+    (1) program -> PROGRAM ID COLON auxVar auxFuncion MAIN . bloque
+    (25) bloque -> . L_KEY auxEstatuto R_KEY
+
+    L_KEY           shift and go to state 25
+
+    bloque                         shift and go to state 24
+
+state 19
+
+    (16) auxFuncion -> funcion auxFuncion .
+
+    MAIN            reduce using rule 16 (auxFuncion -> funcion auxFuncion .)
+
+
+state 20
+
+    (18) funcion -> FUNCION tipoFuncion . ID L_PARENT auxParametro R_PARENT COLON auxVar bloque
+
+    ID              shift and go to state 26
+
+
+state 21
+
+    (20) tipoFuncion -> tipo .
+
+    ID              reduce using rule 20 (tipoFuncion -> tipo .)
+
+
+state 22
+
+    (21) tipoFuncion -> VOID .
+
+    ID              reduce using rule 21 (tipoFuncion -> VOID .)
+
+
+state 23
+
+    (4) var -> VAR tipo COLON . lista_ids auxLista_idsVar SEMICOLON
+    (10) lista_ids -> . ID casilla casilla
+
+    ID              shift and go to state 28
+
+    lista_ids                      shift and go to state 27
+
+state 24
+
+    (1) program -> PROGRAM ID COLON auxVar auxFuncion MAIN bloque .
+
+    $end            reduce using rule 1 (program -> PROGRAM ID COLON auxVar auxFuncion MAIN bloque .)
+
+
+state 25
+
+    (25) bloque -> L_KEY . auxEstatuto R_KEY
+    (26) auxEstatuto -> . estatuto auxEstatuto
+    (27) auxEstatuto -> . empty
+    (28) estatuto -> . asignacion
+    (29) estatuto -> . llamada SEMICOLON
+    (30) estatuto -> . retorno
+    (31) estatuto -> . lectura
+    (32) estatuto -> . escritura
+    (33) estatuto -> . decision
+    (34) estatuto -> . repeticion
+    (89) empty -> .
+    (35) asignacion -> . lista_ids EQUAL exp SEMICOLON
+    (68) llamada -> . ID L_PARENT auxLlamada R_PARENT
+    (71) retorno -> . RETURN L_PARENT exp R_PARENT SEMICOLON
+    (72) lectura -> . READ L_PARENT auxLectura R_PARENT SEMICOLON
+    (75) escritura -> . WRITE L_PARENT auxEscritura R_PARENT SEMICOLON
+    (82) decision -> . IF L_PARENT exp R_PARENT SO bloque auxDecision
+    (85) repeticion -> . condicional
+    (86) repeticion -> . nocondicional
+    (10) lista_ids -> . ID casilla casilla
+    (87) condicional -> . WHILE L_PARENT exp R_PARENT DO bloque
+    (88) nocondicional -> . FROM lista_ids EQUAL exp TO exp DO bloque
+
+    R_KEY           reduce using rule 89 (empty -> .)
+    ID              shift and go to state 40
+    RETURN          shift and go to state 41
+    READ            shift and go to state 42
+    WRITE           shift and go to state 43
+    IF              shift and go to state 44
+    WHILE           shift and go to state 47
+    FROM            shift and go to state 48
+
+    auxEstatuto                    shift and go to state 29
+    estatuto                       shift and go to state 30
+    empty                          shift and go to state 31
+    asignacion                     shift and go to state 32
+    llamada                        shift and go to state 33
+    retorno                        shift and go to state 34
+    lectura                        shift and go to state 35
+    escritura                      shift and go to state 36
+    decision                       shift and go to state 37
+    repeticion                     shift and go to state 38
+    lista_ids                      shift and go to state 39
+    condicional                    shift and go to state 45
+    nocondicional                  shift and go to state 46
+
+state 26
+
+    (18) funcion -> FUNCION tipoFuncion ID . L_PARENT auxParametro R_PARENT COLON auxVar bloque
+
+    L_PARENT        shift and go to state 49
+
+
+state 27
+
+    (4) var -> VAR tipo COLON lista_ids . auxLista_idsVar SEMICOLON
+    (8) auxLista_idsVar -> . COMA lista_ids auxLista_idsVar
+    (9) auxLista_idsVar -> . empty
+    (89) empty -> .
+
+    COMA            shift and go to state 51
+    SEMICOLON       reduce using rule 89 (empty -> .)
+
+    auxLista_idsVar                shift and go to state 50
+    empty                          shift and go to state 52
+
+state 28
+
+    (10) lista_ids -> ID . casilla casilla
+    (11) casilla -> . L_BRACKET casillaVar R_BRACKET
+    (12) casilla -> . empty
+    (89) empty -> .
+
+  ! shift/reduce conflict for L_BRACKET resolved as shift
+    L_BRACKET       shift and go to state 54
+    COMA            reduce using rule 89 (empty -> .)
+    SEMICOLON       reduce using rule 89 (empty -> .)
+    EQUAL           reduce using rule 89 (empty -> .)
+    R_PARENT        reduce using rule 89 (empty -> .)
+
+  ! L_BRACKET       [ reduce using rule 89 (empty -> .) ]
+
+    casilla                        shift and go to state 53
+    empty                          shift and go to state 55
+
+state 29
+
+    (25) bloque -> L_KEY auxEstatuto . R_KEY
+
+    R_KEY           shift and go to state 56
+
+
+state 30
+
+    (26) auxEstatuto -> estatuto . auxEstatuto
+    (26) auxEstatuto -> . estatuto auxEstatuto
+    (27) auxEstatuto -> . empty
+    (28) estatuto -> . asignacion
+    (29) estatuto -> . llamada SEMICOLON
+    (30) estatuto -> . retorno
+    (31) estatuto -> . lectura
+    (32) estatuto -> . escritura
+    (33) estatuto -> . decision
+    (34) estatuto -> . repeticion
+    (89) empty -> .
+    (35) asignacion -> . lista_ids EQUAL exp SEMICOLON
+    (68) llamada -> . ID L_PARENT auxLlamada R_PARENT
+    (71) retorno -> . RETURN L_PARENT exp R_PARENT SEMICOLON
+    (72) lectura -> . READ L_PARENT auxLectura R_PARENT SEMICOLON
+    (75) escritura -> . WRITE L_PARENT auxEscritura R_PARENT SEMICOLON
+    (82) decision -> . IF L_PARENT exp R_PARENT SO bloque auxDecision
+    (85) repeticion -> . condicional
+    (86) repeticion -> . nocondicional
+    (10) lista_ids -> . ID casilla casilla
+    (87) condicional -> . WHILE L_PARENT exp R_PARENT DO bloque
+    (88) nocondicional -> . FROM lista_ids EQUAL exp TO exp DO bloque
+
+    R_KEY           reduce using rule 89 (empty -> .)
+    ID              shift and go to state 40
+    RETURN          shift and go to state 41
+    READ            shift and go to state 42
+    WRITE           shift and go to state 43
+    IF              shift and go to state 44
+    WHILE           shift and go to state 47
+    FROM            shift and go to state 48
+
+    estatuto                       shift and go to state 30
+    auxEstatuto                    shift and go to state 57
+    empty                          shift and go to state 31
+    asignacion                     shift and go to state 32
+    llamada                        shift and go to state 33
+    retorno                        shift and go to state 34
+    lectura                        shift and go to state 35
+    escritura                      shift and go to state 36
+    decision                       shift and go to state 37
+    repeticion                     shift and go to state 38
+    lista_ids                      shift and go to state 39
+    condicional                    shift and go to state 45
+    nocondicional                  shift and go to state 46
+
+state 31
+
+    (27) auxEstatuto -> empty .
+
+    R_KEY           reduce using rule 27 (auxEstatuto -> empty .)
+
+
+state 32
+
+    (28) estatuto -> asignacion .
+
+    ID              reduce using rule 28 (estatuto -> asignacion .)
+    RETURN          reduce using rule 28 (estatuto -> asignacion .)
+    READ            reduce using rule 28 (estatuto -> asignacion .)
+    WRITE           reduce using rule 28 (estatuto -> asignacion .)
+    IF              reduce using rule 28 (estatuto -> asignacion .)
+    WHILE           reduce using rule 28 (estatuto -> asignacion .)
+    FROM            reduce using rule 28 (estatuto -> asignacion .)
+    R_KEY           reduce using rule 28 (estatuto -> asignacion .)
+
+
+state 33
+
+    (29) estatuto -> llamada . SEMICOLON
+
+    SEMICOLON       shift and go to state 58
+
+
+state 34
+
+    (30) estatuto -> retorno .
+
+    ID              reduce using rule 30 (estatuto -> retorno .)
+    RETURN          reduce using rule 30 (estatuto -> retorno .)
+    READ            reduce using rule 30 (estatuto -> retorno .)
+    WRITE           reduce using rule 30 (estatuto -> retorno .)
+    IF              reduce using rule 30 (estatuto -> retorno .)
+    WHILE           reduce using rule 30 (estatuto -> retorno .)
+    FROM            reduce using rule 30 (estatuto -> retorno .)
+    R_KEY           reduce using rule 30 (estatuto -> retorno .)
+
+
+state 35
+
+    (31) estatuto -> lectura .
+
+    ID              reduce using rule 31 (estatuto -> lectura .)
+    RETURN          reduce using rule 31 (estatuto -> lectura .)
+    READ            reduce using rule 31 (estatuto -> lectura .)
+    WRITE           reduce using rule 31 (estatuto -> lectura .)
+    IF              reduce using rule 31 (estatuto -> lectura .)
+    WHILE           reduce using rule 31 (estatuto -> lectura .)
+    FROM            reduce using rule 31 (estatuto -> lectura .)
+    R_KEY           reduce using rule 31 (estatuto -> lectura .)
+
+
+state 36
+
+    (32) estatuto -> escritura .
+
+    ID              reduce using rule 32 (estatuto -> escritura .)
+    RETURN          reduce using rule 32 (estatuto -> escritura .)
+    READ            reduce using rule 32 (estatuto -> escritura .)
+    WRITE           reduce using rule 32 (estatuto -> escritura .)
+    IF              reduce using rule 32 (estatuto -> escritura .)
+    WHILE           reduce using rule 32 (estatuto -> escritura .)
+    FROM            reduce using rule 32 (estatuto -> escritura .)
+    R_KEY           reduce using rule 32 (estatuto -> escritura .)
+
+
+state 37
+
+    (33) estatuto -> decision .
+
+    ID              reduce using rule 33 (estatuto -> decision .)
+    RETURN          reduce using rule 33 (estatuto -> decision .)
+    READ            reduce using rule 33 (estatuto -> decision .)
+    WRITE           reduce using rule 33 (estatuto -> decision .)
+    IF              reduce using rule 33 (estatuto -> decision .)
+    WHILE           reduce using rule 33 (estatuto -> decision .)
+    FROM            reduce using rule 33 (estatuto -> decision .)
+    R_KEY           reduce using rule 33 (estatuto -> decision .)
+
+
+state 38
+
+    (34) estatuto -> repeticion .
+
+    ID              reduce using rule 34 (estatuto -> repeticion .)
+    RETURN          reduce using rule 34 (estatuto -> repeticion .)
+    READ            reduce using rule 34 (estatuto -> repeticion .)
+    WRITE           reduce using rule 34 (estatuto -> repeticion .)
+    IF              reduce using rule 34 (estatuto -> repeticion .)
+    WHILE           reduce using rule 34 (estatuto -> repeticion .)
+    FROM            reduce using rule 34 (estatuto -> repeticion .)
+    R_KEY           reduce using rule 34 (estatuto -> repeticion .)
+
+
+state 39
+
+    (35) asignacion -> lista_ids . EQUAL exp SEMICOLON
+
+    EQUAL           shift and go to state 59
+
+
+state 40
+
+    (68) llamada -> ID . L_PARENT auxLlamada R_PARENT
+    (10) lista_ids -> ID . casilla casilla
+    (11) casilla -> . L_BRACKET casillaVar R_BRACKET
+    (12) casilla -> . empty
+    (89) empty -> .
+
+  ! shift/reduce conflict for L_BRACKET resolved as shift
+    L_PARENT        shift and go to state 60
+    L_BRACKET       shift and go to state 54
+    EQUAL           reduce using rule 89 (empty -> .)
+
+  ! L_BRACKET       [ reduce using rule 89 (empty -> .) ]
+
+    casilla                        shift and go to state 53
+    empty                          shift and go to state 55
+
+state 41
+
+    (71) retorno -> RETURN . L_PARENT exp R_PARENT SEMICOLON
+
+    L_PARENT        shift and go to state 61
+
+
+state 42
+
+    (72) lectura -> READ . L_PARENT auxLectura R_PARENT SEMICOLON
+
+    L_PARENT        shift and go to state 62
+
+
+state 43
+
+    (75) escritura -> WRITE . L_PARENT auxEscritura R_PARENT SEMICOLON
+
+    L_PARENT        shift and go to state 63
+
+
+state 44
+
+    (82) decision -> IF . L_PARENT exp R_PARENT SO bloque auxDecision
+
+    L_PARENT        shift and go to state 64
+
+
+state 45
+
+    (85) repeticion -> condicional .
+
+    ID              reduce using rule 85 (repeticion -> condicional .)
+    RETURN          reduce using rule 85 (repeticion -> condicional .)
+    READ            reduce using rule 85 (repeticion -> condicional .)
+    WRITE           reduce using rule 85 (repeticion -> condicional .)
+    IF              reduce using rule 85 (repeticion -> condicional .)
+    WHILE           reduce using rule 85 (repeticion -> condicional .)
+    FROM            reduce using rule 85 (repeticion -> condicional .)
+    R_KEY           reduce using rule 85 (repeticion -> condicional .)
+
+
+state 46
+
+    (86) repeticion -> nocondicional .
+
+    ID              reduce using rule 86 (repeticion -> nocondicional .)
+    RETURN          reduce using rule 86 (repeticion -> nocondicional .)
+    READ            reduce using rule 86 (repeticion -> nocondicional .)
+    WRITE           reduce using rule 86 (repeticion -> nocondicional .)
+    IF              reduce using rule 86 (repeticion -> nocondicional .)
+    WHILE           reduce using rule 86 (repeticion -> nocondicional .)
+    FROM            reduce using rule 86 (repeticion -> nocondicional .)
+    R_KEY           reduce using rule 86 (repeticion -> nocondicional .)
+
+
+state 47
+
+    (87) condicional -> WHILE . L_PARENT exp R_PARENT DO bloque
+
+    L_PARENT        shift and go to state 65
+
+
+state 48
+
+    (88) nocondicional -> FROM . lista_ids EQUAL exp TO exp DO bloque
+    (10) lista_ids -> . ID casilla casilla
+
+    ID              shift and go to state 28
+
+    lista_ids                      shift and go to state 66
+
+state 49
+
+    (18) funcion -> FUNCION tipoFuncion ID L_PARENT . auxParametro R_PARENT COLON auxVar bloque
+    (22) auxParametro -> . tipo ID
+    (23) auxParametro -> . tipo ID COMA auxParametro
+    (24) auxParametro -> . empty
+    (5) tipo -> . INT
+    (6) tipo -> . FLOAT
+    (7) tipo -> . CHAR
+    (89) empty -> .
+
+    INT             shift and go to state 15
+    FLOAT           shift and go to state 16
+    CHAR            shift and go to state 17
+    R_PARENT        reduce using rule 89 (empty -> .)
+
+    auxParametro                   shift and go to state 67
+    tipo                           shift and go to state 68
+    empty                          shift and go to state 69
+
+state 50
+
+    (4) var -> VAR tipo COLON lista_ids auxLista_idsVar . SEMICOLON
+
+    SEMICOLON       shift and go to state 70
+
+
+state 51
+
+    (8) auxLista_idsVar -> COMA . lista_ids auxLista_idsVar
+    (10) lista_ids -> . ID casilla casilla
+
+    ID              shift and go to state 28
+
+    lista_ids                      shift and go to state 71
+
+state 52
+
+    (9) auxLista_idsVar -> empty .
+
+    SEMICOLON       reduce using rule 9 (auxLista_idsVar -> empty .)
+
+
+state 53
+
+    (10) lista_ids -> ID casilla . casilla
+    (11) casilla -> . L_BRACKET casillaVar R_BRACKET
+    (12) casilla -> . empty
+    (89) empty -> .
+
+    L_BRACKET       shift and go to state 54
+    COMA            reduce using rule 89 (empty -> .)
+    SEMICOLON       reduce using rule 89 (empty -> .)
+    EQUAL           reduce using rule 89 (empty -> .)
+    AND             reduce using rule 89 (empty -> .)
+    OR              reduce using rule 89 (empty -> .)
+    LESSTHAN        reduce using rule 89 (empty -> .)
+    GREATERTHAN     reduce using rule 89 (empty -> .)
+    LESSEQUALTHAN   reduce using rule 89 (empty -> .)
+    GREATEREQUALTHAN reduce using rule 89 (empty -> .)
+    EQUALX2         reduce using rule 89 (empty -> .)
+    MULT            reduce using rule 89 (empty -> .)
+    DIV             reduce using rule 89 (empty -> .)
+    MONEY           reduce using rule 89 (empty -> .)
+    EXCLAMATION     reduce using rule 89 (empty -> .)
+    QUESTION        reduce using rule 89 (empty -> .)
+    PLUS            reduce using rule 89 (empty -> .)
+    MINUS           reduce using rule 89 (empty -> .)
+    R_BRACKET       reduce using rule 89 (empty -> .)
+    R_PARENT        reduce using rule 89 (empty -> .)
+    TO              reduce using rule 89 (empty -> .)
+    DO              reduce using rule 89 (empty -> .)
+
+    casilla                        shift and go to state 72
+    empty                          shift and go to state 55
+
+state 54
+
+    (11) casilla -> L_BRACKET . casillaVar R_BRACKET
+    (13) casillaVar -> . CTE_I
+    (14) casillaVar -> . ID
+    (15) casillaVar -> . exp
+    (36) exp -> . t auxExp
+    (40) t -> . f auxT
+    (47) f -> . m auxF
+    (54) m -> . x auxM
+    (57) x -> . z auxX
+    (60) z -> . var_cte
+    (61) z -> . L_PARENT exp R_PARENT
+    (62) z -> . lista_ids
+    (63) z -> . llamada
+    (64) z -> . empty
+    (65) var_cte -> . ID
+    (66) var_cte -> . CTE_I
+    (67) var_cte -> . CTE_F
+    (10) lista_ids -> . ID casilla casilla
+    (68) llamada -> . ID L_PARENT auxLlamada R_PARENT
+    (89) empty -> .
+
+    CTE_I           shift and go to state 74
+    ID              shift and go to state 75
+    L_PARENT        shift and go to state 83
+    CTE_F           shift and go to state 87
+    AND             reduce using rule 89 (empty -> .)
+    OR              reduce using rule 89 (empty -> .)
+    LESSTHAN        reduce using rule 89 (empty -> .)
+    GREATERTHAN     reduce using rule 89 (empty -> .)
+    LESSEQUALTHAN   reduce using rule 89 (empty -> .)
+    GREATEREQUALTHAN reduce using rule 89 (empty -> .)
+    EQUALX2         reduce using rule 89 (empty -> .)
+    MULT            reduce using rule 89 (empty -> .)
+    DIV             reduce using rule 89 (empty -> .)
+    MONEY           reduce using rule 89 (empty -> .)
+    EXCLAMATION     reduce using rule 89 (empty -> .)
+    QUESTION        reduce using rule 89 (empty -> .)
+    PLUS            reduce using rule 89 (empty -> .)
+    MINUS           reduce using rule 89 (empty -> .)
+    R_BRACKET       reduce using rule 89 (empty -> .)
+
+    casillaVar                     shift and go to state 73
+    exp                            shift and go to state 76
+    t                              shift and go to state 77
+    f                              shift and go to state 78
+    m                              shift and go to state 79
+    x                              shift and go to state 80
+    z                              shift and go to state 81
+    var_cte                        shift and go to state 82
+    lista_ids                      shift and go to state 84
+    llamada                        shift and go to state 85
+    empty                          shift and go to state 86
+
+state 55
+
+    (12) casilla -> empty .
+
+    L_BRACKET       reduce using rule 12 (casilla -> empty .)
+    COMA            reduce using rule 12 (casilla -> empty .)
+    SEMICOLON       reduce using rule 12 (casilla -> empty .)
+    EQUAL           reduce using rule 12 (casilla -> empty .)
+    R_PARENT        reduce using rule 12 (casilla -> empty .)
+    AND             reduce using rule 12 (casilla -> empty .)
+    OR              reduce using rule 12 (casilla -> empty .)
+    LESSTHAN        reduce using rule 12 (casilla -> empty .)
+    GREATERTHAN     reduce using rule 12 (casilla -> empty .)
+    LESSEQUALTHAN   reduce using rule 12 (casilla -> empty .)
+    GREATEREQUALTHAN reduce using rule 12 (casilla -> empty .)
+    EQUALX2         reduce using rule 12 (casilla -> empty .)
+    MULT            reduce using rule 12 (casilla -> empty .)
+    DIV             reduce using rule 12 (casilla -> empty .)
+    MONEY           reduce using rule 12 (casilla -> empty .)
+    EXCLAMATION     reduce using rule 12 (casilla -> empty .)
+    QUESTION        reduce using rule 12 (casilla -> empty .)
+    PLUS            reduce using rule 12 (casilla -> empty .)
+    MINUS           reduce using rule 12 (casilla -> empty .)
+    R_BRACKET       reduce using rule 12 (casilla -> empty .)
+    TO              reduce using rule 12 (casilla -> empty .)
+    DO              reduce using rule 12 (casilla -> empty .)
+
+
+state 56
+
+    (25) bloque -> L_KEY auxEstatuto R_KEY .
+
+    $end            reduce using rule 25 (bloque -> L_KEY auxEstatuto R_KEY .)
+    ELSE            reduce using rule 25 (bloque -> L_KEY auxEstatuto R_KEY .)
+    ID              reduce using rule 25 (bloque -> L_KEY auxEstatuto R_KEY .)
+    RETURN          reduce using rule 25 (bloque -> L_KEY auxEstatuto R_KEY .)
+    READ            reduce using rule 25 (bloque -> L_KEY auxEstatuto R_KEY .)
+    WRITE           reduce using rule 25 (bloque -> L_KEY auxEstatuto R_KEY .)
+    IF              reduce using rule 25 (bloque -> L_KEY auxEstatuto R_KEY .)
+    WHILE           reduce using rule 25 (bloque -> L_KEY auxEstatuto R_KEY .)
+    FROM            reduce using rule 25 (bloque -> L_KEY auxEstatuto R_KEY .)
+    R_KEY           reduce using rule 25 (bloque -> L_KEY auxEstatuto R_KEY .)
+    FUNCION         reduce using rule 25 (bloque -> L_KEY auxEstatuto R_KEY .)
+    MAIN            reduce using rule 25 (bloque -> L_KEY auxEstatuto R_KEY .)
+
+
+state 57
+
+    (26) auxEstatuto -> estatuto auxEstatuto .
+
+    R_KEY           reduce using rule 26 (auxEstatuto -> estatuto auxEstatuto .)
+
+
+state 58
+
+    (29) estatuto -> llamada SEMICOLON .
+
+    ID              reduce using rule 29 (estatuto -> llamada SEMICOLON .)
+    RETURN          reduce using rule 29 (estatuto -> llamada SEMICOLON .)
+    READ            reduce using rule 29 (estatuto -> llamada SEMICOLON .)
+    WRITE           reduce using rule 29 (estatuto -> llamada SEMICOLON .)
+    IF              reduce using rule 29 (estatuto -> llamada SEMICOLON .)
+    WHILE           reduce using rule 29 (estatuto -> llamada SEMICOLON .)
+    FROM            reduce using rule 29 (estatuto -> llamada SEMICOLON .)
+    R_KEY           reduce using rule 29 (estatuto -> llamada SEMICOLON .)
+
+
+state 59
+
+    (35) asignacion -> lista_ids EQUAL . exp SEMICOLON
+    (36) exp -> . t auxExp
+    (40) t -> . f auxT
+    (47) f -> . m auxF
+    (54) m -> . x auxM
+    (57) x -> . z auxX
+    (60) z -> . var_cte
+    (61) z -> . L_PARENT exp R_PARENT
+    (62) z -> . lista_ids
+    (63) z -> . llamada
+    (64) z -> . empty
+    (65) var_cte -> . ID
+    (66) var_cte -> . CTE_I
+    (67) var_cte -> . CTE_F
+    (10) lista_ids -> . ID casilla casilla
+    (68) llamada -> . ID L_PARENT auxLlamada R_PARENT
+    (89) empty -> .
+
+    L_PARENT        shift and go to state 83
+    ID              shift and go to state 89
+    CTE_I           shift and go to state 90
+    CTE_F           shift and go to state 87
+    AND             reduce using rule 89 (empty -> .)
+    OR              reduce using rule 89 (empty -> .)
+    LESSTHAN        reduce using rule 89 (empty -> .)
+    GREATERTHAN     reduce using rule 89 (empty -> .)
+    LESSEQUALTHAN   reduce using rule 89 (empty -> .)
+    GREATEREQUALTHAN reduce using rule 89 (empty -> .)
+    EQUALX2         reduce using rule 89 (empty -> .)
+    MULT            reduce using rule 89 (empty -> .)
+    DIV             reduce using rule 89 (empty -> .)
+    MONEY           reduce using rule 89 (empty -> .)
+    EXCLAMATION     reduce using rule 89 (empty -> .)
+    QUESTION        reduce using rule 89 (empty -> .)
+    PLUS            reduce using rule 89 (empty -> .)
+    MINUS           reduce using rule 89 (empty -> .)
+    SEMICOLON       reduce using rule 89 (empty -> .)
+
+    lista_ids                      shift and go to state 84
+    exp                            shift and go to state 88
+    t                              shift and go to state 77
+    f                              shift and go to state 78
+    m                              shift and go to state 79
+    x                              shift and go to state 80
+    z                              shift and go to state 81
+    var_cte                        shift and go to state 82
+    llamada                        shift and go to state 85
+    empty                          shift and go to state 86
+
+state 60
+
+    (68) llamada -> ID L_PARENT . auxLlamada R_PARENT
+    (69) auxLlamada -> . exp
+    (70) auxLlamada -> . exp COMA auxLlamada
+    (36) exp -> . t auxExp
+    (40) t -> . f auxT
+    (47) f -> . m auxF
+    (54) m -> . x auxM
+    (57) x -> . z auxX
+    (60) z -> . var_cte
+    (61) z -> . L_PARENT exp R_PARENT
+    (62) z -> . lista_ids
+    (63) z -> . llamada
+    (64) z -> . empty
+    (65) var_cte -> . ID
+    (66) var_cte -> . CTE_I
+    (67) var_cte -> . CTE_F
+    (10) lista_ids -> . ID casilla casilla
+    (68) llamada -> . ID L_PARENT auxLlamada R_PARENT
+    (89) empty -> .
+
+    L_PARENT        shift and go to state 83
+    ID              shift and go to state 89
+    CTE_I           shift and go to state 90
+    CTE_F           shift and go to state 87
+    AND             reduce using rule 89 (empty -> .)
+    OR              reduce using rule 89 (empty -> .)
+    LESSTHAN        reduce using rule 89 (empty -> .)
+    GREATERTHAN     reduce using rule 89 (empty -> .)
+    LESSEQUALTHAN   reduce using rule 89 (empty -> .)
+    GREATEREQUALTHAN reduce using rule 89 (empty -> .)
+    EQUALX2         reduce using rule 89 (empty -> .)
+    MULT            reduce using rule 89 (empty -> .)
+    DIV             reduce using rule 89 (empty -> .)
+    MONEY           reduce using rule 89 (empty -> .)
+    EXCLAMATION     reduce using rule 89 (empty -> .)
+    QUESTION        reduce using rule 89 (empty -> .)
+    PLUS            reduce using rule 89 (empty -> .)
+    MINUS           reduce using rule 89 (empty -> .)
+    COMA            reduce using rule 89 (empty -> .)
+    R_PARENT        reduce using rule 89 (empty -> .)
+
+    auxLlamada                     shift and go to state 91
+    exp                            shift and go to state 92
+    t                              shift and go to state 77
+    f                              shift and go to state 78
+    m                              shift and go to state 79
+    x                              shift and go to state 80
+    z                              shift and go to state 81
+    var_cte                        shift and go to state 82
+    lista_ids                      shift and go to state 84
+    llamada                        shift and go to state 85
+    empty                          shift and go to state 86
+
+state 61
+
+    (71) retorno -> RETURN L_PARENT . exp R_PARENT SEMICOLON
+    (36) exp -> . t auxExp
+    (40) t -> . f auxT
+    (47) f -> . m auxF
+    (54) m -> . x auxM
+    (57) x -> . z auxX
+    (60) z -> . var_cte
+    (61) z -> . L_PARENT exp R_PARENT
+    (62) z -> . lista_ids
+    (63) z -> . llamada
+    (64) z -> . empty
+    (65) var_cte -> . ID
+    (66) var_cte -> . CTE_I
+    (67) var_cte -> . CTE_F
+    (10) lista_ids -> . ID casilla casilla
+    (68) llamada -> . ID L_PARENT auxLlamada R_PARENT
+    (89) empty -> .
+
+    L_PARENT        shift and go to state 83
+    ID              shift and go to state 89
+    CTE_I           shift and go to state 90
+    CTE_F           shift and go to state 87
+    AND             reduce using rule 89 (empty -> .)
+    OR              reduce using rule 89 (empty -> .)
+    LESSTHAN        reduce using rule 89 (empty -> .)
+    GREATERTHAN     reduce using rule 89 (empty -> .)
+    LESSEQUALTHAN   reduce using rule 89 (empty -> .)
+    GREATEREQUALTHAN reduce using rule 89 (empty -> .)
+    EQUALX2         reduce using rule 89 (empty -> .)
+    MULT            reduce using rule 89 (empty -> .)
+    DIV             reduce using rule 89 (empty -> .)
+    MONEY           reduce using rule 89 (empty -> .)
+    EXCLAMATION     reduce using rule 89 (empty -> .)
+    QUESTION        reduce using rule 89 (empty -> .)
+    PLUS            reduce using rule 89 (empty -> .)
+    MINUS           reduce using rule 89 (empty -> .)
+    R_PARENT        reduce using rule 89 (empty -> .)
+
+    exp                            shift and go to state 93
+    t                              shift and go to state 77
+    f                              shift and go to state 78
+    m                              shift and go to state 79
+    x                              shift and go to state 80
+    z                              shift and go to state 81
+    var_cte                        shift and go to state 82
+    lista_ids                      shift and go to state 84
+    llamada                        shift and go to state 85
+    empty                          shift and go to state 86
+
+state 62
+
+    (72) lectura -> READ L_PARENT . auxLectura R_PARENT SEMICOLON
+    (73) auxLectura -> . lista_ids
+    (74) auxLectura -> . lista_ids COMA auxLectura
+    (10) lista_ids -> . ID casilla casilla
+
+    ID              shift and go to state 28
+
+    auxLectura                     shift and go to state 94
+    lista_ids                      shift and go to state 95
+
+state 63
+
+    (75) escritura -> WRITE L_PARENT . auxEscritura R_PARENT SEMICOLON
+    (76) auxEscritura -> . auxString
+    (77) auxEscritura -> . auxExpEscritura
+    (78) auxString -> . CTE_STRING
+    (79) auxString -> . CTE_STRING COMA auxEscritura
+    (80) auxExpEscritura -> . exp
+    (81) auxExpEscritura -> . exp COMA auxExpEscritura
+    (36) exp -> . t auxExp
+    (40) t -> . f auxT
+    (47) f -> . m auxF
+    (54) m -> . x auxM
+    (57) x -> . z auxX
+    (60) z -> . var_cte
+    (61) z -> . L_PARENT exp R_PARENT
+    (62) z -> . lista_ids
+    (63) z -> . llamada
+    (64) z -> . empty
+    (65) var_cte -> . ID
+    (66) var_cte -> . CTE_I
+    (67) var_cte -> . CTE_F
+    (10) lista_ids -> . ID casilla casilla
+    (68) llamada -> . ID L_PARENT auxLlamada R_PARENT
+    (89) empty -> .
+
+    CTE_STRING      shift and go to state 99
+    L_PARENT        shift and go to state 83
+    ID              shift and go to state 89
+    CTE_I           shift and go to state 90
+    CTE_F           shift and go to state 87
+    AND             reduce using rule 89 (empty -> .)
+    OR              reduce using rule 89 (empty -> .)
+    LESSTHAN        reduce using rule 89 (empty -> .)
+    GREATERTHAN     reduce using rule 89 (empty -> .)
+    LESSEQUALTHAN   reduce using rule 89 (empty -> .)
+    GREATEREQUALTHAN reduce using rule 89 (empty -> .)
+    EQUALX2         reduce using rule 89 (empty -> .)
+    MULT            reduce using rule 89 (empty -> .)
+    DIV             reduce using rule 89 (empty -> .)
+    MONEY           reduce using rule 89 (empty -> .)
+    EXCLAMATION     reduce using rule 89 (empty -> .)
+    QUESTION        reduce using rule 89 (empty -> .)
+    PLUS            reduce using rule 89 (empty -> .)
+    MINUS           reduce using rule 89 (empty -> .)
+    COMA            reduce using rule 89 (empty -> .)
+    R_PARENT        reduce using rule 89 (empty -> .)
+
+    auxEscritura                   shift and go to state 96
+    auxString                      shift and go to state 97
+    auxExpEscritura                shift and go to state 98
+    exp                            shift and go to state 100
+    t                              shift and go to state 77
+    f                              shift and go to state 78
+    m                              shift and go to state 79
+    x                              shift and go to state 80
+    z                              shift and go to state 81
+    var_cte                        shift and go to state 82
+    lista_ids                      shift and go to state 84
+    llamada                        shift and go to state 85
+    empty                          shift and go to state 86
+
+state 64
+
+    (82) decision -> IF L_PARENT . exp R_PARENT SO bloque auxDecision
+    (36) exp -> . t auxExp
+    (40) t -> . f auxT
+    (47) f -> . m auxF
+    (54) m -> . x auxM
+    (57) x -> . z auxX
+    (60) z -> . var_cte
+    (61) z -> . L_PARENT exp R_PARENT
+    (62) z -> . lista_ids
+    (63) z -> . llamada
+    (64) z -> . empty
+    (65) var_cte -> . ID
+    (66) var_cte -> . CTE_I
+    (67) var_cte -> . CTE_F
+    (10) lista_ids -> . ID casilla casilla
+    (68) llamada -> . ID L_PARENT auxLlamada R_PARENT
+    (89) empty -> .
+
+    L_PARENT        shift and go to state 83
+    ID              shift and go to state 89
+    CTE_I           shift and go to state 90
+    CTE_F           shift and go to state 87
+    AND             reduce using rule 89 (empty -> .)
+    OR              reduce using rule 89 (empty -> .)
+    LESSTHAN        reduce using rule 89 (empty -> .)
+    GREATERTHAN     reduce using rule 89 (empty -> .)
+    LESSEQUALTHAN   reduce using rule 89 (empty -> .)
+    GREATEREQUALTHAN reduce using rule 89 (empty -> .)
+    EQUALX2         reduce using rule 89 (empty -> .)
+    MULT            reduce using rule 89 (empty -> .)
+    DIV             reduce using rule 89 (empty -> .)
+    MONEY           reduce using rule 89 (empty -> .)
+    EXCLAMATION     reduce using rule 89 (empty -> .)
+    QUESTION        reduce using rule 89 (empty -> .)
+    PLUS            reduce using rule 89 (empty -> .)
+    MINUS           reduce using rule 89 (empty -> .)
+    R_PARENT        reduce using rule 89 (empty -> .)
+
+    exp                            shift and go to state 101
+    t                              shift and go to state 77
+    f                              shift and go to state 78
+    m                              shift and go to state 79
+    x                              shift and go to state 80
+    z                              shift and go to state 81
+    var_cte                        shift and go to state 82
+    lista_ids                      shift and go to state 84
+    llamada                        shift and go to state 85
+    empty                          shift and go to state 86
+
+state 65
+
+    (87) condicional -> WHILE L_PARENT . exp R_PARENT DO bloque
+    (36) exp -> . t auxExp
+    (40) t -> . f auxT
+    (47) f -> . m auxF
+    (54) m -> . x auxM
+    (57) x -> . z auxX
+    (60) z -> . var_cte
+    (61) z -> . L_PARENT exp R_PARENT
+    (62) z -> . lista_ids
+    (63) z -> . llamada
+    (64) z -> . empty
+    (65) var_cte -> . ID
+    (66) var_cte -> . CTE_I
+    (67) var_cte -> . CTE_F
+    (10) lista_ids -> . ID casilla casilla
+    (68) llamada -> . ID L_PARENT auxLlamada R_PARENT
+    (89) empty -> .
+
+    L_PARENT        shift and go to state 83
+    ID              shift and go to state 89
+    CTE_I           shift and go to state 90
+    CTE_F           shift and go to state 87
+    AND             reduce using rule 89 (empty -> .)
+    OR              reduce using rule 89 (empty -> .)
+    LESSTHAN        reduce using rule 89 (empty -> .)
+    GREATERTHAN     reduce using rule 89 (empty -> .)
+    LESSEQUALTHAN   reduce using rule 89 (empty -> .)
+    GREATEREQUALTHAN reduce using rule 89 (empty -> .)
+    EQUALX2         reduce using rule 89 (empty -> .)
+    MULT            reduce using rule 89 (empty -> .)
+    DIV             reduce using rule 89 (empty -> .)
+    MONEY           reduce using rule 89 (empty -> .)
+    EXCLAMATION     reduce using rule 89 (empty -> .)
+    QUESTION        reduce using rule 89 (empty -> .)
+    PLUS            reduce using rule 89 (empty -> .)
+    MINUS           reduce using rule 89 (empty -> .)
+    R_PARENT        reduce using rule 89 (empty -> .)
+
+    exp                            shift and go to state 102
+    t                              shift and go to state 77
+    f                              shift and go to state 78
+    m                              shift and go to state 79
+    x                              shift and go to state 80
+    z                              shift and go to state 81
+    var_cte                        shift and go to state 82
+    lista_ids                      shift and go to state 84
+    llamada                        shift and go to state 85
+    empty                          shift and go to state 86
+
+state 66
+
+    (88) nocondicional -> FROM lista_ids . EQUAL exp TO exp DO bloque
+
+    EQUAL           shift and go to state 103
+
+
+state 67
+
+    (18) funcion -> FUNCION tipoFuncion ID L_PARENT auxParametro . R_PARENT COLON auxVar bloque
+
+    R_PARENT        shift and go to state 104
+
+
+state 68
+
+    (22) auxParametro -> tipo . ID
+    (23) auxParametro -> tipo . ID COMA auxParametro
+
+    ID              shift and go to state 105
+
+
+state 69
+
+    (24) auxParametro -> empty .
+
+    R_PARENT        reduce using rule 24 (auxParametro -> empty .)
+
+
+state 70
+
+    (4) var -> VAR tipo COLON lista_ids auxLista_idsVar SEMICOLON .
+
+    VAR             reduce using rule 4 (var -> VAR tipo COLON lista_ids auxLista_idsVar SEMICOLON .)
+    FUNCION         reduce using rule 4 (var -> VAR tipo COLON lista_ids auxLista_idsVar SEMICOLON .)
+    MAIN            reduce using rule 4 (var -> VAR tipo COLON lista_ids auxLista_idsVar SEMICOLON .)
+    L_KEY           reduce using rule 4 (var -> VAR tipo COLON lista_ids auxLista_idsVar SEMICOLON .)
+
+
+state 71
+
+    (8) auxLista_idsVar -> COMA lista_ids . auxLista_idsVar
+    (8) auxLista_idsVar -> . COMA lista_ids auxLista_idsVar
+    (9) auxLista_idsVar -> . empty
+    (89) empty -> .
+
+    COMA            shift and go to state 51
+    SEMICOLON       reduce using rule 89 (empty -> .)
+
+    auxLista_idsVar                shift and go to state 106
+    empty                          shift and go to state 52
+
+state 72
+
+    (10) lista_ids -> ID casilla casilla .
+
+    COMA            reduce using rule 10 (lista_ids -> ID casilla casilla .)
+    SEMICOLON       reduce using rule 10 (lista_ids -> ID casilla casilla .)
+    EQUAL           reduce using rule 10 (lista_ids -> ID casilla casilla .)
+    AND             reduce using rule 10 (lista_ids -> ID casilla casilla .)
+    OR              reduce using rule 10 (lista_ids -> ID casilla casilla .)
+    LESSTHAN        reduce using rule 10 (lista_ids -> ID casilla casilla .)
+    GREATERTHAN     reduce using rule 10 (lista_ids -> ID casilla casilla .)
+    LESSEQUALTHAN   reduce using rule 10 (lista_ids -> ID casilla casilla .)
+    GREATEREQUALTHAN reduce using rule 10 (lista_ids -> ID casilla casilla .)
+    EQUALX2         reduce using rule 10 (lista_ids -> ID casilla casilla .)
+    MULT            reduce using rule 10 (lista_ids -> ID casilla casilla .)
+    DIV             reduce using rule 10 (lista_ids -> ID casilla casilla .)
+    MONEY           reduce using rule 10 (lista_ids -> ID casilla casilla .)
+    EXCLAMATION     reduce using rule 10 (lista_ids -> ID casilla casilla .)
+    QUESTION        reduce using rule 10 (lista_ids -> ID casilla casilla .)
+    PLUS            reduce using rule 10 (lista_ids -> ID casilla casilla .)
+    MINUS           reduce using rule 10 (lista_ids -> ID casilla casilla .)
+    R_BRACKET       reduce using rule 10 (lista_ids -> ID casilla casilla .)
+    R_PARENT        reduce using rule 10 (lista_ids -> ID casilla casilla .)
+    TO              reduce using rule 10 (lista_ids -> ID casilla casilla .)
+    DO              reduce using rule 10 (lista_ids -> ID casilla casilla .)
+
+
+state 73
+
+    (11) casilla -> L_BRACKET casillaVar . R_BRACKET
+
+    R_BRACKET       shift and go to state 107
+
+
+state 74
+
+    (13) casillaVar -> CTE_I .
+    (66) var_cte -> CTE_I .
+
+  ! reduce/reduce conflict for R_BRACKET resolved using rule 13 (casillaVar -> CTE_I .)
+    R_BRACKET       reduce using rule 13 (casillaVar -> CTE_I .)
+    AND             reduce using rule 66 (var_cte -> CTE_I .)
+    OR              reduce using rule 66 (var_cte -> CTE_I .)
+    LESSTHAN        reduce using rule 66 (var_cte -> CTE_I .)
+    GREATERTHAN     reduce using rule 66 (var_cte -> CTE_I .)
+    LESSEQUALTHAN   reduce using rule 66 (var_cte -> CTE_I .)
+    GREATEREQUALTHAN reduce using rule 66 (var_cte -> CTE_I .)
+    EQUALX2         reduce using rule 66 (var_cte -> CTE_I .)
+    MULT            reduce using rule 66 (var_cte -> CTE_I .)
+    DIV             reduce using rule 66 (var_cte -> CTE_I .)
+    MONEY           reduce using rule 66 (var_cte -> CTE_I .)
+    EXCLAMATION     reduce using rule 66 (var_cte -> CTE_I .)
+    QUESTION        reduce using rule 66 (var_cte -> CTE_I .)
+    PLUS            reduce using rule 66 (var_cte -> CTE_I .)
+    MINUS           reduce using rule 66 (var_cte -> CTE_I .)
+
+  ! R_BRACKET       [ reduce using rule 66 (var_cte -> CTE_I .) ]
+
+
+state 75
+
+    (14) casillaVar -> ID .
+    (65) var_cte -> ID .
+    (10) lista_ids -> ID . casilla casilla
+    (68) llamada -> ID . L_PARENT auxLlamada R_PARENT
+    (11) casilla -> . L_BRACKET casillaVar R_BRACKET
+    (12) casilla -> . empty
+    (89) empty -> .
+
+  ! reduce/reduce conflict for R_BRACKET resolved using rule 14 (casillaVar -> ID .)
+  ! shift/reduce conflict for L_BRACKET resolved as shift
+  ! reduce/reduce conflict for AND resolved using rule 65 (var_cte -> ID .)
+  ! reduce/reduce conflict for OR resolved using rule 65 (var_cte -> ID .)
+  ! reduce/reduce conflict for LESSTHAN resolved using rule 65 (var_cte -> ID .)
+  ! reduce/reduce conflict for GREATERTHAN resolved using rule 65 (var_cte -> ID .)
+  ! reduce/reduce conflict for LESSEQUALTHAN resolved using rule 65 (var_cte -> ID .)
+  ! reduce/reduce conflict for GREATEREQUALTHAN resolved using rule 65 (var_cte -> ID .)
+  ! reduce/reduce conflict for EQUALX2 resolved using rule 65 (var_cte -> ID .)
+  ! reduce/reduce conflict for MULT resolved using rule 65 (var_cte -> ID .)
+  ! reduce/reduce conflict for DIV resolved using rule 65 (var_cte -> ID .)
+  ! reduce/reduce conflict for MONEY resolved using rule 65 (var_cte -> ID .)
+  ! reduce/reduce conflict for EXCLAMATION resolved using rule 65 (var_cte -> ID .)
+  ! reduce/reduce conflict for QUESTION resolved using rule 65 (var_cte -> ID .)
+  ! reduce/reduce conflict for PLUS resolved using rule 65 (var_cte -> ID .)
+  ! reduce/reduce conflict for MINUS resolved using rule 65 (var_cte -> ID .)
+  ! reduce/reduce conflict for R_BRACKET resolved using rule 14 (casillaVar -> ID .)
+    R_BRACKET       reduce using rule 14 (casillaVar -> ID .)
+    AND             reduce using rule 65 (var_cte -> ID .)
+    OR              reduce using rule 65 (var_cte -> ID .)
+    LESSTHAN        reduce using rule 65 (var_cte -> ID .)
+    GREATERTHAN     reduce using rule 65 (var_cte -> ID .)
+    LESSEQUALTHAN   reduce using rule 65 (var_cte -> ID .)
+    GREATEREQUALTHAN reduce using rule 65 (var_cte -> ID .)
+    EQUALX2         reduce using rule 65 (var_cte -> ID .)
+    MULT            reduce using rule 65 (var_cte -> ID .)
+    DIV             reduce using rule 65 (var_cte -> ID .)
+    MONEY           reduce using rule 65 (var_cte -> ID .)
+    EXCLAMATION     reduce using rule 65 (var_cte -> ID .)
+    QUESTION        reduce using rule 65 (var_cte -> ID .)
+    PLUS            reduce using rule 65 (var_cte -> ID .)
+    MINUS           reduce using rule 65 (var_cte -> ID .)
+    L_PARENT        shift and go to state 60
+    L_BRACKET       shift and go to state 54
+
+  ! R_BRACKET       [ reduce using rule 65 (var_cte -> ID .) ]
+  ! L_BRACKET       [ reduce using rule 89 (empty -> .) ]
+  ! AND             [ reduce using rule 89 (empty -> .) ]
+  ! OR              [ reduce using rule 89 (empty -> .) ]
+  ! LESSTHAN        [ reduce using rule 89 (empty -> .) ]
+  ! GREATERTHAN     [ reduce using rule 89 (empty -> .) ]
+  ! LESSEQUALTHAN   [ reduce using rule 89 (empty -> .) ]
+  ! GREATEREQUALTHAN [ reduce using rule 89 (empty -> .) ]
+  ! EQUALX2         [ reduce using rule 89 (empty -> .) ]
+  ! MULT            [ reduce using rule 89 (empty -> .) ]
+  ! DIV             [ reduce using rule 89 (empty -> .) ]
+  ! MONEY           [ reduce using rule 89 (empty -> .) ]
+  ! EXCLAMATION     [ reduce using rule 89 (empty -> .) ]
+  ! QUESTION        [ reduce using rule 89 (empty -> .) ]
+  ! PLUS            [ reduce using rule 89 (empty -> .) ]
+  ! MINUS           [ reduce using rule 89 (empty -> .) ]
+  ! R_BRACKET       [ reduce using rule 89 (empty -> .) ]
+
+    casilla                        shift and go to state 53
+    empty                          shift and go to state 55
+
+state 76
+
+    (15) casillaVar -> exp .
+
+    R_BRACKET       reduce using rule 15 (casillaVar -> exp .)
+
+
+state 77
+
+    (36) exp -> t . auxExp
+    (37) auxExp -> . PLUS exp
+    (38) auxExp -> . MINUS exp
+    (39) auxExp -> . empty
+    (89) empty -> .
+
+    PLUS            shift and go to state 109
+    MINUS           shift and go to state 110
+    R_BRACKET       reduce using rule 89 (empty -> .)
+    SEMICOLON       reduce using rule 89 (empty -> .)
+    COMA            reduce using rule 89 (empty -> .)
+    R_PARENT        reduce using rule 89 (empty -> .)
+    TO              reduce using rule 89 (empty -> .)
+    DO              reduce using rule 89 (empty -> .)
+
+    auxExp                         shift and go to state 108
+    empty                          shift and go to state 111
+
+state 78
+
+    (40) t -> f . auxT
+    (41) auxT -> . MULT t
+    (42) auxT -> . DIV t
+    (43) auxT -> . MONEY t
+    (44) auxT -> . EXCLAMATION t
+    (45) auxT -> . QUESTION t
+    (46) auxT -> . empty
+    (89) empty -> .
+
+    MULT            shift and go to state 113
+    DIV             shift and go to state 114
+    MONEY           shift and go to state 115
+    EXCLAMATION     shift and go to state 116
+    QUESTION        shift and go to state 117
+    PLUS            reduce using rule 89 (empty -> .)
+    MINUS           reduce using rule 89 (empty -> .)
+    R_BRACKET       reduce using rule 89 (empty -> .)
+    SEMICOLON       reduce using rule 89 (empty -> .)
+    COMA            reduce using rule 89 (empty -> .)
+    R_PARENT        reduce using rule 89 (empty -> .)
+    TO              reduce using rule 89 (empty -> .)
+    DO              reduce using rule 89 (empty -> .)
+
+    auxT                           shift and go to state 112
+    empty                          shift and go to state 118
+
+state 79
+
+    (47) f -> m . auxF
+    (48) auxF -> . LESSTHAN f
+    (49) auxF -> . GREATERTHAN f
+    (50) auxF -> . LESSEQUALTHAN f
+    (51) auxF -> . GREATEREQUALTHAN f
+    (52) auxF -> . EQUALX2 f
+    (53) auxF -> . empty
+    (89) empty -> .
+
+    LESSTHAN        shift and go to state 120
+    GREATERTHAN     shift and go to state 121
+    LESSEQUALTHAN   shift and go to state 122
+    GREATEREQUALTHAN shift and go to state 123
+    EQUALX2         shift and go to state 124
+    MULT            reduce using rule 89 (empty -> .)
+    DIV             reduce using rule 89 (empty -> .)
+    MONEY           reduce using rule 89 (empty -> .)
+    EXCLAMATION     reduce using rule 89 (empty -> .)
+    QUESTION        reduce using rule 89 (empty -> .)
+    PLUS            reduce using rule 89 (empty -> .)
+    MINUS           reduce using rule 89 (empty -> .)
+    R_BRACKET       reduce using rule 89 (empty -> .)
+    SEMICOLON       reduce using rule 89 (empty -> .)
+    COMA            reduce using rule 89 (empty -> .)
+    R_PARENT        reduce using rule 89 (empty -> .)
+    TO              reduce using rule 89 (empty -> .)
+    DO              reduce using rule 89 (empty -> .)
+
+    auxF                           shift and go to state 119
+    empty                          shift and go to state 125
+
+state 80
+
+    (54) m -> x . auxM
+    (55) auxM -> . OR m
+    (56) auxM -> . empty
+    (89) empty -> .
+
+    OR              shift and go to state 127
+    LESSTHAN        reduce using rule 89 (empty -> .)
+    GREATERTHAN     reduce using rule 89 (empty -> .)
+    LESSEQUALTHAN   reduce using rule 89 (empty -> .)
+    GREATEREQUALTHAN reduce using rule 89 (empty -> .)
+    EQUALX2         reduce using rule 89 (empty -> .)
+    MULT            reduce using rule 89 (empty -> .)
+    DIV             reduce using rule 89 (empty -> .)
+    MONEY           reduce using rule 89 (empty -> .)
+    EXCLAMATION     reduce using rule 89 (empty -> .)
+    QUESTION        reduce using rule 89 (empty -> .)
+    PLUS            reduce using rule 89 (empty -> .)
+    MINUS           reduce using rule 89 (empty -> .)
+    R_BRACKET       reduce using rule 89 (empty -> .)
+    SEMICOLON       reduce using rule 89 (empty -> .)
+    COMA            reduce using rule 89 (empty -> .)
+    R_PARENT        reduce using rule 89 (empty -> .)
+    TO              reduce using rule 89 (empty -> .)
+    DO              reduce using rule 89 (empty -> .)
+
+    auxM                           shift and go to state 126
+    empty                          shift and go to state 128
+
+state 81
+
+    (57) x -> z . auxX
+    (58) auxX -> . AND z
+    (59) auxX -> . empty
+    (89) empty -> .
+
+    AND             shift and go to state 130
+    OR              reduce using rule 89 (empty -> .)
+    LESSTHAN        reduce using rule 89 (empty -> .)
+    GREATERTHAN     reduce using rule 89 (empty -> .)
+    LESSEQUALTHAN   reduce using rule 89 (empty -> .)
+    GREATEREQUALTHAN reduce using rule 89 (empty -> .)
+    EQUALX2         reduce using rule 89 (empty -> .)
+    MULT            reduce using rule 89 (empty -> .)
+    DIV             reduce using rule 89 (empty -> .)
+    MONEY           reduce using rule 89 (empty -> .)
+    EXCLAMATION     reduce using rule 89 (empty -> .)
+    QUESTION        reduce using rule 89 (empty -> .)
+    PLUS            reduce using rule 89 (empty -> .)
+    MINUS           reduce using rule 89 (empty -> .)
+    R_BRACKET       reduce using rule 89 (empty -> .)
+    SEMICOLON       reduce using rule 89 (empty -> .)
+    COMA            reduce using rule 89 (empty -> .)
+    R_PARENT        reduce using rule 89 (empty -> .)
+    TO              reduce using rule 89 (empty -> .)
+    DO              reduce using rule 89 (empty -> .)
+
+    auxX                           shift and go to state 129
+    empty                          shift and go to state 131
+
+state 82
+
+    (60) z -> var_cte .
+
+    AND             reduce using rule 60 (z -> var_cte .)
+    OR              reduce using rule 60 (z -> var_cte .)
+    LESSTHAN        reduce using rule 60 (z -> var_cte .)
+    GREATERTHAN     reduce using rule 60 (z -> var_cte .)
+    LESSEQUALTHAN   reduce using rule 60 (z -> var_cte .)
+    GREATEREQUALTHAN reduce using rule 60 (z -> var_cte .)
+    EQUALX2         reduce using rule 60 (z -> var_cte .)
+    MULT            reduce using rule 60 (z -> var_cte .)
+    DIV             reduce using rule 60 (z -> var_cte .)
+    MONEY           reduce using rule 60 (z -> var_cte .)
+    EXCLAMATION     reduce using rule 60 (z -> var_cte .)
+    QUESTION        reduce using rule 60 (z -> var_cte .)
+    PLUS            reduce using rule 60 (z -> var_cte .)
+    MINUS           reduce using rule 60 (z -> var_cte .)
+    R_BRACKET       reduce using rule 60 (z -> var_cte .)
+    SEMICOLON       reduce using rule 60 (z -> var_cte .)
+    COMA            reduce using rule 60 (z -> var_cte .)
+    R_PARENT        reduce using rule 60 (z -> var_cte .)
+    TO              reduce using rule 60 (z -> var_cte .)
+    DO              reduce using rule 60 (z -> var_cte .)
+
+
+state 83
+
+    (61) z -> L_PARENT . exp R_PARENT
+    (36) exp -> . t auxExp
+    (40) t -> . f auxT
+    (47) f -> . m auxF
+    (54) m -> . x auxM
+    (57) x -> . z auxX
+    (60) z -> . var_cte
+    (61) z -> . L_PARENT exp R_PARENT
+    (62) z -> . lista_ids
+    (63) z -> . llamada
+    (64) z -> . empty
+    (65) var_cte -> . ID
+    (66) var_cte -> . CTE_I
+    (67) var_cte -> . CTE_F
+    (10) lista_ids -> . ID casilla casilla
+    (68) llamada -> . ID L_PARENT auxLlamada R_PARENT
+    (89) empty -> .
+
+    L_PARENT        shift and go to state 83
+    ID              shift and go to state 89
+    CTE_I           shift and go to state 90
+    CTE_F           shift and go to state 87
+    AND             reduce using rule 89 (empty -> .)
+    OR              reduce using rule 89 (empty -> .)
+    LESSTHAN        reduce using rule 89 (empty -> .)
+    GREATERTHAN     reduce using rule 89 (empty -> .)
+    LESSEQUALTHAN   reduce using rule 89 (empty -> .)
+    GREATEREQUALTHAN reduce using rule 89 (empty -> .)
+    EQUALX2         reduce using rule 89 (empty -> .)
+    MULT            reduce using rule 89 (empty -> .)
+    DIV             reduce using rule 89 (empty -> .)
+    MONEY           reduce using rule 89 (empty -> .)
+    EXCLAMATION     reduce using rule 89 (empty -> .)
+    QUESTION        reduce using rule 89 (empty -> .)
+    PLUS            reduce using rule 89 (empty -> .)
+    MINUS           reduce using rule 89 (empty -> .)
+    R_PARENT        reduce using rule 89 (empty -> .)
+
+    exp                            shift and go to state 132
+    t                              shift and go to state 77
+    f                              shift and go to state 78
+    m                              shift and go to state 79
+    x                              shift and go to state 80
+    z                              shift and go to state 81
+    var_cte                        shift and go to state 82
+    lista_ids                      shift and go to state 84
+    llamada                        shift and go to state 85
+    empty                          shift and go to state 86
+
+state 84
+
+    (62) z -> lista_ids .
+
+    AND             reduce using rule 62 (z -> lista_ids .)
+    OR              reduce using rule 62 (z -> lista_ids .)
+    LESSTHAN        reduce using rule 62 (z -> lista_ids .)
+    GREATERTHAN     reduce using rule 62 (z -> lista_ids .)
+    LESSEQUALTHAN   reduce using rule 62 (z -> lista_ids .)
+    GREATEREQUALTHAN reduce using rule 62 (z -> lista_ids .)
+    EQUALX2         reduce using rule 62 (z -> lista_ids .)
+    MULT            reduce using rule 62 (z -> lista_ids .)
+    DIV             reduce using rule 62 (z -> lista_ids .)
+    MONEY           reduce using rule 62 (z -> lista_ids .)
+    EXCLAMATION     reduce using rule 62 (z -> lista_ids .)
+    QUESTION        reduce using rule 62 (z -> lista_ids .)
+    PLUS            reduce using rule 62 (z -> lista_ids .)
+    MINUS           reduce using rule 62 (z -> lista_ids .)
+    R_BRACKET       reduce using rule 62 (z -> lista_ids .)
+    SEMICOLON       reduce using rule 62 (z -> lista_ids .)
+    COMA            reduce using rule 62 (z -> lista_ids .)
+    R_PARENT        reduce using rule 62 (z -> lista_ids .)
+    TO              reduce using rule 62 (z -> lista_ids .)
+    DO              reduce using rule 62 (z -> lista_ids .)
+
+
+state 85
+
+    (63) z -> llamada .
+
+    AND             reduce using rule 63 (z -> llamada .)
+    OR              reduce using rule 63 (z -> llamada .)
+    LESSTHAN        reduce using rule 63 (z -> llamada .)
+    GREATERTHAN     reduce using rule 63 (z -> llamada .)
+    LESSEQUALTHAN   reduce using rule 63 (z -> llamada .)
+    GREATEREQUALTHAN reduce using rule 63 (z -> llamada .)
+    EQUALX2         reduce using rule 63 (z -> llamada .)
+    MULT            reduce using rule 63 (z -> llamada .)
+    DIV             reduce using rule 63 (z -> llamada .)
+    MONEY           reduce using rule 63 (z -> llamada .)
+    EXCLAMATION     reduce using rule 63 (z -> llamada .)
+    QUESTION        reduce using rule 63 (z -> llamada .)
+    PLUS            reduce using rule 63 (z -> llamada .)
+    MINUS           reduce using rule 63 (z -> llamada .)
+    R_BRACKET       reduce using rule 63 (z -> llamada .)
+    SEMICOLON       reduce using rule 63 (z -> llamada .)
+    COMA            reduce using rule 63 (z -> llamada .)
+    R_PARENT        reduce using rule 63 (z -> llamada .)
+    TO              reduce using rule 63 (z -> llamada .)
+    DO              reduce using rule 63 (z -> llamada .)
+
+
+state 86
+
+    (64) z -> empty .
+
+    AND             reduce using rule 64 (z -> empty .)
+    OR              reduce using rule 64 (z -> empty .)
+    LESSTHAN        reduce using rule 64 (z -> empty .)
+    GREATERTHAN     reduce using rule 64 (z -> empty .)
+    LESSEQUALTHAN   reduce using rule 64 (z -> empty .)
+    GREATEREQUALTHAN reduce using rule 64 (z -> empty .)
+    EQUALX2         reduce using rule 64 (z -> empty .)
+    MULT            reduce using rule 64 (z -> empty .)
+    DIV             reduce using rule 64 (z -> empty .)
+    MONEY           reduce using rule 64 (z -> empty .)
+    EXCLAMATION     reduce using rule 64 (z -> empty .)
+    QUESTION        reduce using rule 64 (z -> empty .)
+    PLUS            reduce using rule 64 (z -> empty .)
+    MINUS           reduce using rule 64 (z -> empty .)
+    R_BRACKET       reduce using rule 64 (z -> empty .)
+    SEMICOLON       reduce using rule 64 (z -> empty .)
+    COMA            reduce using rule 64 (z -> empty .)
+    R_PARENT        reduce using rule 64 (z -> empty .)
+    TO              reduce using rule 64 (z -> empty .)
+    DO              reduce using rule 64 (z -> empty .)
+
+
+state 87
+
+    (67) var_cte -> CTE_F .
+
+    AND             reduce using rule 67 (var_cte -> CTE_F .)
+    OR              reduce using rule 67 (var_cte -> CTE_F .)
+    LESSTHAN        reduce using rule 67 (var_cte -> CTE_F .)
+    GREATERTHAN     reduce using rule 67 (var_cte -> CTE_F .)
+    LESSEQUALTHAN   reduce using rule 67 (var_cte -> CTE_F .)
+    GREATEREQUALTHAN reduce using rule 67 (var_cte -> CTE_F .)
+    EQUALX2         reduce using rule 67 (var_cte -> CTE_F .)
+    MULT            reduce using rule 67 (var_cte -> CTE_F .)
+    DIV             reduce using rule 67 (var_cte -> CTE_F .)
+    MONEY           reduce using rule 67 (var_cte -> CTE_F .)
+    EXCLAMATION     reduce using rule 67 (var_cte -> CTE_F .)
+    QUESTION        reduce using rule 67 (var_cte -> CTE_F .)
+    PLUS            reduce using rule 67 (var_cte -> CTE_F .)
+    MINUS           reduce using rule 67 (var_cte -> CTE_F .)
+    R_BRACKET       reduce using rule 67 (var_cte -> CTE_F .)
+    SEMICOLON       reduce using rule 67 (var_cte -> CTE_F .)
+    COMA            reduce using rule 67 (var_cte -> CTE_F .)
+    R_PARENT        reduce using rule 67 (var_cte -> CTE_F .)
+    TO              reduce using rule 67 (var_cte -> CTE_F .)
+    DO              reduce using rule 67 (var_cte -> CTE_F .)
+
+
+state 88
+
+    (35) asignacion -> lista_ids EQUAL exp . SEMICOLON
+
+    SEMICOLON       shift and go to state 133
+
+
+state 89
+
+    (65) var_cte -> ID .
+    (10) lista_ids -> ID . casilla casilla
+    (68) llamada -> ID . L_PARENT auxLlamada R_PARENT
+    (11) casilla -> . L_BRACKET casillaVar R_BRACKET
+    (12) casilla -> . empty
+    (89) empty -> .
+
+  ! shift/reduce conflict for L_BRACKET resolved as shift
+  ! reduce/reduce conflict for AND resolved using rule 65 (var_cte -> ID .)
+  ! reduce/reduce conflict for OR resolved using rule 65 (var_cte -> ID .)
+  ! reduce/reduce conflict for LESSTHAN resolved using rule 65 (var_cte -> ID .)
+  ! reduce/reduce conflict for GREATERTHAN resolved using rule 65 (var_cte -> ID .)
+  ! reduce/reduce conflict for LESSEQUALTHAN resolved using rule 65 (var_cte -> ID .)
+  ! reduce/reduce conflict for GREATEREQUALTHAN resolved using rule 65 (var_cte -> ID .)
+  ! reduce/reduce conflict for EQUALX2 resolved using rule 65 (var_cte -> ID .)
+  ! reduce/reduce conflict for MULT resolved using rule 65 (var_cte -> ID .)
+  ! reduce/reduce conflict for DIV resolved using rule 65 (var_cte -> ID .)
+  ! reduce/reduce conflict for MONEY resolved using rule 65 (var_cte -> ID .)
+  ! reduce/reduce conflict for EXCLAMATION resolved using rule 65 (var_cte -> ID .)
+  ! reduce/reduce conflict for QUESTION resolved using rule 65 (var_cte -> ID .)
+  ! reduce/reduce conflict for PLUS resolved using rule 65 (var_cte -> ID .)
+  ! reduce/reduce conflict for MINUS resolved using rule 65 (var_cte -> ID .)
+  ! reduce/reduce conflict for SEMICOLON resolved using rule 65 (var_cte -> ID .)
+  ! reduce/reduce conflict for COMA resolved using rule 65 (var_cte -> ID .)
+  ! reduce/reduce conflict for R_PARENT resolved using rule 65 (var_cte -> ID .)
+  ! reduce/reduce conflict for TO resolved using rule 65 (var_cte -> ID .)
+  ! reduce/reduce conflict for R_BRACKET resolved using rule 65 (var_cte -> ID .)
+  ! reduce/reduce conflict for DO resolved using rule 65 (var_cte -> ID .)
+    AND             reduce using rule 65 (var_cte -> ID .)
+    OR              reduce using rule 65 (var_cte -> ID .)
+    LESSTHAN        reduce using rule 65 (var_cte -> ID .)
+    GREATERTHAN     reduce using rule 65 (var_cte -> ID .)
+    LESSEQUALTHAN   reduce using rule 65 (var_cte -> ID .)
+    GREATEREQUALTHAN reduce using rule 65 (var_cte -> ID .)
+    EQUALX2         reduce using rule 65 (var_cte -> ID .)
+    MULT            reduce using rule 65 (var_cte -> ID .)
+    DIV             reduce using rule 65 (var_cte -> ID .)
+    MONEY           reduce using rule 65 (var_cte -> ID .)
+    EXCLAMATION     reduce using rule 65 (var_cte -> ID .)
+    QUESTION        reduce using rule 65 (var_cte -> ID .)
+    PLUS            reduce using rule 65 (var_cte -> ID .)
+    MINUS           reduce using rule 65 (var_cte -> ID .)
+    SEMICOLON       reduce using rule 65 (var_cte -> ID .)
+    COMA            reduce using rule 65 (var_cte -> ID .)
+    R_PARENT        reduce using rule 65 (var_cte -> ID .)
+    TO              reduce using rule 65 (var_cte -> ID .)
+    R_BRACKET       reduce using rule 65 (var_cte -> ID .)
+    DO              reduce using rule 65 (var_cte -> ID .)
+    L_PARENT        shift and go to state 60
+    L_BRACKET       shift and go to state 54
+
+  ! L_BRACKET       [ reduce using rule 89 (empty -> .) ]
+  ! AND             [ reduce using rule 89 (empty -> .) ]
+  ! OR              [ reduce using rule 89 (empty -> .) ]
+  ! LESSTHAN        [ reduce using rule 89 (empty -> .) ]
+  ! GREATERTHAN     [ reduce using rule 89 (empty -> .) ]
+  ! LESSEQUALTHAN   [ reduce using rule 89 (empty -> .) ]
+  ! GREATEREQUALTHAN [ reduce using rule 89 (empty -> .) ]
+  ! EQUALX2         [ reduce using rule 89 (empty -> .) ]
+  ! MULT            [ reduce using rule 89 (empty -> .) ]
+  ! DIV             [ reduce using rule 89 (empty -> .) ]
+  ! MONEY           [ reduce using rule 89 (empty -> .) ]
+  ! EXCLAMATION     [ reduce using rule 89 (empty -> .) ]
+  ! QUESTION        [ reduce using rule 89 (empty -> .) ]
+  ! PLUS            [ reduce using rule 89 (empty -> .) ]
+  ! MINUS           [ reduce using rule 89 (empty -> .) ]
+  ! SEMICOLON       [ reduce using rule 89 (empty -> .) ]
+  ! COMA            [ reduce using rule 89 (empty -> .) ]
+  ! R_PARENT        [ reduce using rule 89 (empty -> .) ]
+  ! TO              [ reduce using rule 89 (empty -> .) ]
+  ! R_BRACKET       [ reduce using rule 89 (empty -> .) ]
+  ! DO              [ reduce using rule 89 (empty -> .) ]
+
+    casilla                        shift and go to state 53
+    empty                          shift and go to state 55
+
+state 90
+
+    (66) var_cte -> CTE_I .
+
+    AND             reduce using rule 66 (var_cte -> CTE_I .)
+    OR              reduce using rule 66 (var_cte -> CTE_I .)
+    LESSTHAN        reduce using rule 66 (var_cte -> CTE_I .)
+    GREATERTHAN     reduce using rule 66 (var_cte -> CTE_I .)
+    LESSEQUALTHAN   reduce using rule 66 (var_cte -> CTE_I .)
+    GREATEREQUALTHAN reduce using rule 66 (var_cte -> CTE_I .)
+    EQUALX2         reduce using rule 66 (var_cte -> CTE_I .)
+    MULT            reduce using rule 66 (var_cte -> CTE_I .)
+    DIV             reduce using rule 66 (var_cte -> CTE_I .)
+    MONEY           reduce using rule 66 (var_cte -> CTE_I .)
+    EXCLAMATION     reduce using rule 66 (var_cte -> CTE_I .)
+    QUESTION        reduce using rule 66 (var_cte -> CTE_I .)
+    PLUS            reduce using rule 66 (var_cte -> CTE_I .)
+    MINUS           reduce using rule 66 (var_cte -> CTE_I .)
+    SEMICOLON       reduce using rule 66 (var_cte -> CTE_I .)
+    COMA            reduce using rule 66 (var_cte -> CTE_I .)
+    R_PARENT        reduce using rule 66 (var_cte -> CTE_I .)
+    TO              reduce using rule 66 (var_cte -> CTE_I .)
+    R_BRACKET       reduce using rule 66 (var_cte -> CTE_I .)
+    DO              reduce using rule 66 (var_cte -> CTE_I .)
+
+
+state 91
+
+    (68) llamada -> ID L_PARENT auxLlamada . R_PARENT
+
+    R_PARENT        shift and go to state 134
+
+
+state 92
+
+    (69) auxLlamada -> exp .
+    (70) auxLlamada -> exp . COMA auxLlamada
+
+    R_PARENT        reduce using rule 69 (auxLlamada -> exp .)
+    COMA            shift and go to state 135
+
+
+state 93
+
+    (71) retorno -> RETURN L_PARENT exp . R_PARENT SEMICOLON
+
+    R_PARENT        shift and go to state 136
+
+
+state 94
+
+    (72) lectura -> READ L_PARENT auxLectura . R_PARENT SEMICOLON
+
+    R_PARENT        shift and go to state 137
+
+
+state 95
+
+    (73) auxLectura -> lista_ids .
+    (74) auxLectura -> lista_ids . COMA auxLectura
+
+    R_PARENT        reduce using rule 73 (auxLectura -> lista_ids .)
+    COMA            shift and go to state 138
+
+
+state 96
+
+    (75) escritura -> WRITE L_PARENT auxEscritura . R_PARENT SEMICOLON
+
+    R_PARENT        shift and go to state 139
+
+
+state 97
+
+    (76) auxEscritura -> auxString .
+
+    R_PARENT        reduce using rule 76 (auxEscritura -> auxString .)
+
+
+state 98
+
+    (77) auxEscritura -> auxExpEscritura .
+
+    R_PARENT        reduce using rule 77 (auxEscritura -> auxExpEscritura .)
+
+
+state 99
+
+    (78) auxString -> CTE_STRING .
+    (79) auxString -> CTE_STRING . COMA auxEscritura
+
+    R_PARENT        reduce using rule 78 (auxString -> CTE_STRING .)
+    COMA            shift and go to state 140
+
+
+state 100
+
+    (80) auxExpEscritura -> exp .
+    (81) auxExpEscritura -> exp . COMA auxExpEscritura
+
+    R_PARENT        reduce using rule 80 (auxExpEscritura -> exp .)
+    COMA            shift and go to state 141
+
+
+state 101
+
+    (82) decision -> IF L_PARENT exp . R_PARENT SO bloque auxDecision
+
+    R_PARENT        shift and go to state 142
+
+
+state 102
+
+    (87) condicional -> WHILE L_PARENT exp . R_PARENT DO bloque
+
+    R_PARENT        shift and go to state 143
+
+
+state 103
+
+    (88) nocondicional -> FROM lista_ids EQUAL . exp TO exp DO bloque
+    (36) exp -> . t auxExp
+    (40) t -> . f auxT
+    (47) f -> . m auxF
+    (54) m -> . x auxM
+    (57) x -> . z auxX
+    (60) z -> . var_cte
+    (61) z -> . L_PARENT exp R_PARENT
+    (62) z -> . lista_ids
+    (63) z -> . llamada
+    (64) z -> . empty
+    (65) var_cte -> . ID
+    (66) var_cte -> . CTE_I
+    (67) var_cte -> . CTE_F
+    (10) lista_ids -> . ID casilla casilla
+    (68) llamada -> . ID L_PARENT auxLlamada R_PARENT
+    (89) empty -> .
+
+    L_PARENT        shift and go to state 83
+    ID              shift and go to state 89
+    CTE_I           shift and go to state 90
+    CTE_F           shift and go to state 87
+    AND             reduce using rule 89 (empty -> .)
+    OR              reduce using rule 89 (empty -> .)
+    LESSTHAN        reduce using rule 89 (empty -> .)
+    GREATERTHAN     reduce using rule 89 (empty -> .)
+    LESSEQUALTHAN   reduce using rule 89 (empty -> .)
+    GREATEREQUALTHAN reduce using rule 89 (empty -> .)
+    EQUALX2         reduce using rule 89 (empty -> .)
+    MULT            reduce using rule 89 (empty -> .)
+    DIV             reduce using rule 89 (empty -> .)
+    MONEY           reduce using rule 89 (empty -> .)
+    EXCLAMATION     reduce using rule 89 (empty -> .)
+    QUESTION        reduce using rule 89 (empty -> .)
+    PLUS            reduce using rule 89 (empty -> .)
+    MINUS           reduce using rule 89 (empty -> .)
+    TO              reduce using rule 89 (empty -> .)
+
+    lista_ids                      shift and go to state 84
+    exp                            shift and go to state 144
+    t                              shift and go to state 77
+    f                              shift and go to state 78
+    m                              shift and go to state 79
+    x                              shift and go to state 80
+    z                              shift and go to state 81
+    var_cte                        shift and go to state 82
+    llamada                        shift and go to state 85
+    empty                          shift and go to state 86
+
+state 104
+
+    (18) funcion -> FUNCION tipoFuncion ID L_PARENT auxParametro R_PARENT . COLON auxVar bloque
+
+    COLON           shift and go to state 145
+
+
+state 105
+
+    (22) auxParametro -> tipo ID .
+    (23) auxParametro -> tipo ID . COMA auxParametro
+
+    R_PARENT        reduce using rule 22 (auxParametro -> tipo ID .)
+    COMA            shift and go to state 146
+
+
+state 106
+
+    (8) auxLista_idsVar -> COMA lista_ids auxLista_idsVar .
+
+    SEMICOLON       reduce using rule 8 (auxLista_idsVar -> COMA lista_ids auxLista_idsVar .)
+
+
+state 107
+
+    (11) casilla -> L_BRACKET casillaVar R_BRACKET .
+
+    L_BRACKET       reduce using rule 11 (casilla -> L_BRACKET casillaVar R_BRACKET .)
+    COMA            reduce using rule 11 (casilla -> L_BRACKET casillaVar R_BRACKET .)
+    SEMICOLON       reduce using rule 11 (casilla -> L_BRACKET casillaVar R_BRACKET .)
+    EQUAL           reduce using rule 11 (casilla -> L_BRACKET casillaVar R_BRACKET .)
+    R_PARENT        reduce using rule 11 (casilla -> L_BRACKET casillaVar R_BRACKET .)
+    AND             reduce using rule 11 (casilla -> L_BRACKET casillaVar R_BRACKET .)
+    OR              reduce using rule 11 (casilla -> L_BRACKET casillaVar R_BRACKET .)
+    LESSTHAN        reduce using rule 11 (casilla -> L_BRACKET casillaVar R_BRACKET .)
+    GREATERTHAN     reduce using rule 11 (casilla -> L_BRACKET casillaVar R_BRACKET .)
+    LESSEQUALTHAN   reduce using rule 11 (casilla -> L_BRACKET casillaVar R_BRACKET .)
+    GREATEREQUALTHAN reduce using rule 11 (casilla -> L_BRACKET casillaVar R_BRACKET .)
+    EQUALX2         reduce using rule 11 (casilla -> L_BRACKET casillaVar R_BRACKET .)
+    MULT            reduce using rule 11 (casilla -> L_BRACKET casillaVar R_BRACKET .)
+    DIV             reduce using rule 11 (casilla -> L_BRACKET casillaVar R_BRACKET .)
+    MONEY           reduce using rule 11 (casilla -> L_BRACKET casillaVar R_BRACKET .)
+    EXCLAMATION     reduce using rule 11 (casilla -> L_BRACKET casillaVar R_BRACKET .)
+    QUESTION        reduce using rule 11 (casilla -> L_BRACKET casillaVar R_BRACKET .)
+    PLUS            reduce using rule 11 (casilla -> L_BRACKET casillaVar R_BRACKET .)
+    MINUS           reduce using rule 11 (casilla -> L_BRACKET casillaVar R_BRACKET .)
+    R_BRACKET       reduce using rule 11 (casilla -> L_BRACKET casillaVar R_BRACKET .)
+    TO              reduce using rule 11 (casilla -> L_BRACKET casillaVar R_BRACKET .)
+    DO              reduce using rule 11 (casilla -> L_BRACKET casillaVar R_BRACKET .)
+
+
+state 108
+
+    (36) exp -> t auxExp .
+
+    R_BRACKET       reduce using rule 36 (exp -> t auxExp .)
+    SEMICOLON       reduce using rule 36 (exp -> t auxExp .)
+    COMA            reduce using rule 36 (exp -> t auxExp .)
+    R_PARENT        reduce using rule 36 (exp -> t auxExp .)
+    TO              reduce using rule 36 (exp -> t auxExp .)
+    DO              reduce using rule 36 (exp -> t auxExp .)
+
+
+state 109
+
+    (37) auxExp -> PLUS . exp
+    (36) exp -> . t auxExp
+    (40) t -> . f auxT
+    (47) f -> . m auxF
+    (54) m -> . x auxM
+    (57) x -> . z auxX
+    (60) z -> . var_cte
+    (61) z -> . L_PARENT exp R_PARENT
+    (62) z -> . lista_ids
+    (63) z -> . llamada
+    (64) z -> . empty
+    (65) var_cte -> . ID
+    (66) var_cte -> . CTE_I
+    (67) var_cte -> . CTE_F
+    (10) lista_ids -> . ID casilla casilla
+    (68) llamada -> . ID L_PARENT auxLlamada R_PARENT
+    (89) empty -> .
+
+    L_PARENT        shift and go to state 83
+    ID              shift and go to state 89
+    CTE_I           shift and go to state 90
+    CTE_F           shift and go to state 87
+    AND             reduce using rule 89 (empty -> .)
+    OR              reduce using rule 89 (empty -> .)
+    LESSTHAN        reduce using rule 89 (empty -> .)
+    GREATERTHAN     reduce using rule 89 (empty -> .)
+    LESSEQUALTHAN   reduce using rule 89 (empty -> .)
+    GREATEREQUALTHAN reduce using rule 89 (empty -> .)
+    EQUALX2         reduce using rule 89 (empty -> .)
+    MULT            reduce using rule 89 (empty -> .)
+    DIV             reduce using rule 89 (empty -> .)
+    MONEY           reduce using rule 89 (empty -> .)
+    EXCLAMATION     reduce using rule 89 (empty -> .)
+    QUESTION        reduce using rule 89 (empty -> .)
+    PLUS            reduce using rule 89 (empty -> .)
+    MINUS           reduce using rule 89 (empty -> .)
+    R_BRACKET       reduce using rule 89 (empty -> .)
+    SEMICOLON       reduce using rule 89 (empty -> .)
+    COMA            reduce using rule 89 (empty -> .)
+    R_PARENT        reduce using rule 89 (empty -> .)
+    TO              reduce using rule 89 (empty -> .)
+    DO              reduce using rule 89 (empty -> .)
+
+    exp                            shift and go to state 147
+    t                              shift and go to state 77
+    f                              shift and go to state 78
+    m                              shift and go to state 79
+    x                              shift and go to state 80
+    z                              shift and go to state 81
+    var_cte                        shift and go to state 82
+    lista_ids                      shift and go to state 84
+    llamada                        shift and go to state 85
+    empty                          shift and go to state 86
+
+state 110
+
+    (38) auxExp -> MINUS . exp
+    (36) exp -> . t auxExp
+    (40) t -> . f auxT
+    (47) f -> . m auxF
+    (54) m -> . x auxM
+    (57) x -> . z auxX
+    (60) z -> . var_cte
+    (61) z -> . L_PARENT exp R_PARENT
+    (62) z -> . lista_ids
+    (63) z -> . llamada
+    (64) z -> . empty
+    (65) var_cte -> . ID
+    (66) var_cte -> . CTE_I
+    (67) var_cte -> . CTE_F
+    (10) lista_ids -> . ID casilla casilla
+    (68) llamada -> . ID L_PARENT auxLlamada R_PARENT
+    (89) empty -> .
+
+    L_PARENT        shift and go to state 83
+    ID              shift and go to state 89
+    CTE_I           shift and go to state 90
+    CTE_F           shift and go to state 87
+    AND             reduce using rule 89 (empty -> .)
+    OR              reduce using rule 89 (empty -> .)
+    LESSTHAN        reduce using rule 89 (empty -> .)
+    GREATERTHAN     reduce using rule 89 (empty -> .)
+    LESSEQUALTHAN   reduce using rule 89 (empty -> .)
+    GREATEREQUALTHAN reduce using rule 89 (empty -> .)
+    EQUALX2         reduce using rule 89 (empty -> .)
+    MULT            reduce using rule 89 (empty -> .)
+    DIV             reduce using rule 89 (empty -> .)
+    MONEY           reduce using rule 89 (empty -> .)
+    EXCLAMATION     reduce using rule 89 (empty -> .)
+    QUESTION        reduce using rule 89 (empty -> .)
+    PLUS            reduce using rule 89 (empty -> .)
+    MINUS           reduce using rule 89 (empty -> .)
+    R_BRACKET       reduce using rule 89 (empty -> .)
+    SEMICOLON       reduce using rule 89 (empty -> .)
+    COMA            reduce using rule 89 (empty -> .)
+    R_PARENT        reduce using rule 89 (empty -> .)
+    TO              reduce using rule 89 (empty -> .)
+    DO              reduce using rule 89 (empty -> .)
+
+    exp                            shift and go to state 148
+    t                              shift and go to state 77
+    f                              shift and go to state 78
+    m                              shift and go to state 79
+    x                              shift and go to state 80
+    z                              shift and go to state 81
+    var_cte                        shift and go to state 82
+    lista_ids                      shift and go to state 84
+    llamada                        shift and go to state 85
+    empty                          shift and go to state 86
+
+state 111
+
+    (39) auxExp -> empty .
+
+    R_BRACKET       reduce using rule 39 (auxExp -> empty .)
+    SEMICOLON       reduce using rule 39 (auxExp -> empty .)
+    COMA            reduce using rule 39 (auxExp -> empty .)
+    R_PARENT        reduce using rule 39 (auxExp -> empty .)
+    TO              reduce using rule 39 (auxExp -> empty .)
+    DO              reduce using rule 39 (auxExp -> empty .)
+
+
+state 112
+
+    (40) t -> f auxT .
+
+    PLUS            reduce using rule 40 (t -> f auxT .)
+    MINUS           reduce using rule 40 (t -> f auxT .)
+    R_BRACKET       reduce using rule 40 (t -> f auxT .)
+    SEMICOLON       reduce using rule 40 (t -> f auxT .)
+    COMA            reduce using rule 40 (t -> f auxT .)
+    R_PARENT        reduce using rule 40 (t -> f auxT .)
+    TO              reduce using rule 40 (t -> f auxT .)
+    DO              reduce using rule 40 (t -> f auxT .)
+
+
+state 113
+
+    (41) auxT -> MULT . t
+    (40) t -> . f auxT
+    (47) f -> . m auxF
+    (54) m -> . x auxM
+    (57) x -> . z auxX
+    (60) z -> . var_cte
+    (61) z -> . L_PARENT exp R_PARENT
+    (62) z -> . lista_ids
+    (63) z -> . llamada
+    (64) z -> . empty
+    (65) var_cte -> . ID
+    (66) var_cte -> . CTE_I
+    (67) var_cte -> . CTE_F
+    (10) lista_ids -> . ID casilla casilla
+    (68) llamada -> . ID L_PARENT auxLlamada R_PARENT
+    (89) empty -> .
+
+    L_PARENT        shift and go to state 83
+    ID              shift and go to state 89
+    CTE_I           shift and go to state 90
+    CTE_F           shift and go to state 87
+    AND             reduce using rule 89 (empty -> .)
+    OR              reduce using rule 89 (empty -> .)
+    LESSTHAN        reduce using rule 89 (empty -> .)
+    GREATERTHAN     reduce using rule 89 (empty -> .)
+    LESSEQUALTHAN   reduce using rule 89 (empty -> .)
+    GREATEREQUALTHAN reduce using rule 89 (empty -> .)
+    EQUALX2         reduce using rule 89 (empty -> .)
+    MULT            reduce using rule 89 (empty -> .)
+    DIV             reduce using rule 89 (empty -> .)
+    MONEY           reduce using rule 89 (empty -> .)
+    EXCLAMATION     reduce using rule 89 (empty -> .)
+    QUESTION        reduce using rule 89 (empty -> .)
+    PLUS            reduce using rule 89 (empty -> .)
+    MINUS           reduce using rule 89 (empty -> .)
+    R_BRACKET       reduce using rule 89 (empty -> .)
+    SEMICOLON       reduce using rule 89 (empty -> .)
+    COMA            reduce using rule 89 (empty -> .)
+    R_PARENT        reduce using rule 89 (empty -> .)
+    TO              reduce using rule 89 (empty -> .)
+    DO              reduce using rule 89 (empty -> .)
+
+    t                              shift and go to state 149
+    f                              shift and go to state 78
+    m                              shift and go to state 79
+    x                              shift and go to state 80
+    z                              shift and go to state 81
+    var_cte                        shift and go to state 82
+    lista_ids                      shift and go to state 84
+    llamada                        shift and go to state 85
+    empty                          shift and go to state 86
+
+state 114
+
+    (42) auxT -> DIV . t
+    (40) t -> . f auxT
+    (47) f -> . m auxF
+    (54) m -> . x auxM
+    (57) x -> . z auxX
+    (60) z -> . var_cte
+    (61) z -> . L_PARENT exp R_PARENT
+    (62) z -> . lista_ids
+    (63) z -> . llamada
+    (64) z -> . empty
+    (65) var_cte -> . ID
+    (66) var_cte -> . CTE_I
+    (67) var_cte -> . CTE_F
+    (10) lista_ids -> . ID casilla casilla
+    (68) llamada -> . ID L_PARENT auxLlamada R_PARENT
+    (89) empty -> .
+
+    L_PARENT        shift and go to state 83
+    ID              shift and go to state 89
+    CTE_I           shift and go to state 90
+    CTE_F           shift and go to state 87
+    AND             reduce using rule 89 (empty -> .)
+    OR              reduce using rule 89 (empty -> .)
+    LESSTHAN        reduce using rule 89 (empty -> .)
+    GREATERTHAN     reduce using rule 89 (empty -> .)
+    LESSEQUALTHAN   reduce using rule 89 (empty -> .)
+    GREATEREQUALTHAN reduce using rule 89 (empty -> .)
+    EQUALX2         reduce using rule 89 (empty -> .)
+    MULT            reduce using rule 89 (empty -> .)
+    DIV             reduce using rule 89 (empty -> .)
+    MONEY           reduce using rule 89 (empty -> .)
+    EXCLAMATION     reduce using rule 89 (empty -> .)
+    QUESTION        reduce using rule 89 (empty -> .)
+    PLUS            reduce using rule 89 (empty -> .)
+    MINUS           reduce using rule 89 (empty -> .)
+    R_BRACKET       reduce using rule 89 (empty -> .)
+    SEMICOLON       reduce using rule 89 (empty -> .)
+    COMA            reduce using rule 89 (empty -> .)
+    R_PARENT        reduce using rule 89 (empty -> .)
+    TO              reduce using rule 89 (empty -> .)
+    DO              reduce using rule 89 (empty -> .)
+
+    t                              shift and go to state 150
+    f                              shift and go to state 78
+    m                              shift and go to state 79
+    x                              shift and go to state 80
+    z                              shift and go to state 81
+    var_cte                        shift and go to state 82
+    lista_ids                      shift and go to state 84
+    llamada                        shift and go to state 85
+    empty                          shift and go to state 86
+
+state 115
+
+    (43) auxT -> MONEY . t
+    (40) t -> . f auxT
+    (47) f -> . m auxF
+    (54) m -> . x auxM
+    (57) x -> . z auxX
+    (60) z -> . var_cte
+    (61) z -> . L_PARENT exp R_PARENT
+    (62) z -> . lista_ids
+    (63) z -> . llamada
+    (64) z -> . empty
+    (65) var_cte -> . ID
+    (66) var_cte -> . CTE_I
+    (67) var_cte -> . CTE_F
+    (10) lista_ids -> . ID casilla casilla
+    (68) llamada -> . ID L_PARENT auxLlamada R_PARENT
+    (89) empty -> .
+
+    L_PARENT        shift and go to state 83
+    ID              shift and go to state 89
+    CTE_I           shift and go to state 90
+    CTE_F           shift and go to state 87
+    AND             reduce using rule 89 (empty -> .)
+    OR              reduce using rule 89 (empty -> .)
+    LESSTHAN        reduce using rule 89 (empty -> .)
+    GREATERTHAN     reduce using rule 89 (empty -> .)
+    LESSEQUALTHAN   reduce using rule 89 (empty -> .)
+    GREATEREQUALTHAN reduce using rule 89 (empty -> .)
+    EQUALX2         reduce using rule 89 (empty -> .)
+    MULT            reduce using rule 89 (empty -> .)
+    DIV             reduce using rule 89 (empty -> .)
+    MONEY           reduce using rule 89 (empty -> .)
+    EXCLAMATION     reduce using rule 89 (empty -> .)
+    QUESTION        reduce using rule 89 (empty -> .)
+    PLUS            reduce using rule 89 (empty -> .)
+    MINUS           reduce using rule 89 (empty -> .)
+    R_BRACKET       reduce using rule 89 (empty -> .)
+    SEMICOLON       reduce using rule 89 (empty -> .)
+    COMA            reduce using rule 89 (empty -> .)
+    R_PARENT        reduce using rule 89 (empty -> .)
+    TO              reduce using rule 89 (empty -> .)
+    DO              reduce using rule 89 (empty -> .)
+
+    t                              shift and go to state 151
+    f                              shift and go to state 78
+    m                              shift and go to state 79
+    x                              shift and go to state 80
+    z                              shift and go to state 81
+    var_cte                        shift and go to state 82
+    lista_ids                      shift and go to state 84
+    llamada                        shift and go to state 85
+    empty                          shift and go to state 86
+
+state 116
+
+    (44) auxT -> EXCLAMATION . t
+    (40) t -> . f auxT
+    (47) f -> . m auxF
+    (54) m -> . x auxM
+    (57) x -> . z auxX
+    (60) z -> . var_cte
+    (61) z -> . L_PARENT exp R_PARENT
+    (62) z -> . lista_ids
+    (63) z -> . llamada
+    (64) z -> . empty
+    (65) var_cte -> . ID
+    (66) var_cte -> . CTE_I
+    (67) var_cte -> . CTE_F
+    (10) lista_ids -> . ID casilla casilla
+    (68) llamada -> . ID L_PARENT auxLlamada R_PARENT
+    (89) empty -> .
+
+    L_PARENT        shift and go to state 83
+    ID              shift and go to state 89
+    CTE_I           shift and go to state 90
+    CTE_F           shift and go to state 87
+    AND             reduce using rule 89 (empty -> .)
+    OR              reduce using rule 89 (empty -> .)
+    LESSTHAN        reduce using rule 89 (empty -> .)
+    GREATERTHAN     reduce using rule 89 (empty -> .)
+    LESSEQUALTHAN   reduce using rule 89 (empty -> .)
+    GREATEREQUALTHAN reduce using rule 89 (empty -> .)
+    EQUALX2         reduce using rule 89 (empty -> .)
+    MULT            reduce using rule 89 (empty -> .)
+    DIV             reduce using rule 89 (empty -> .)
+    MONEY           reduce using rule 89 (empty -> .)
+    EXCLAMATION     reduce using rule 89 (empty -> .)
+    QUESTION        reduce using rule 89 (empty -> .)
+    PLUS            reduce using rule 89 (empty -> .)
+    MINUS           reduce using rule 89 (empty -> .)
+    R_BRACKET       reduce using rule 89 (empty -> .)
+    SEMICOLON       reduce using rule 89 (empty -> .)
+    COMA            reduce using rule 89 (empty -> .)
+    R_PARENT        reduce using rule 89 (empty -> .)
+    TO              reduce using rule 89 (empty -> .)
+    DO              reduce using rule 89 (empty -> .)
+
+    t                              shift and go to state 152
+    f                              shift and go to state 78
+    m                              shift and go to state 79
+    x                              shift and go to state 80
+    z                              shift and go to state 81
+    var_cte                        shift and go to state 82
+    lista_ids                      shift and go to state 84
+    llamada                        shift and go to state 85
+    empty                          shift and go to state 86
+
+state 117
+
+    (45) auxT -> QUESTION . t
+    (40) t -> . f auxT
+    (47) f -> . m auxF
+    (54) m -> . x auxM
+    (57) x -> . z auxX
+    (60) z -> . var_cte
+    (61) z -> . L_PARENT exp R_PARENT
+    (62) z -> . lista_ids
+    (63) z -> . llamada
+    (64) z -> . empty
+    (65) var_cte -> . ID
+    (66) var_cte -> . CTE_I
+    (67) var_cte -> . CTE_F
+    (10) lista_ids -> . ID casilla casilla
+    (68) llamada -> . ID L_PARENT auxLlamada R_PARENT
+    (89) empty -> .
+
+    L_PARENT        shift and go to state 83
+    ID              shift and go to state 89
+    CTE_I           shift and go to state 90
+    CTE_F           shift and go to state 87
+    AND             reduce using rule 89 (empty -> .)
+    OR              reduce using rule 89 (empty -> .)
+    LESSTHAN        reduce using rule 89 (empty -> .)
+    GREATERTHAN     reduce using rule 89 (empty -> .)
+    LESSEQUALTHAN   reduce using rule 89 (empty -> .)
+    GREATEREQUALTHAN reduce using rule 89 (empty -> .)
+    EQUALX2         reduce using rule 89 (empty -> .)
+    MULT            reduce using rule 89 (empty -> .)
+    DIV             reduce using rule 89 (empty -> .)
+    MONEY           reduce using rule 89 (empty -> .)
+    EXCLAMATION     reduce using rule 89 (empty -> .)
+    QUESTION        reduce using rule 89 (empty -> .)
+    PLUS            reduce using rule 89 (empty -> .)
+    MINUS           reduce using rule 89 (empty -> .)
+    R_BRACKET       reduce using rule 89 (empty -> .)
+    SEMICOLON       reduce using rule 89 (empty -> .)
+    COMA            reduce using rule 89 (empty -> .)
+    R_PARENT        reduce using rule 89 (empty -> .)
+    TO              reduce using rule 89 (empty -> .)
+    DO              reduce using rule 89 (empty -> .)
+
+    t                              shift and go to state 153
+    f                              shift and go to state 78
+    m                              shift and go to state 79
+    x                              shift and go to state 80
+    z                              shift and go to state 81
+    var_cte                        shift and go to state 82
+    lista_ids                      shift and go to state 84
+    llamada                        shift and go to state 85
+    empty                          shift and go to state 86
+
+state 118
+
+    (46) auxT -> empty .
+
+    PLUS            reduce using rule 46 (auxT -> empty .)
+    MINUS           reduce using rule 46 (auxT -> empty .)
+    R_BRACKET       reduce using rule 46 (auxT -> empty .)
+    SEMICOLON       reduce using rule 46 (auxT -> empty .)
+    COMA            reduce using rule 46 (auxT -> empty .)
+    R_PARENT        reduce using rule 46 (auxT -> empty .)
+    TO              reduce using rule 46 (auxT -> empty .)
+    DO              reduce using rule 46 (auxT -> empty .)
+
+
+state 119
+
+    (47) f -> m auxF .
+
+    MULT            reduce using rule 47 (f -> m auxF .)
+    DIV             reduce using rule 47 (f -> m auxF .)
+    MONEY           reduce using rule 47 (f -> m auxF .)
+    EXCLAMATION     reduce using rule 47 (f -> m auxF .)
+    QUESTION        reduce using rule 47 (f -> m auxF .)
+    PLUS            reduce using rule 47 (f -> m auxF .)
+    MINUS           reduce using rule 47 (f -> m auxF .)
+    R_BRACKET       reduce using rule 47 (f -> m auxF .)
+    SEMICOLON       reduce using rule 47 (f -> m auxF .)
+    COMA            reduce using rule 47 (f -> m auxF .)
+    R_PARENT        reduce using rule 47 (f -> m auxF .)
+    TO              reduce using rule 47 (f -> m auxF .)
+    DO              reduce using rule 47 (f -> m auxF .)
+
+
+state 120
+
+    (48) auxF -> LESSTHAN . f
+    (47) f -> . m auxF
+    (54) m -> . x auxM
+    (57) x -> . z auxX
+    (60) z -> . var_cte
+    (61) z -> . L_PARENT exp R_PARENT
+    (62) z -> . lista_ids
+    (63) z -> . llamada
+    (64) z -> . empty
+    (65) var_cte -> . ID
+    (66) var_cte -> . CTE_I
+    (67) var_cte -> . CTE_F
+    (10) lista_ids -> . ID casilla casilla
+    (68) llamada -> . ID L_PARENT auxLlamada R_PARENT
+    (89) empty -> .
+
+    L_PARENT        shift and go to state 83
+    ID              shift and go to state 89
+    CTE_I           shift and go to state 90
+    CTE_F           shift and go to state 87
+    AND             reduce using rule 89 (empty -> .)
+    OR              reduce using rule 89 (empty -> .)
+    LESSTHAN        reduce using rule 89 (empty -> .)
+    GREATERTHAN     reduce using rule 89 (empty -> .)
+    LESSEQUALTHAN   reduce using rule 89 (empty -> .)
+    GREATEREQUALTHAN reduce using rule 89 (empty -> .)
+    EQUALX2         reduce using rule 89 (empty -> .)
+    MULT            reduce using rule 89 (empty -> .)
+    DIV             reduce using rule 89 (empty -> .)
+    MONEY           reduce using rule 89 (empty -> .)
+    EXCLAMATION     reduce using rule 89 (empty -> .)
+    QUESTION        reduce using rule 89 (empty -> .)
+    PLUS            reduce using rule 89 (empty -> .)
+    MINUS           reduce using rule 89 (empty -> .)
+    R_BRACKET       reduce using rule 89 (empty -> .)
+    SEMICOLON       reduce using rule 89 (empty -> .)
+    COMA            reduce using rule 89 (empty -> .)
+    R_PARENT        reduce using rule 89 (empty -> .)
+    TO              reduce using rule 89 (empty -> .)
+    DO              reduce using rule 89 (empty -> .)
+
+    f                              shift and go to state 154
+    m                              shift and go to state 79
+    x                              shift and go to state 80
+    z                              shift and go to state 81
+    var_cte                        shift and go to state 82
+    lista_ids                      shift and go to state 84
+    llamada                        shift and go to state 85
+    empty                          shift and go to state 86
+
+state 121
+
+    (49) auxF -> GREATERTHAN . f
+    (47) f -> . m auxF
+    (54) m -> . x auxM
+    (57) x -> . z auxX
+    (60) z -> . var_cte
+    (61) z -> . L_PARENT exp R_PARENT
+    (62) z -> . lista_ids
+    (63) z -> . llamada
+    (64) z -> . empty
+    (65) var_cte -> . ID
+    (66) var_cte -> . CTE_I
+    (67) var_cte -> . CTE_F
+    (10) lista_ids -> . ID casilla casilla
+    (68) llamada -> . ID L_PARENT auxLlamada R_PARENT
+    (89) empty -> .
+
+    L_PARENT        shift and go to state 83
+    ID              shift and go to state 89
+    CTE_I           shift and go to state 90
+    CTE_F           shift and go to state 87
+    AND             reduce using rule 89 (empty -> .)
+    OR              reduce using rule 89 (empty -> .)
+    LESSTHAN        reduce using rule 89 (empty -> .)
+    GREATERTHAN     reduce using rule 89 (empty -> .)
+    LESSEQUALTHAN   reduce using rule 89 (empty -> .)
+    GREATEREQUALTHAN reduce using rule 89 (empty -> .)
+    EQUALX2         reduce using rule 89 (empty -> .)
+    MULT            reduce using rule 89 (empty -> .)
+    DIV             reduce using rule 89 (empty -> .)
+    MONEY           reduce using rule 89 (empty -> .)
+    EXCLAMATION     reduce using rule 89 (empty -> .)
+    QUESTION        reduce using rule 89 (empty -> .)
+    PLUS            reduce using rule 89 (empty -> .)
+    MINUS           reduce using rule 89 (empty -> .)
+    R_BRACKET       reduce using rule 89 (empty -> .)
+    SEMICOLON       reduce using rule 89 (empty -> .)
+    COMA            reduce using rule 89 (empty -> .)
+    R_PARENT        reduce using rule 89 (empty -> .)
+    TO              reduce using rule 89 (empty -> .)
+    DO              reduce using rule 89 (empty -> .)
+
+    f                              shift and go to state 155
+    m                              shift and go to state 79
+    x                              shift and go to state 80
+    z                              shift and go to state 81
+    var_cte                        shift and go to state 82
+    lista_ids                      shift and go to state 84
+    llamada                        shift and go to state 85
+    empty                          shift and go to state 86
+
+state 122
+
+    (50) auxF -> LESSEQUALTHAN . f
+    (47) f -> . m auxF
+    (54) m -> . x auxM
+    (57) x -> . z auxX
+    (60) z -> . var_cte
+    (61) z -> . L_PARENT exp R_PARENT
+    (62) z -> . lista_ids
+    (63) z -> . llamada
+    (64) z -> . empty
+    (65) var_cte -> . ID
+    (66) var_cte -> . CTE_I
+    (67) var_cte -> . CTE_F
+    (10) lista_ids -> . ID casilla casilla
+    (68) llamada -> . ID L_PARENT auxLlamada R_PARENT
+    (89) empty -> .
+
+    L_PARENT        shift and go to state 83
+    ID              shift and go to state 89
+    CTE_I           shift and go to state 90
+    CTE_F           shift and go to state 87
+    AND             reduce using rule 89 (empty -> .)
+    OR              reduce using rule 89 (empty -> .)
+    LESSTHAN        reduce using rule 89 (empty -> .)
+    GREATERTHAN     reduce using rule 89 (empty -> .)
+    LESSEQUALTHAN   reduce using rule 89 (empty -> .)
+    GREATEREQUALTHAN reduce using rule 89 (empty -> .)
+    EQUALX2         reduce using rule 89 (empty -> .)
+    MULT            reduce using rule 89 (empty -> .)
+    DIV             reduce using rule 89 (empty -> .)
+    MONEY           reduce using rule 89 (empty -> .)
+    EXCLAMATION     reduce using rule 89 (empty -> .)
+    QUESTION        reduce using rule 89 (empty -> .)
+    PLUS            reduce using rule 89 (empty -> .)
+    MINUS           reduce using rule 89 (empty -> .)
+    R_BRACKET       reduce using rule 89 (empty -> .)
+    SEMICOLON       reduce using rule 89 (empty -> .)
+    COMA            reduce using rule 89 (empty -> .)
+    R_PARENT        reduce using rule 89 (empty -> .)
+    TO              reduce using rule 89 (empty -> .)
+    DO              reduce using rule 89 (empty -> .)
+
+    f                              shift and go to state 156
+    m                              shift and go to state 79
+    x                              shift and go to state 80
+    z                              shift and go to state 81
+    var_cte                        shift and go to state 82
+    lista_ids                      shift and go to state 84
+    llamada                        shift and go to state 85
+    empty                          shift and go to state 86
+
+state 123
+
+    (51) auxF -> GREATEREQUALTHAN . f
+    (47) f -> . m auxF
+    (54) m -> . x auxM
+    (57) x -> . z auxX
+    (60) z -> . var_cte
+    (61) z -> . L_PARENT exp R_PARENT
+    (62) z -> . lista_ids
+    (63) z -> . llamada
+    (64) z -> . empty
+    (65) var_cte -> . ID
+    (66) var_cte -> . CTE_I
+    (67) var_cte -> . CTE_F
+    (10) lista_ids -> . ID casilla casilla
+    (68) llamada -> . ID L_PARENT auxLlamada R_PARENT
+    (89) empty -> .
+
+    L_PARENT        shift and go to state 83
+    ID              shift and go to state 89
+    CTE_I           shift and go to state 90
+    CTE_F           shift and go to state 87
+    AND             reduce using rule 89 (empty -> .)
+    OR              reduce using rule 89 (empty -> .)
+    LESSTHAN        reduce using rule 89 (empty -> .)
+    GREATERTHAN     reduce using rule 89 (empty -> .)
+    LESSEQUALTHAN   reduce using rule 89 (empty -> .)
+    GREATEREQUALTHAN reduce using rule 89 (empty -> .)
+    EQUALX2         reduce using rule 89 (empty -> .)
+    MULT            reduce using rule 89 (empty -> .)
+    DIV             reduce using rule 89 (empty -> .)
+    MONEY           reduce using rule 89 (empty -> .)
+    EXCLAMATION     reduce using rule 89 (empty -> .)
+    QUESTION        reduce using rule 89 (empty -> .)
+    PLUS            reduce using rule 89 (empty -> .)
+    MINUS           reduce using rule 89 (empty -> .)
+    R_BRACKET       reduce using rule 89 (empty -> .)
+    SEMICOLON       reduce using rule 89 (empty -> .)
+    COMA            reduce using rule 89 (empty -> .)
+    R_PARENT        reduce using rule 89 (empty -> .)
+    TO              reduce using rule 89 (empty -> .)
+    DO              reduce using rule 89 (empty -> .)
+
+    f                              shift and go to state 157
+    m                              shift and go to state 79
+    x                              shift and go to state 80
+    z                              shift and go to state 81
+    var_cte                        shift and go to state 82
+    lista_ids                      shift and go to state 84
+    llamada                        shift and go to state 85
+    empty                          shift and go to state 86
+
+state 124
+
+    (52) auxF -> EQUALX2 . f
+    (47) f -> . m auxF
+    (54) m -> . x auxM
+    (57) x -> . z auxX
+    (60) z -> . var_cte
+    (61) z -> . L_PARENT exp R_PARENT
+    (62) z -> . lista_ids
+    (63) z -> . llamada
+    (64) z -> . empty
+    (65) var_cte -> . ID
+    (66) var_cte -> . CTE_I
+    (67) var_cte -> . CTE_F
+    (10) lista_ids -> . ID casilla casilla
+    (68) llamada -> . ID L_PARENT auxLlamada R_PARENT
+    (89) empty -> .
+
+    L_PARENT        shift and go to state 83
+    ID              shift and go to state 89
+    CTE_I           shift and go to state 90
+    CTE_F           shift and go to state 87
+    AND             reduce using rule 89 (empty -> .)
+    OR              reduce using rule 89 (empty -> .)
+    LESSTHAN        reduce using rule 89 (empty -> .)
+    GREATERTHAN     reduce using rule 89 (empty -> .)
+    LESSEQUALTHAN   reduce using rule 89 (empty -> .)
+    GREATEREQUALTHAN reduce using rule 89 (empty -> .)
+    EQUALX2         reduce using rule 89 (empty -> .)
+    MULT            reduce using rule 89 (empty -> .)
+    DIV             reduce using rule 89 (empty -> .)
+    MONEY           reduce using rule 89 (empty -> .)
+    EXCLAMATION     reduce using rule 89 (empty -> .)
+    QUESTION        reduce using rule 89 (empty -> .)
+    PLUS            reduce using rule 89 (empty -> .)
+    MINUS           reduce using rule 89 (empty -> .)
+    R_BRACKET       reduce using rule 89 (empty -> .)
+    SEMICOLON       reduce using rule 89 (empty -> .)
+    COMA            reduce using rule 89 (empty -> .)
+    R_PARENT        reduce using rule 89 (empty -> .)
+    TO              reduce using rule 89 (empty -> .)
+    DO              reduce using rule 89 (empty -> .)
+
+    f                              shift and go to state 158
+    m                              shift and go to state 79
+    x                              shift and go to state 80
+    z                              shift and go to state 81
+    var_cte                        shift and go to state 82
+    lista_ids                      shift and go to state 84
+    llamada                        shift and go to state 85
+    empty                          shift and go to state 86
+
+state 125
+
+    (53) auxF -> empty .
+
+    MULT            reduce using rule 53 (auxF -> empty .)
+    DIV             reduce using rule 53 (auxF -> empty .)
+    MONEY           reduce using rule 53 (auxF -> empty .)
+    EXCLAMATION     reduce using rule 53 (auxF -> empty .)
+    QUESTION        reduce using rule 53 (auxF -> empty .)
+    PLUS            reduce using rule 53 (auxF -> empty .)
+    MINUS           reduce using rule 53 (auxF -> empty .)
+    R_BRACKET       reduce using rule 53 (auxF -> empty .)
+    SEMICOLON       reduce using rule 53 (auxF -> empty .)
+    COMA            reduce using rule 53 (auxF -> empty .)
+    R_PARENT        reduce using rule 53 (auxF -> empty .)
+    TO              reduce using rule 53 (auxF -> empty .)
+    DO              reduce using rule 53 (auxF -> empty .)
+
+
+state 126
+
+    (54) m -> x auxM .
+
+    LESSTHAN        reduce using rule 54 (m -> x auxM .)
+    GREATERTHAN     reduce using rule 54 (m -> x auxM .)
+    LESSEQUALTHAN   reduce using rule 54 (m -> x auxM .)
+    GREATEREQUALTHAN reduce using rule 54 (m -> x auxM .)
+    EQUALX2         reduce using rule 54 (m -> x auxM .)
+    MULT            reduce using rule 54 (m -> x auxM .)
+    DIV             reduce using rule 54 (m -> x auxM .)
+    MONEY           reduce using rule 54 (m -> x auxM .)
+    EXCLAMATION     reduce using rule 54 (m -> x auxM .)
+    QUESTION        reduce using rule 54 (m -> x auxM .)
+    PLUS            reduce using rule 54 (m -> x auxM .)
+    MINUS           reduce using rule 54 (m -> x auxM .)
+    R_BRACKET       reduce using rule 54 (m -> x auxM .)
+    SEMICOLON       reduce using rule 54 (m -> x auxM .)
+    COMA            reduce using rule 54 (m -> x auxM .)
+    R_PARENT        reduce using rule 54 (m -> x auxM .)
+    TO              reduce using rule 54 (m -> x auxM .)
+    DO              reduce using rule 54 (m -> x auxM .)
+
+
+state 127
+
+    (55) auxM -> OR . m
+    (54) m -> . x auxM
+    (57) x -> . z auxX
+    (60) z -> . var_cte
+    (61) z -> . L_PARENT exp R_PARENT
+    (62) z -> . lista_ids
+    (63) z -> . llamada
+    (64) z -> . empty
+    (65) var_cte -> . ID
+    (66) var_cte -> . CTE_I
+    (67) var_cte -> . CTE_F
+    (10) lista_ids -> . ID casilla casilla
+    (68) llamada -> . ID L_PARENT auxLlamada R_PARENT
+    (89) empty -> .
+
+    L_PARENT        shift and go to state 83
+    ID              shift and go to state 89
+    CTE_I           shift and go to state 90
+    CTE_F           shift and go to state 87
+    AND             reduce using rule 89 (empty -> .)
+    OR              reduce using rule 89 (empty -> .)
+    LESSTHAN        reduce using rule 89 (empty -> .)
+    GREATERTHAN     reduce using rule 89 (empty -> .)
+    LESSEQUALTHAN   reduce using rule 89 (empty -> .)
+    GREATEREQUALTHAN reduce using rule 89 (empty -> .)
+    EQUALX2         reduce using rule 89 (empty -> .)
+    MULT            reduce using rule 89 (empty -> .)
+    DIV             reduce using rule 89 (empty -> .)
+    MONEY           reduce using rule 89 (empty -> .)
+    EXCLAMATION     reduce using rule 89 (empty -> .)
+    QUESTION        reduce using rule 89 (empty -> .)
+    PLUS            reduce using rule 89 (empty -> .)
+    MINUS           reduce using rule 89 (empty -> .)
+    R_BRACKET       reduce using rule 89 (empty -> .)
+    SEMICOLON       reduce using rule 89 (empty -> .)
+    COMA            reduce using rule 89 (empty -> .)
+    R_PARENT        reduce using rule 89 (empty -> .)
+    TO              reduce using rule 89 (empty -> .)
+    DO              reduce using rule 89 (empty -> .)
+
+    m                              shift and go to state 159
+    x                              shift and go to state 80
+    z                              shift and go to state 81
+    var_cte                        shift and go to state 82
+    lista_ids                      shift and go to state 84
+    llamada                        shift and go to state 85
+    empty                          shift and go to state 86
+
+state 128
+
+    (56) auxM -> empty .
+
+    LESSTHAN        reduce using rule 56 (auxM -> empty .)
+    GREATERTHAN     reduce using rule 56 (auxM -> empty .)
+    LESSEQUALTHAN   reduce using rule 56 (auxM -> empty .)
+    GREATEREQUALTHAN reduce using rule 56 (auxM -> empty .)
+    EQUALX2         reduce using rule 56 (auxM -> empty .)
+    MULT            reduce using rule 56 (auxM -> empty .)
+    DIV             reduce using rule 56 (auxM -> empty .)
+    MONEY           reduce using rule 56 (auxM -> empty .)
+    EXCLAMATION     reduce using rule 56 (auxM -> empty .)
+    QUESTION        reduce using rule 56 (auxM -> empty .)
+    PLUS            reduce using rule 56 (auxM -> empty .)
+    MINUS           reduce using rule 56 (auxM -> empty .)
+    R_BRACKET       reduce using rule 56 (auxM -> empty .)
+    SEMICOLON       reduce using rule 56 (auxM -> empty .)
+    COMA            reduce using rule 56 (auxM -> empty .)
+    R_PARENT        reduce using rule 56 (auxM -> empty .)
+    TO              reduce using rule 56 (auxM -> empty .)
+    DO              reduce using rule 56 (auxM -> empty .)
+
+
+state 129
+
+    (57) x -> z auxX .
+
+    OR              reduce using rule 57 (x -> z auxX .)
+    LESSTHAN        reduce using rule 57 (x -> z auxX .)
+    GREATERTHAN     reduce using rule 57 (x -> z auxX .)
+    LESSEQUALTHAN   reduce using rule 57 (x -> z auxX .)
+    GREATEREQUALTHAN reduce using rule 57 (x -> z auxX .)
+    EQUALX2         reduce using rule 57 (x -> z auxX .)
+    MULT            reduce using rule 57 (x -> z auxX .)
+    DIV             reduce using rule 57 (x -> z auxX .)
+    MONEY           reduce using rule 57 (x -> z auxX .)
+    EXCLAMATION     reduce using rule 57 (x -> z auxX .)
+    QUESTION        reduce using rule 57 (x -> z auxX .)
+    PLUS            reduce using rule 57 (x -> z auxX .)
+    MINUS           reduce using rule 57 (x -> z auxX .)
+    R_BRACKET       reduce using rule 57 (x -> z auxX .)
+    SEMICOLON       reduce using rule 57 (x -> z auxX .)
+    COMA            reduce using rule 57 (x -> z auxX .)
+    R_PARENT        reduce using rule 57 (x -> z auxX .)
+    TO              reduce using rule 57 (x -> z auxX .)
+    DO              reduce using rule 57 (x -> z auxX .)
+
+
+state 130
+
+    (58) auxX -> AND . z
+    (60) z -> . var_cte
+    (61) z -> . L_PARENT exp R_PARENT
+    (62) z -> . lista_ids
+    (63) z -> . llamada
+    (64) z -> . empty
+    (65) var_cte -> . ID
+    (66) var_cte -> . CTE_I
+    (67) var_cte -> . CTE_F
+    (10) lista_ids -> . ID casilla casilla
+    (68) llamada -> . ID L_PARENT auxLlamada R_PARENT
+    (89) empty -> .
+
+    L_PARENT        shift and go to state 83
+    ID              shift and go to state 89
+    CTE_I           shift and go to state 90
+    CTE_F           shift and go to state 87
+    OR              reduce using rule 89 (empty -> .)
+    LESSTHAN        reduce using rule 89 (empty -> .)
+    GREATERTHAN     reduce using rule 89 (empty -> .)
+    LESSEQUALTHAN   reduce using rule 89 (empty -> .)
+    GREATEREQUALTHAN reduce using rule 89 (empty -> .)
+    EQUALX2         reduce using rule 89 (empty -> .)
+    MULT            reduce using rule 89 (empty -> .)
+    DIV             reduce using rule 89 (empty -> .)
+    MONEY           reduce using rule 89 (empty -> .)
+    EXCLAMATION     reduce using rule 89 (empty -> .)
+    QUESTION        reduce using rule 89 (empty -> .)
+    PLUS            reduce using rule 89 (empty -> .)
+    MINUS           reduce using rule 89 (empty -> .)
+    R_BRACKET       reduce using rule 89 (empty -> .)
+    SEMICOLON       reduce using rule 89 (empty -> .)
+    COMA            reduce using rule 89 (empty -> .)
+    R_PARENT        reduce using rule 89 (empty -> .)
+    TO              reduce using rule 89 (empty -> .)
+    DO              reduce using rule 89 (empty -> .)
+
+    z                              shift and go to state 160
+    var_cte                        shift and go to state 82
+    lista_ids                      shift and go to state 84
+    llamada                        shift and go to state 85
+    empty                          shift and go to state 86
+
+state 131
+
+    (59) auxX -> empty .
+
+    OR              reduce using rule 59 (auxX -> empty .)
+    LESSTHAN        reduce using rule 59 (auxX -> empty .)
+    GREATERTHAN     reduce using rule 59 (auxX -> empty .)
+    LESSEQUALTHAN   reduce using rule 59 (auxX -> empty .)
+    GREATEREQUALTHAN reduce using rule 59 (auxX -> empty .)
+    EQUALX2         reduce using rule 59 (auxX -> empty .)
+    MULT            reduce using rule 59 (auxX -> empty .)
+    DIV             reduce using rule 59 (auxX -> empty .)
+    MONEY           reduce using rule 59 (auxX -> empty .)
+    EXCLAMATION     reduce using rule 59 (auxX -> empty .)
+    QUESTION        reduce using rule 59 (auxX -> empty .)
+    PLUS            reduce using rule 59 (auxX -> empty .)
+    MINUS           reduce using rule 59 (auxX -> empty .)
+    R_BRACKET       reduce using rule 59 (auxX -> empty .)
+    SEMICOLON       reduce using rule 59 (auxX -> empty .)
+    COMA            reduce using rule 59 (auxX -> empty .)
+    R_PARENT        reduce using rule 59 (auxX -> empty .)
+    TO              reduce using rule 59 (auxX -> empty .)
+    DO              reduce using rule 59 (auxX -> empty .)
+
+
+state 132
+
+    (61) z -> L_PARENT exp . R_PARENT
+
+    R_PARENT        shift and go to state 161
+
+
+state 133
+
+    (35) asignacion -> lista_ids EQUAL exp SEMICOLON .
+
+    ID              reduce using rule 35 (asignacion -> lista_ids EQUAL exp SEMICOLON .)
+    RETURN          reduce using rule 35 (asignacion -> lista_ids EQUAL exp SEMICOLON .)
+    READ            reduce using rule 35 (asignacion -> lista_ids EQUAL exp SEMICOLON .)
+    WRITE           reduce using rule 35 (asignacion -> lista_ids EQUAL exp SEMICOLON .)
+    IF              reduce using rule 35 (asignacion -> lista_ids EQUAL exp SEMICOLON .)
+    WHILE           reduce using rule 35 (asignacion -> lista_ids EQUAL exp SEMICOLON .)
+    FROM            reduce using rule 35 (asignacion -> lista_ids EQUAL exp SEMICOLON .)
+    R_KEY           reduce using rule 35 (asignacion -> lista_ids EQUAL exp SEMICOLON .)
+
+
+state 134
+
+    (68) llamada -> ID L_PARENT auxLlamada R_PARENT .
+
+    SEMICOLON       reduce using rule 68 (llamada -> ID L_PARENT auxLlamada R_PARENT .)
+    AND             reduce using rule 68 (llamada -> ID L_PARENT auxLlamada R_PARENT .)
+    OR              reduce using rule 68 (llamada -> ID L_PARENT auxLlamada R_PARENT .)
+    LESSTHAN        reduce using rule 68 (llamada -> ID L_PARENT auxLlamada R_PARENT .)
+    GREATERTHAN     reduce using rule 68 (llamada -> ID L_PARENT auxLlamada R_PARENT .)
+    LESSEQUALTHAN   reduce using rule 68 (llamada -> ID L_PARENT auxLlamada R_PARENT .)
+    GREATEREQUALTHAN reduce using rule 68 (llamada -> ID L_PARENT auxLlamada R_PARENT .)
+    EQUALX2         reduce using rule 68 (llamada -> ID L_PARENT auxLlamada R_PARENT .)
+    MULT            reduce using rule 68 (llamada -> ID L_PARENT auxLlamada R_PARENT .)
+    DIV             reduce using rule 68 (llamada -> ID L_PARENT auxLlamada R_PARENT .)
+    MONEY           reduce using rule 68 (llamada -> ID L_PARENT auxLlamada R_PARENT .)
+    EXCLAMATION     reduce using rule 68 (llamada -> ID L_PARENT auxLlamada R_PARENT .)
+    QUESTION        reduce using rule 68 (llamada -> ID L_PARENT auxLlamada R_PARENT .)
+    PLUS            reduce using rule 68 (llamada -> ID L_PARENT auxLlamada R_PARENT .)
+    MINUS           reduce using rule 68 (llamada -> ID L_PARENT auxLlamada R_PARENT .)
+    R_BRACKET       reduce using rule 68 (llamada -> ID L_PARENT auxLlamada R_PARENT .)
+    COMA            reduce using rule 68 (llamada -> ID L_PARENT auxLlamada R_PARENT .)
+    R_PARENT        reduce using rule 68 (llamada -> ID L_PARENT auxLlamada R_PARENT .)
+    TO              reduce using rule 68 (llamada -> ID L_PARENT auxLlamada R_PARENT .)
+    DO              reduce using rule 68 (llamada -> ID L_PARENT auxLlamada R_PARENT .)
+
+
+state 135
+
+    (70) auxLlamada -> exp COMA . auxLlamada
+    (69) auxLlamada -> . exp
+    (70) auxLlamada -> . exp COMA auxLlamada
+    (36) exp -> . t auxExp
+    (40) t -> . f auxT
+    (47) f -> . m auxF
+    (54) m -> . x auxM
+    (57) x -> . z auxX
+    (60) z -> . var_cte
+    (61) z -> . L_PARENT exp R_PARENT
+    (62) z -> . lista_ids
+    (63) z -> . llamada
+    (64) z -> . empty
+    (65) var_cte -> . ID
+    (66) var_cte -> . CTE_I
+    (67) var_cte -> . CTE_F
+    (10) lista_ids -> . ID casilla casilla
+    (68) llamada -> . ID L_PARENT auxLlamada R_PARENT
+    (89) empty -> .
+
+    L_PARENT        shift and go to state 83
+    ID              shift and go to state 89
+    CTE_I           shift and go to state 90
+    CTE_F           shift and go to state 87
+    AND             reduce using rule 89 (empty -> .)
+    OR              reduce using rule 89 (empty -> .)
+    LESSTHAN        reduce using rule 89 (empty -> .)
+    GREATERTHAN     reduce using rule 89 (empty -> .)
+    LESSEQUALTHAN   reduce using rule 89 (empty -> .)
+    GREATEREQUALTHAN reduce using rule 89 (empty -> .)
+    EQUALX2         reduce using rule 89 (empty -> .)
+    MULT            reduce using rule 89 (empty -> .)
+    DIV             reduce using rule 89 (empty -> .)
+    MONEY           reduce using rule 89 (empty -> .)
+    EXCLAMATION     reduce using rule 89 (empty -> .)
+    QUESTION        reduce using rule 89 (empty -> .)
+    PLUS            reduce using rule 89 (empty -> .)
+    MINUS           reduce using rule 89 (empty -> .)
+    COMA            reduce using rule 89 (empty -> .)
+    R_PARENT        reduce using rule 89 (empty -> .)
+
+    exp                            shift and go to state 92
+    auxLlamada                     shift and go to state 162
+    t                              shift and go to state 77
+    f                              shift and go to state 78
+    m                              shift and go to state 79
+    x                              shift and go to state 80
+    z                              shift and go to state 81
+    var_cte                        shift and go to state 82
+    lista_ids                      shift and go to state 84
+    llamada                        shift and go to state 85
+    empty                          shift and go to state 86
+
+state 136
+
+    (71) retorno -> RETURN L_PARENT exp R_PARENT . SEMICOLON
+
+    SEMICOLON       shift and go to state 163
+
+
+state 137
+
+    (72) lectura -> READ L_PARENT auxLectura R_PARENT . SEMICOLON
+
+    SEMICOLON       shift and go to state 164
+
+
+state 138
+
+    (74) auxLectura -> lista_ids COMA . auxLectura
+    (73) auxLectura -> . lista_ids
+    (74) auxLectura -> . lista_ids COMA auxLectura
+    (10) lista_ids -> . ID casilla casilla
+
+    ID              shift and go to state 28
+
+    lista_ids                      shift and go to state 95
+    auxLectura                     shift and go to state 165
+
+state 139
+
+    (75) escritura -> WRITE L_PARENT auxEscritura R_PARENT . SEMICOLON
+
+    SEMICOLON       shift and go to state 166
+
+
+state 140
+
+    (79) auxString -> CTE_STRING COMA . auxEscritura
+    (76) auxEscritura -> . auxString
+    (77) auxEscritura -> . auxExpEscritura
+    (78) auxString -> . CTE_STRING
+    (79) auxString -> . CTE_STRING COMA auxEscritura
+    (80) auxExpEscritura -> . exp
+    (81) auxExpEscritura -> . exp COMA auxExpEscritura
+    (36) exp -> . t auxExp
+    (40) t -> . f auxT
+    (47) f -> . m auxF
+    (54) m -> . x auxM
+    (57) x -> . z auxX
+    (60) z -> . var_cte
+    (61) z -> . L_PARENT exp R_PARENT
+    (62) z -> . lista_ids
+    (63) z -> . llamada
+    (64) z -> . empty
+    (65) var_cte -> . ID
+    (66) var_cte -> . CTE_I
+    (67) var_cte -> . CTE_F
+    (10) lista_ids -> . ID casilla casilla
+    (68) llamada -> . ID L_PARENT auxLlamada R_PARENT
+    (89) empty -> .
+
+    CTE_STRING      shift and go to state 99
+    L_PARENT        shift and go to state 83
+    ID              shift and go to state 89
+    CTE_I           shift and go to state 90
+    CTE_F           shift and go to state 87
+    AND             reduce using rule 89 (empty -> .)
+    OR              reduce using rule 89 (empty -> .)
+    LESSTHAN        reduce using rule 89 (empty -> .)
+    GREATERTHAN     reduce using rule 89 (empty -> .)
+    LESSEQUALTHAN   reduce using rule 89 (empty -> .)
+    GREATEREQUALTHAN reduce using rule 89 (empty -> .)
+    EQUALX2         reduce using rule 89 (empty -> .)
+    MULT            reduce using rule 89 (empty -> .)
+    DIV             reduce using rule 89 (empty -> .)
+    MONEY           reduce using rule 89 (empty -> .)
+    EXCLAMATION     reduce using rule 89 (empty -> .)
+    QUESTION        reduce using rule 89 (empty -> .)
+    PLUS            reduce using rule 89 (empty -> .)
+    MINUS           reduce using rule 89 (empty -> .)
+    COMA            reduce using rule 89 (empty -> .)
+    R_PARENT        reduce using rule 89 (empty -> .)
+
+    auxEscritura                   shift and go to state 167
+    auxString                      shift and go to state 97
+    auxExpEscritura                shift and go to state 98
+    exp                            shift and go to state 100
+    t                              shift and go to state 77
+    f                              shift and go to state 78
+    m                              shift and go to state 79
+    x                              shift and go to state 80
+    z                              shift and go to state 81
+    var_cte                        shift and go to state 82
+    lista_ids                      shift and go to state 84
+    llamada                        shift and go to state 85
+    empty                          shift and go to state 86
+
+state 141
+
+    (81) auxExpEscritura -> exp COMA . auxExpEscritura
+    (80) auxExpEscritura -> . exp
+    (81) auxExpEscritura -> . exp COMA auxExpEscritura
+    (36) exp -> . t auxExp
+    (40) t -> . f auxT
+    (47) f -> . m auxF
+    (54) m -> . x auxM
+    (57) x -> . z auxX
+    (60) z -> . var_cte
+    (61) z -> . L_PARENT exp R_PARENT
+    (62) z -> . lista_ids
+    (63) z -> . llamada
+    (64) z -> . empty
+    (65) var_cte -> . ID
+    (66) var_cte -> . CTE_I
+    (67) var_cte -> . CTE_F
+    (10) lista_ids -> . ID casilla casilla
+    (68) llamada -> . ID L_PARENT auxLlamada R_PARENT
+    (89) empty -> .
+
+    L_PARENT        shift and go to state 83
+    ID              shift and go to state 89
+    CTE_I           shift and go to state 90
+    CTE_F           shift and go to state 87
+    AND             reduce using rule 89 (empty -> .)
+    OR              reduce using rule 89 (empty -> .)
+    LESSTHAN        reduce using rule 89 (empty -> .)
+    GREATERTHAN     reduce using rule 89 (empty -> .)
+    LESSEQUALTHAN   reduce using rule 89 (empty -> .)
+    GREATEREQUALTHAN reduce using rule 89 (empty -> .)
+    EQUALX2         reduce using rule 89 (empty -> .)
+    MULT            reduce using rule 89 (empty -> .)
+    DIV             reduce using rule 89 (empty -> .)
+    MONEY           reduce using rule 89 (empty -> .)
+    EXCLAMATION     reduce using rule 89 (empty -> .)
+    QUESTION        reduce using rule 89 (empty -> .)
+    PLUS            reduce using rule 89 (empty -> .)
+    MINUS           reduce using rule 89 (empty -> .)
+    COMA            reduce using rule 89 (empty -> .)
+    R_PARENT        reduce using rule 89 (empty -> .)
+
+    exp                            shift and go to state 100
+    auxExpEscritura                shift and go to state 168
+    t                              shift and go to state 77
+    f                              shift and go to state 78
+    m                              shift and go to state 79
+    x                              shift and go to state 80
+    z                              shift and go to state 81
+    var_cte                        shift and go to state 82
+    lista_ids                      shift and go to state 84
+    llamada                        shift and go to state 85
+    empty                          shift and go to state 86
+
+state 142
+
+    (82) decision -> IF L_PARENT exp R_PARENT . SO bloque auxDecision
+
+    SO              shift and go to state 169
+
+
+state 143
+
+    (87) condicional -> WHILE L_PARENT exp R_PARENT . DO bloque
+
+    DO              shift and go to state 170
+
+
+state 144
+
+    (88) nocondicional -> FROM lista_ids EQUAL exp . TO exp DO bloque
+
+    TO              shift and go to state 171
+
+
+state 145
+
+    (18) funcion -> FUNCION tipoFuncion ID L_PARENT auxParametro R_PARENT COLON . auxVar bloque
+    (2) auxVar -> . var auxVar
+    (3) auxVar -> . empty
+    (4) var -> . VAR tipo COLON lista_ids auxLista_idsVar SEMICOLON
+    (89) empty -> .
+
+    VAR             shift and go to state 8
+    L_KEY           reduce using rule 89 (empty -> .)
+
+    auxVar                         shift and go to state 172
+    var                            shift and go to state 6
+    empty                          shift and go to state 7
+
+state 146
+
+    (23) auxParametro -> tipo ID COMA . auxParametro
+    (22) auxParametro -> . tipo ID
+    (23) auxParametro -> . tipo ID COMA auxParametro
+    (24) auxParametro -> . empty
+    (5) tipo -> . INT
+    (6) tipo -> . FLOAT
+    (7) tipo -> . CHAR
+    (89) empty -> .
+
+    INT             shift and go to state 15
+    FLOAT           shift and go to state 16
+    CHAR            shift and go to state 17
+    R_PARENT        reduce using rule 89 (empty -> .)
+
+    tipo                           shift and go to state 68
+    auxParametro                   shift and go to state 173
+    empty                          shift and go to state 69
+
+state 147
+
+    (37) auxExp -> PLUS exp .
+
+    R_BRACKET       reduce using rule 37 (auxExp -> PLUS exp .)
+    SEMICOLON       reduce using rule 37 (auxExp -> PLUS exp .)
+    COMA            reduce using rule 37 (auxExp -> PLUS exp .)
+    R_PARENT        reduce using rule 37 (auxExp -> PLUS exp .)
+    TO              reduce using rule 37 (auxExp -> PLUS exp .)
+    DO              reduce using rule 37 (auxExp -> PLUS exp .)
+
+
+state 148
+
+    (38) auxExp -> MINUS exp .
+
+    R_BRACKET       reduce using rule 38 (auxExp -> MINUS exp .)
+    SEMICOLON       reduce using rule 38 (auxExp -> MINUS exp .)
+    COMA            reduce using rule 38 (auxExp -> MINUS exp .)
+    R_PARENT        reduce using rule 38 (auxExp -> MINUS exp .)
+    TO              reduce using rule 38 (auxExp -> MINUS exp .)
+    DO              reduce using rule 38 (auxExp -> MINUS exp .)
+
+
+state 149
+
+    (41) auxT -> MULT t .
+
+    PLUS            reduce using rule 41 (auxT -> MULT t .)
+    MINUS           reduce using rule 41 (auxT -> MULT t .)
+    R_BRACKET       reduce using rule 41 (auxT -> MULT t .)
+    SEMICOLON       reduce using rule 41 (auxT -> MULT t .)
+    COMA            reduce using rule 41 (auxT -> MULT t .)
+    R_PARENT        reduce using rule 41 (auxT -> MULT t .)
+    TO              reduce using rule 41 (auxT -> MULT t .)
+    DO              reduce using rule 41 (auxT -> MULT t .)
+
+
+state 150
+
+    (42) auxT -> DIV t .
+
+    PLUS            reduce using rule 42 (auxT -> DIV t .)
+    MINUS           reduce using rule 42 (auxT -> DIV t .)
+    R_BRACKET       reduce using rule 42 (auxT -> DIV t .)
+    SEMICOLON       reduce using rule 42 (auxT -> DIV t .)
+    COMA            reduce using rule 42 (auxT -> DIV t .)
+    R_PARENT        reduce using rule 42 (auxT -> DIV t .)
+    TO              reduce using rule 42 (auxT -> DIV t .)
+    DO              reduce using rule 42 (auxT -> DIV t .)
+
+
+state 151
+
+    (43) auxT -> MONEY t .
+
+    PLUS            reduce using rule 43 (auxT -> MONEY t .)
+    MINUS           reduce using rule 43 (auxT -> MONEY t .)
+    R_BRACKET       reduce using rule 43 (auxT -> MONEY t .)
+    SEMICOLON       reduce using rule 43 (auxT -> MONEY t .)
+    COMA            reduce using rule 43 (auxT -> MONEY t .)
+    R_PARENT        reduce using rule 43 (auxT -> MONEY t .)
+    TO              reduce using rule 43 (auxT -> MONEY t .)
+    DO              reduce using rule 43 (auxT -> MONEY t .)
+
+
+state 152
+
+    (44) auxT -> EXCLAMATION t .
+
+    PLUS            reduce using rule 44 (auxT -> EXCLAMATION t .)
+    MINUS           reduce using rule 44 (auxT -> EXCLAMATION t .)
+    R_BRACKET       reduce using rule 44 (auxT -> EXCLAMATION t .)
+    SEMICOLON       reduce using rule 44 (auxT -> EXCLAMATION t .)
+    COMA            reduce using rule 44 (auxT -> EXCLAMATION t .)
+    R_PARENT        reduce using rule 44 (auxT -> EXCLAMATION t .)
+    TO              reduce using rule 44 (auxT -> EXCLAMATION t .)
+    DO              reduce using rule 44 (auxT -> EXCLAMATION t .)
+
+
+state 153
+
+    (45) auxT -> QUESTION t .
+
+    PLUS            reduce using rule 45 (auxT -> QUESTION t .)
+    MINUS           reduce using rule 45 (auxT -> QUESTION t .)
+    R_BRACKET       reduce using rule 45 (auxT -> QUESTION t .)
+    SEMICOLON       reduce using rule 45 (auxT -> QUESTION t .)
+    COMA            reduce using rule 45 (auxT -> QUESTION t .)
+    R_PARENT        reduce using rule 45 (auxT -> QUESTION t .)
+    TO              reduce using rule 45 (auxT -> QUESTION t .)
+    DO              reduce using rule 45 (auxT -> QUESTION t .)
+
+
+state 154
+
+    (48) auxF -> LESSTHAN f .
+
+    MULT            reduce using rule 48 (auxF -> LESSTHAN f .)
+    DIV             reduce using rule 48 (auxF -> LESSTHAN f .)
+    MONEY           reduce using rule 48 (auxF -> LESSTHAN f .)
+    EXCLAMATION     reduce using rule 48 (auxF -> LESSTHAN f .)
+    QUESTION        reduce using rule 48 (auxF -> LESSTHAN f .)
+    PLUS            reduce using rule 48 (auxF -> LESSTHAN f .)
+    MINUS           reduce using rule 48 (auxF -> LESSTHAN f .)
+    R_BRACKET       reduce using rule 48 (auxF -> LESSTHAN f .)
+    SEMICOLON       reduce using rule 48 (auxF -> LESSTHAN f .)
+    COMA            reduce using rule 48 (auxF -> LESSTHAN f .)
+    R_PARENT        reduce using rule 48 (auxF -> LESSTHAN f .)
+    TO              reduce using rule 48 (auxF -> LESSTHAN f .)
+    DO              reduce using rule 48 (auxF -> LESSTHAN f .)
+
+
+state 155
+
+    (49) auxF -> GREATERTHAN f .
+
+    MULT            reduce using rule 49 (auxF -> GREATERTHAN f .)
+    DIV             reduce using rule 49 (auxF -> GREATERTHAN f .)
+    MONEY           reduce using rule 49 (auxF -> GREATERTHAN f .)
+    EXCLAMATION     reduce using rule 49 (auxF -> GREATERTHAN f .)
+    QUESTION        reduce using rule 49 (auxF -> GREATERTHAN f .)
+    PLUS            reduce using rule 49 (auxF -> GREATERTHAN f .)
+    MINUS           reduce using rule 49 (auxF -> GREATERTHAN f .)
+    R_BRACKET       reduce using rule 49 (auxF -> GREATERTHAN f .)
+    SEMICOLON       reduce using rule 49 (auxF -> GREATERTHAN f .)
+    COMA            reduce using rule 49 (auxF -> GREATERTHAN f .)
+    R_PARENT        reduce using rule 49 (auxF -> GREATERTHAN f .)
+    TO              reduce using rule 49 (auxF -> GREATERTHAN f .)
+    DO              reduce using rule 49 (auxF -> GREATERTHAN f .)
+
+
+state 156
+
+    (50) auxF -> LESSEQUALTHAN f .
+
+    MULT            reduce using rule 50 (auxF -> LESSEQUALTHAN f .)
+    DIV             reduce using rule 50 (auxF -> LESSEQUALTHAN f .)
+    MONEY           reduce using rule 50 (auxF -> LESSEQUALTHAN f .)
+    EXCLAMATION     reduce using rule 50 (auxF -> LESSEQUALTHAN f .)
+    QUESTION        reduce using rule 50 (auxF -> LESSEQUALTHAN f .)
+    PLUS            reduce using rule 50 (auxF -> LESSEQUALTHAN f .)
+    MINUS           reduce using rule 50 (auxF -> LESSEQUALTHAN f .)
+    R_BRACKET       reduce using rule 50 (auxF -> LESSEQUALTHAN f .)
+    SEMICOLON       reduce using rule 50 (auxF -> LESSEQUALTHAN f .)
+    COMA            reduce using rule 50 (auxF -> LESSEQUALTHAN f .)
+    R_PARENT        reduce using rule 50 (auxF -> LESSEQUALTHAN f .)
+    TO              reduce using rule 50 (auxF -> LESSEQUALTHAN f .)
+    DO              reduce using rule 50 (auxF -> LESSEQUALTHAN f .)
+
+
+state 157
+
+    (51) auxF -> GREATEREQUALTHAN f .
+
+    MULT            reduce using rule 51 (auxF -> GREATEREQUALTHAN f .)
+    DIV             reduce using rule 51 (auxF -> GREATEREQUALTHAN f .)
+    MONEY           reduce using rule 51 (auxF -> GREATEREQUALTHAN f .)
+    EXCLAMATION     reduce using rule 51 (auxF -> GREATEREQUALTHAN f .)
+    QUESTION        reduce using rule 51 (auxF -> GREATEREQUALTHAN f .)
+    PLUS            reduce using rule 51 (auxF -> GREATEREQUALTHAN f .)
+    MINUS           reduce using rule 51 (auxF -> GREATEREQUALTHAN f .)
+    R_BRACKET       reduce using rule 51 (auxF -> GREATEREQUALTHAN f .)
+    SEMICOLON       reduce using rule 51 (auxF -> GREATEREQUALTHAN f .)
+    COMA            reduce using rule 51 (auxF -> GREATEREQUALTHAN f .)
+    R_PARENT        reduce using rule 51 (auxF -> GREATEREQUALTHAN f .)
+    TO              reduce using rule 51 (auxF -> GREATEREQUALTHAN f .)
+    DO              reduce using rule 51 (auxF -> GREATEREQUALTHAN f .)
+
+
+state 158
+
+    (52) auxF -> EQUALX2 f .
+
+    MULT            reduce using rule 52 (auxF -> EQUALX2 f .)
+    DIV             reduce using rule 52 (auxF -> EQUALX2 f .)
+    MONEY           reduce using rule 52 (auxF -> EQUALX2 f .)
+    EXCLAMATION     reduce using rule 52 (auxF -> EQUALX2 f .)
+    QUESTION        reduce using rule 52 (auxF -> EQUALX2 f .)
+    PLUS            reduce using rule 52 (auxF -> EQUALX2 f .)
+    MINUS           reduce using rule 52 (auxF -> EQUALX2 f .)
+    R_BRACKET       reduce using rule 52 (auxF -> EQUALX2 f .)
+    SEMICOLON       reduce using rule 52 (auxF -> EQUALX2 f .)
+    COMA            reduce using rule 52 (auxF -> EQUALX2 f .)
+    R_PARENT        reduce using rule 52 (auxF -> EQUALX2 f .)
+    TO              reduce using rule 52 (auxF -> EQUALX2 f .)
+    DO              reduce using rule 52 (auxF -> EQUALX2 f .)
+
+
+state 159
+
+    (55) auxM -> OR m .
+
+    LESSTHAN        reduce using rule 55 (auxM -> OR m .)
+    GREATERTHAN     reduce using rule 55 (auxM -> OR m .)
+    LESSEQUALTHAN   reduce using rule 55 (auxM -> OR m .)
+    GREATEREQUALTHAN reduce using rule 55 (auxM -> OR m .)
+    EQUALX2         reduce using rule 55 (auxM -> OR m .)
+    MULT            reduce using rule 55 (auxM -> OR m .)
+    DIV             reduce using rule 55 (auxM -> OR m .)
+    MONEY           reduce using rule 55 (auxM -> OR m .)
+    EXCLAMATION     reduce using rule 55 (auxM -> OR m .)
+    QUESTION        reduce using rule 55 (auxM -> OR m .)
+    PLUS            reduce using rule 55 (auxM -> OR m .)
+    MINUS           reduce using rule 55 (auxM -> OR m .)
+    R_BRACKET       reduce using rule 55 (auxM -> OR m .)
+    SEMICOLON       reduce using rule 55 (auxM -> OR m .)
+    COMA            reduce using rule 55 (auxM -> OR m .)
+    R_PARENT        reduce using rule 55 (auxM -> OR m .)
+    TO              reduce using rule 55 (auxM -> OR m .)
+    DO              reduce using rule 55 (auxM -> OR m .)
+
+
+state 160
+
+    (58) auxX -> AND z .
+
+    OR              reduce using rule 58 (auxX -> AND z .)
+    LESSTHAN        reduce using rule 58 (auxX -> AND z .)
+    GREATERTHAN     reduce using rule 58 (auxX -> AND z .)
+    LESSEQUALTHAN   reduce using rule 58 (auxX -> AND z .)
+    GREATEREQUALTHAN reduce using rule 58 (auxX -> AND z .)
+    EQUALX2         reduce using rule 58 (auxX -> AND z .)
+    MULT            reduce using rule 58 (auxX -> AND z .)
+    DIV             reduce using rule 58 (auxX -> AND z .)
+    MONEY           reduce using rule 58 (auxX -> AND z .)
+    EXCLAMATION     reduce using rule 58 (auxX -> AND z .)
+    QUESTION        reduce using rule 58 (auxX -> AND z .)
+    PLUS            reduce using rule 58 (auxX -> AND z .)
+    MINUS           reduce using rule 58 (auxX -> AND z .)
+    R_BRACKET       reduce using rule 58 (auxX -> AND z .)
+    SEMICOLON       reduce using rule 58 (auxX -> AND z .)
+    COMA            reduce using rule 58 (auxX -> AND z .)
+    R_PARENT        reduce using rule 58 (auxX -> AND z .)
+    TO              reduce using rule 58 (auxX -> AND z .)
+    DO              reduce using rule 58 (auxX -> AND z .)
+
+
+state 161
+
+    (61) z -> L_PARENT exp R_PARENT .
+
+    AND             reduce using rule 61 (z -> L_PARENT exp R_PARENT .)
+    OR              reduce using rule 61 (z -> L_PARENT exp R_PARENT .)
+    LESSTHAN        reduce using rule 61 (z -> L_PARENT exp R_PARENT .)
+    GREATERTHAN     reduce using rule 61 (z -> L_PARENT exp R_PARENT .)
+    LESSEQUALTHAN   reduce using rule 61 (z -> L_PARENT exp R_PARENT .)
+    GREATEREQUALTHAN reduce using rule 61 (z -> L_PARENT exp R_PARENT .)
+    EQUALX2         reduce using rule 61 (z -> L_PARENT exp R_PARENT .)
+    MULT            reduce using rule 61 (z -> L_PARENT exp R_PARENT .)
+    DIV             reduce using rule 61 (z -> L_PARENT exp R_PARENT .)
+    MONEY           reduce using rule 61 (z -> L_PARENT exp R_PARENT .)
+    EXCLAMATION     reduce using rule 61 (z -> L_PARENT exp R_PARENT .)
+    QUESTION        reduce using rule 61 (z -> L_PARENT exp R_PARENT .)
+    PLUS            reduce using rule 61 (z -> L_PARENT exp R_PARENT .)
+    MINUS           reduce using rule 61 (z -> L_PARENT exp R_PARENT .)
+    R_BRACKET       reduce using rule 61 (z -> L_PARENT exp R_PARENT .)
+    SEMICOLON       reduce using rule 61 (z -> L_PARENT exp R_PARENT .)
+    COMA            reduce using rule 61 (z -> L_PARENT exp R_PARENT .)
+    R_PARENT        reduce using rule 61 (z -> L_PARENT exp R_PARENT .)
+    TO              reduce using rule 61 (z -> L_PARENT exp R_PARENT .)
+    DO              reduce using rule 61 (z -> L_PARENT exp R_PARENT .)
+
+
+state 162
+
+    (70) auxLlamada -> exp COMA auxLlamada .
+
+    R_PARENT        reduce using rule 70 (auxLlamada -> exp COMA auxLlamada .)
+
+
+state 163
+
+    (71) retorno -> RETURN L_PARENT exp R_PARENT SEMICOLON .
+
+    ID              reduce using rule 71 (retorno -> RETURN L_PARENT exp R_PARENT SEMICOLON .)
+    RETURN          reduce using rule 71 (retorno -> RETURN L_PARENT exp R_PARENT SEMICOLON .)
+    READ            reduce using rule 71 (retorno -> RETURN L_PARENT exp R_PARENT SEMICOLON .)
+    WRITE           reduce using rule 71 (retorno -> RETURN L_PARENT exp R_PARENT SEMICOLON .)
+    IF              reduce using rule 71 (retorno -> RETURN L_PARENT exp R_PARENT SEMICOLON .)
+    WHILE           reduce using rule 71 (retorno -> RETURN L_PARENT exp R_PARENT SEMICOLON .)
+    FROM            reduce using rule 71 (retorno -> RETURN L_PARENT exp R_PARENT SEMICOLON .)
+    R_KEY           reduce using rule 71 (retorno -> RETURN L_PARENT exp R_PARENT SEMICOLON .)
+
+
+state 164
+
+    (72) lectura -> READ L_PARENT auxLectura R_PARENT SEMICOLON .
+
+    ID              reduce using rule 72 (lectura -> READ L_PARENT auxLectura R_PARENT SEMICOLON .)
+    RETURN          reduce using rule 72 (lectura -> READ L_PARENT auxLectura R_PARENT SEMICOLON .)
+    READ            reduce using rule 72 (lectura -> READ L_PARENT auxLectura R_PARENT SEMICOLON .)
+    WRITE           reduce using rule 72 (lectura -> READ L_PARENT auxLectura R_PARENT SEMICOLON .)
+    IF              reduce using rule 72 (lectura -> READ L_PARENT auxLectura R_PARENT SEMICOLON .)
+    WHILE           reduce using rule 72 (lectura -> READ L_PARENT auxLectura R_PARENT SEMICOLON .)
+    FROM            reduce using rule 72 (lectura -> READ L_PARENT auxLectura R_PARENT SEMICOLON .)
+    R_KEY           reduce using rule 72 (lectura -> READ L_PARENT auxLectura R_PARENT SEMICOLON .)
+
+
+state 165
+
+    (74) auxLectura -> lista_ids COMA auxLectura .
+
+    R_PARENT        reduce using rule 74 (auxLectura -> lista_ids COMA auxLectura .)
+
+
+state 166
+
+    (75) escritura -> WRITE L_PARENT auxEscritura R_PARENT SEMICOLON .
+
+    ID              reduce using rule 75 (escritura -> WRITE L_PARENT auxEscritura R_PARENT SEMICOLON .)
+    RETURN          reduce using rule 75 (escritura -> WRITE L_PARENT auxEscritura R_PARENT SEMICOLON .)
+    READ            reduce using rule 75 (escritura -> WRITE L_PARENT auxEscritura R_PARENT SEMICOLON .)
+    WRITE           reduce using rule 75 (escritura -> WRITE L_PARENT auxEscritura R_PARENT SEMICOLON .)
+    IF              reduce using rule 75 (escritura -> WRITE L_PARENT auxEscritura R_PARENT SEMICOLON .)
+    WHILE           reduce using rule 75 (escritura -> WRITE L_PARENT auxEscritura R_PARENT SEMICOLON .)
+    FROM            reduce using rule 75 (escritura -> WRITE L_PARENT auxEscritura R_PARENT SEMICOLON .)
+    R_KEY           reduce using rule 75 (escritura -> WRITE L_PARENT auxEscritura R_PARENT SEMICOLON .)
+
+
+state 167
+
+    (79) auxString -> CTE_STRING COMA auxEscritura .
+
+    R_PARENT        reduce using rule 79 (auxString -> CTE_STRING COMA auxEscritura .)
+
+
+state 168
+
+    (81) auxExpEscritura -> exp COMA auxExpEscritura .
+
+    R_PARENT        reduce using rule 81 (auxExpEscritura -> exp COMA auxExpEscritura .)
+
+
+state 169
+
+    (82) decision -> IF L_PARENT exp R_PARENT SO . bloque auxDecision
+    (25) bloque -> . L_KEY auxEstatuto R_KEY
+
+    L_KEY           shift and go to state 25
+
+    bloque                         shift and go to state 174
+
+state 170
+
+    (87) condicional -> WHILE L_PARENT exp R_PARENT DO . bloque
+    (25) bloque -> . L_KEY auxEstatuto R_KEY
+
+    L_KEY           shift and go to state 25
+
+    bloque                         shift and go to state 175
+
+state 171
+
+    (88) nocondicional -> FROM lista_ids EQUAL exp TO . exp DO bloque
+    (36) exp -> . t auxExp
+    (40) t -> . f auxT
+    (47) f -> . m auxF
+    (54) m -> . x auxM
+    (57) x -> . z auxX
+    (60) z -> . var_cte
+    (61) z -> . L_PARENT exp R_PARENT
+    (62) z -> . lista_ids
+    (63) z -> . llamada
+    (64) z -> . empty
+    (65) var_cte -> . ID
+    (66) var_cte -> . CTE_I
+    (67) var_cte -> . CTE_F
+    (10) lista_ids -> . ID casilla casilla
+    (68) llamada -> . ID L_PARENT auxLlamada R_PARENT
+    (89) empty -> .
+
+    L_PARENT        shift and go to state 83
+    ID              shift and go to state 89
+    CTE_I           shift and go to state 90
+    CTE_F           shift and go to state 87
+    AND             reduce using rule 89 (empty -> .)
+    OR              reduce using rule 89 (empty -> .)
+    LESSTHAN        reduce using rule 89 (empty -> .)
+    GREATERTHAN     reduce using rule 89 (empty -> .)
+    LESSEQUALTHAN   reduce using rule 89 (empty -> .)
+    GREATEREQUALTHAN reduce using rule 89 (empty -> .)
+    EQUALX2         reduce using rule 89 (empty -> .)
+    MULT            reduce using rule 89 (empty -> .)
+    DIV             reduce using rule 89 (empty -> .)
+    MONEY           reduce using rule 89 (empty -> .)
+    EXCLAMATION     reduce using rule 89 (empty -> .)
+    QUESTION        reduce using rule 89 (empty -> .)
+    PLUS            reduce using rule 89 (empty -> .)
+    MINUS           reduce using rule 89 (empty -> .)
+    DO              reduce using rule 89 (empty -> .)
+
+    lista_ids                      shift and go to state 84
+    exp                            shift and go to state 176
+    t                              shift and go to state 77
+    f                              shift and go to state 78
+    m                              shift and go to state 79
+    x                              shift and go to state 80
+    z                              shift and go to state 81
+    var_cte                        shift and go to state 82
+    llamada                        shift and go to state 85
+    empty                          shift and go to state 86
+
+state 172
+
+    (18) funcion -> FUNCION tipoFuncion ID L_PARENT auxParametro R_PARENT COLON auxVar . bloque
+    (25) bloque -> . L_KEY auxEstatuto R_KEY
+
+    L_KEY           shift and go to state 25
+
+    bloque                         shift and go to state 177
+
+state 173
+
+    (23) auxParametro -> tipo ID COMA auxParametro .
+
+    R_PARENT        reduce using rule 23 (auxParametro -> tipo ID COMA auxParametro .)
+
+
+state 174
+
+    (82) decision -> IF L_PARENT exp R_PARENT SO bloque . auxDecision
+    (83) auxDecision -> . ELSE bloque
+    (84) auxDecision -> . empty
+    (89) empty -> .
+
+    ELSE            shift and go to state 179
+    ID              reduce using rule 89 (empty -> .)
+    RETURN          reduce using rule 89 (empty -> .)
+    READ            reduce using rule 89 (empty -> .)
+    WRITE           reduce using rule 89 (empty -> .)
+    IF              reduce using rule 89 (empty -> .)
+    WHILE           reduce using rule 89 (empty -> .)
+    FROM            reduce using rule 89 (empty -> .)
+    R_KEY           reduce using rule 89 (empty -> .)
+
+    auxDecision                    shift and go to state 178
+    empty                          shift and go to state 180
+
+state 175
+
+    (87) condicional -> WHILE L_PARENT exp R_PARENT DO bloque .
+
+    ID              reduce using rule 87 (condicional -> WHILE L_PARENT exp R_PARENT DO bloque .)
+    RETURN          reduce using rule 87 (condicional -> WHILE L_PARENT exp R_PARENT DO bloque .)
+    READ            reduce using rule 87 (condicional -> WHILE L_PARENT exp R_PARENT DO bloque .)
+    WRITE           reduce using rule 87 (condicional -> WHILE L_PARENT exp R_PARENT DO bloque .)
+    IF              reduce using rule 87 (condicional -> WHILE L_PARENT exp R_PARENT DO bloque .)
+    WHILE           reduce using rule 87 (condicional -> WHILE L_PARENT exp R_PARENT DO bloque .)
+    FROM            reduce using rule 87 (condicional -> WHILE L_PARENT exp R_PARENT DO bloque .)
+    R_KEY           reduce using rule 87 (condicional -> WHILE L_PARENT exp R_PARENT DO bloque .)
+
+
+state 176
+
+    (88) nocondicional -> FROM lista_ids EQUAL exp TO exp . DO bloque
+
+    DO              shift and go to state 181
+
+
+state 177
+
+    (18) funcion -> FUNCION tipoFuncion ID L_PARENT auxParametro R_PARENT COLON auxVar bloque .
+
+    FUNCION         reduce using rule 18 (funcion -> FUNCION tipoFuncion ID L_PARENT auxParametro R_PARENT COLON auxVar bloque .)
+    MAIN            reduce using rule 18 (funcion -> FUNCION tipoFuncion ID L_PARENT auxParametro R_PARENT COLON auxVar bloque .)
+
+
+state 178
+
+    (82) decision -> IF L_PARENT exp R_PARENT SO bloque auxDecision .
+
+    ID              reduce using rule 82 (decision -> IF L_PARENT exp R_PARENT SO bloque auxDecision .)
+    RETURN          reduce using rule 82 (decision -> IF L_PARENT exp R_PARENT SO bloque auxDecision .)
+    READ            reduce using rule 82 (decision -> IF L_PARENT exp R_PARENT SO bloque auxDecision .)
+    WRITE           reduce using rule 82 (decision -> IF L_PARENT exp R_PARENT SO bloque auxDecision .)
+    IF              reduce using rule 82 (decision -> IF L_PARENT exp R_PARENT SO bloque auxDecision .)
+    WHILE           reduce using rule 82 (decision -> IF L_PARENT exp R_PARENT SO bloque auxDecision .)
+    FROM            reduce using rule 82 (decision -> IF L_PARENT exp R_PARENT SO bloque auxDecision .)
+    R_KEY           reduce using rule 82 (decision -> IF L_PARENT exp R_PARENT SO bloque auxDecision .)
+
+
+state 179
+
+    (83) auxDecision -> ELSE . bloque
+    (25) bloque -> . L_KEY auxEstatuto R_KEY
+
+    L_KEY           shift and go to state 25
+
+    bloque                         shift and go to state 182
+
+state 180
+
+    (84) auxDecision -> empty .
+
+    ID              reduce using rule 84 (auxDecision -> empty .)
+    RETURN          reduce using rule 84 (auxDecision -> empty .)
+    READ            reduce using rule 84 (auxDecision -> empty .)
+    WRITE           reduce using rule 84 (auxDecision -> empty .)
+    IF              reduce using rule 84 (auxDecision -> empty .)
+    WHILE           reduce using rule 84 (auxDecision -> empty .)
+    FROM            reduce using rule 84 (auxDecision -> empty .)
+    R_KEY           reduce using rule 84 (auxDecision -> empty .)
+
+
+state 181
+
+    (88) nocondicional -> FROM lista_ids EQUAL exp TO exp DO . bloque
+    (25) bloque -> . L_KEY auxEstatuto R_KEY
+
+    L_KEY           shift and go to state 25
+
+    bloque                         shift and go to state 183
+
+state 182
+
+    (83) auxDecision -> ELSE bloque .
+
+    ID              reduce using rule 83 (auxDecision -> ELSE bloque .)
+    RETURN          reduce using rule 83 (auxDecision -> ELSE bloque .)
+    READ            reduce using rule 83 (auxDecision -> ELSE bloque .)
+    WRITE           reduce using rule 83 (auxDecision -> ELSE bloque .)
+    IF              reduce using rule 83 (auxDecision -> ELSE bloque .)
+    WHILE           reduce using rule 83 (auxDecision -> ELSE bloque .)
+    FROM            reduce using rule 83 (auxDecision -> ELSE bloque .)
+    R_KEY           reduce using rule 83 (auxDecision -> ELSE bloque .)
+
+
+state 183
+
+    (88) nocondicional -> FROM lista_ids EQUAL exp TO exp DO bloque .
+
+    ID              reduce using rule 88 (nocondicional -> FROM lista_ids EQUAL exp TO exp DO bloque .)
+    RETURN          reduce using rule 88 (nocondicional -> FROM lista_ids EQUAL exp TO exp DO bloque .)
+    READ            reduce using rule 88 (nocondicional -> FROM lista_ids EQUAL exp TO exp DO bloque .)
+    WRITE           reduce using rule 88 (nocondicional -> FROM lista_ids EQUAL exp TO exp DO bloque .)
+    IF              reduce using rule 88 (nocondicional -> FROM lista_ids EQUAL exp TO exp DO bloque .)
+    WHILE           reduce using rule 88 (nocondicional -> FROM lista_ids EQUAL exp TO exp DO bloque .)
+    FROM            reduce using rule 88 (nocondicional -> FROM lista_ids EQUAL exp TO exp DO bloque .)
+    R_KEY           reduce using rule 88 (nocondicional -> FROM lista_ids EQUAL exp TO exp DO bloque .)
+
+WARNING: 
+WARNING: Conflicts:
+WARNING: 
+WARNING: shift/reduce conflict for FUNCION in state 5 resolved as shift
+WARNING: shift/reduce conflict for FUNCION in state 10 resolved as shift
+WARNING: shift/reduce conflict for L_BRACKET in state 28 resolved as shift
+WARNING: shift/reduce conflict for L_BRACKET in state 40 resolved as shift
+WARNING: shift/reduce conflict for L_BRACKET in state 75 resolved as shift
+WARNING: shift/reduce conflict for L_BRACKET in state 89 resolved as shift
+WARNING: reduce/reduce conflict in state 11 resolved using rule (auxFuncion -> empty)
+WARNING: rejected rule (funcion -> empty) in state 11
+WARNING: reduce/reduce conflict in state 74 resolved using rule (casillaVar -> CTE_I)
+WARNING: rejected rule (var_cte -> CTE_I) in state 74
+WARNING: reduce/reduce conflict in state 75 resolved using rule (casillaVar -> ID)
+WARNING: rejected rule (var_cte -> ID) in state 75
+WARNING: reduce/reduce conflict in state 75 resolved using rule (var_cte -> ID)
+WARNING: rejected rule (empty -> <empty>) in state 75
+WARNING: reduce/reduce conflict in state 75 resolved using rule (casillaVar -> ID)
+WARNING: rejected rule (empty -> <empty>) in state 75
+WARNING: reduce/reduce conflict in state 89 resolved using rule (var_cte -> ID)
+WARNING: rejected rule (empty -> <empty>) in state 89

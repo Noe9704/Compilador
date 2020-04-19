@@ -1,0 +1,7 @@
+program abc:
+var noe : !!!; 
+{
+ 
+
+ 
+}
