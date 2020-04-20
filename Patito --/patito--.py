@@ -119,13 +119,14 @@ def p_program(p):
 
 def p_auxVar(p):
     '''
-    auxVar : var auxVar 
+    auxVar : VAR var auxVar 
             | empty
     '''
 
 def p_var(p):
     '''
-    var : VAR tipo COLON lista_ids auxLista_idsVar SEMICOLON
+    var : tipo COLON lista_ids auxLista_idsVar SEMICOLON
+        | tipo COLON lista_ids auxLista_idsVar SEMICOLON var
     '''
 
 def p_tipo(p):
