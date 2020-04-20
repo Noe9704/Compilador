@@ -1,8 +1,8 @@
 program patito:
 var int : i,j,p; 
-var int : Arreglo[10], OtroArreglo[10];
-var float : valor;
-var int : Matriz[3][8], OtraMatrix[3][3];
+int : Arreglo[10], OtroArreglo[10];
+float : valor;
+int : Matriz[3][8], OtraMatrix[3][3];
 
 funcion int fact(int j):
 var int : i;
