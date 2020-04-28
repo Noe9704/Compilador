@@ -6,6 +6,7 @@ opDer = 0
 opIzq = 0
 operador = 0
 
+
 opsEXP = {
     "+",
     "-",
@@ -13,27 +14,33 @@ opsEXP = {
     "/"    
 }
 
-
 def eval(cuadruplo):
     tokens = cuadruplo.split()
-    for token in tokens:
-        if(token in opsEXP):
-            pilaOperadores.append(token)
+    for token in tokens:      
+        if(token not in opsEXP):
+            pilaId.append(token)           
         else:
-            pilaId.append(token)
-        if len(pilaOperadores) > 0:
-          if(pilaOperadores[-1] == "*" or pilaOperadores[-1] == "/"):
-              opDer = pilaId.pop()
-              opIzq = pilaId.pop()
+            pilaOperadores.append(token)
 
-              operador = pilaOperadores.pop()
-              generaCuadruplo(operador, opDer, opIzq, "12")
+        if len(pilaOperadores) > 0:
+            if(pilaOperadores[-1] == "*" or pilaOperadores[-1] == "/"):
+                opDer = pilaId.pop()
+                opIzq = pilaId.pop()
+            
+                operador = pilaOperadores.pop()
+                generaCuadruplo(operador, opDer, opIzq,"12")
+
+            
+         
             
 
-def generaCuadruplo(operador , opIzq, opDer , respuesta):
-    print(operador,opIzq,opDer,respuesta)
 
+            
+def generaCuadruplo(operador , opDer, opIzq , respuesta):
+    print(operador,opDer,opIzq,respuesta)
+    ##pilaId.append(respuesta)
 
+eval('4 + 5 * 6')
     
     ##print(pilaOperadores)
     ##print(pilaId)
@@ -43,4 +50,3 @@ def generaCuadruplo(operador , opIzq, opDer , respuesta):
 
 
 
-eval('4 + 5 * 6')
