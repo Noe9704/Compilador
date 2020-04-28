@@ -21,12 +21,13 @@ def eval(cuadruplo):
             pilaOperadores.append(token)
         else:
             pilaId.append(token)
-        if(pilaOperadores[-1] == "*" or pilaOperadores[-1] == "/"):
-            opDer = pilaId.pop()
-            opIzq = pilaId.pop()
+        if len(pilaOperadores) > 0:
+          if(pilaOperadores[-1] == "*" or pilaOperadores[-1] == "/"):
+              opDer = pilaId.pop()
+              opIzq = pilaId.pop()
 
-            operador = pilaOperadores.pop()
-            generaCuadruplo(operador, opDer, opIzq, "12")
+              operador = pilaOperadores.pop()
+              generaCuadruplo(operador, opDer, opIzq, "12")
             
 
 def generaCuadruplo(operador , opIzq, opDer , respuesta):
