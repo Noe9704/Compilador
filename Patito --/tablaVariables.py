@@ -10,7 +10,6 @@ usedGlobal = False
 usedMain = False
 
 
-
 ##inicializar la tabla para funciones locales y las globales respectivamente
 def addFunction(id, dataType):
     insert = estructuraTabla.tabla(dataType, {})
