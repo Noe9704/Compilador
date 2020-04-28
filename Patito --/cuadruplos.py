@@ -17,18 +17,18 @@ opsEXP = {
 def eval(cuadruplo):
     tokens = cuadruplo.split()
     for token in tokens:      
-        if(token not in opsEXP):
-            pilaId.append(token)           
+        if(token in opsEXP):
+            pilaOperadores.append(token)            
         else:
-            pilaOperadores.append(token)
-
-        if len(pilaOperadores) > 0:
-            if(pilaOperadores[-1] == "*" or pilaOperadores[-1] == "/"):
-                opDer = pilaId.pop()
-                opIzq = pilaId.pop()
-            
-                operador = pilaOperadores.pop()
-                generaCuadruplo(operador, opDer, opIzq,"12")
+            pilaId.append(token) 
+            if len(pilaOperadores) > 0:
+              if(pilaOperadores[-1] == "*" or pilaOperadores[-1] == "/"):
+                  opDer = pilaId.pop()
+                  opIzq = pilaId.pop()
+              
+                  operador = pilaOperadores.pop()
+                  generaCuadruplo(operador, opDer, opIzq,"12")
+      
 
             
          
