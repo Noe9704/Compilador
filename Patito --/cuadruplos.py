@@ -1,5 +1,6 @@
 import sys
 
+cont = 0 
 pilaOperadores = []
 pilaTipos = []
 pilaId = []
@@ -17,70 +18,32 @@ opsEXP = {
 
 def eval(cuadruplo):
     tokens = cuadruplo.split()
-    for token in tokens: 
-        
+    for token in tokens:
+        print("Token:")
+        print(token)
         if(token not in opsEXP):
             pilaId.append(token)
         else :
             pilaOperadores.append(token)
-        print(pilaOperadores)    
-        
-        if len(pilaOperadores) > 1:
-            if(pilaOperadores[len(pilaOperadores)- 1] == "+" or pilaOperadores[len(pilaOperadores)-1] == "-"):
-                opDer = pilaId.pop()
-                opIzq = pilaId.pop()
-                operador = pilaOperadores.pop()
-            else :
-                print("ERROR DE SUMA")
-                sys.exit()
-            if(pilaOperadores[-1] == "*" or pilaOperadores[-1] == "/"):
-                opDer = pilaId.pop()
-                opIzq = pilaId.pop()
-                operador = pilaOperadores.pop()
-            else :
-                print("ERROR DE MULTIPLICACION")
-                sys.exit()
-            generaCuadruplo(operador,opDer,opIzq,"12")
+            continue
+          
+        if len(pilaOperadores) > 0:
+          if(pilaOperadores[-1] == "*" or pilaOperadores[-1] == "/"):
+              opIzq = pilaId.pop()
+              opDer = pilaId.pop()
             
-        
-       
-
-
-
-
-
-        '''     
-        if(token in opsEXP):
-            pilaOperadores.append(token)            
-        else:
-            pilaId.append(token) 
-            if len(pilaOperadores) > 0:
-              if(pilaOperadores[-1] == "*" or pilaOperadores[-1] == "/"):
-                  opDer = pilaId.pop()
-                  opIzq = pilaId.pop()
-              
-                  operador = pilaOperadores.pop()
-                  generaCuadruplo(operador, opDer, opIzq,"12")
-                  '''
+              operador = pilaOperadores.pop()
+              generaCuadruplo(operador, opDer, opIzq,"t" + str(cont))
+                  
       
-
-            
-         
-            
-
-
-            
+ 
 def generaCuadruplo(operador , opDer, opIzq , respuesta):
+    global cont
+    cont = cont + 1
     print(operador,opDer,opIzq,respuesta)
-    ##pilaId.append(respuesta)
+    pilaId.append(respuesta)
 
-eval('4 + 5 * 6')
+eval('A + B * C / D - E')
     
     ##print(pilaOperadores)
     ##print(pilaId)
-    
-
-
-
-
-
