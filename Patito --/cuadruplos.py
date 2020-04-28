@@ -1,3 +1,4 @@
+import sys
 
 pilaOperadores = []
 pilaTipos = []
@@ -16,7 +17,39 @@ opsEXP = {
 
 def eval(cuadruplo):
     tokens = cuadruplo.split()
-    for token in tokens:      
+    for token in tokens: 
+        
+        if(token not in opsEXP):
+            pilaId.append(token)
+        else :
+            pilaOperadores.append(token)
+        print(pilaOperadores)    
+        
+        if len(pilaOperadores) > 1:
+            if(pilaOperadores[len(pilaOperadores)- 1] == "+" or pilaOperadores[len(pilaOperadores)-1] == "-"):
+                opDer = pilaId.pop()
+                opIzq = pilaId.pop()
+                operador = pilaOperadores.pop()
+            else :
+                print("ERROR DE SUMA")
+                sys.exit()
+            if(pilaOperadores[-1] == "*" or pilaOperadores[-1] == "/"):
+                opDer = pilaId.pop()
+                opIzq = pilaId.pop()
+                operador = pilaOperadores.pop()
+            else :
+                print("ERROR DE MULTIPLICACION")
+                sys.exit()
+            generaCuadruplo(operador,opDer,opIzq,"12")
+            
+        
+       
+
+
+
+
+
+        '''     
         if(token in opsEXP):
             pilaOperadores.append(token)            
         else:
@@ -28,6 +61,7 @@ def eval(cuadruplo):
               
                   operador = pilaOperadores.pop()
                   generaCuadruplo(operador, opDer, opIzq,"12")
+                  '''
       
 
             
