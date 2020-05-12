@@ -11,6 +11,7 @@ symbols = {
 current_tipo = ''
 current_func = 'global'
 current_variable =''
+current_param = ''
 
 '''symbols[current_func]['vars'][p[-1]] = {
     'tipo': current_tipo
@@ -23,7 +24,7 @@ current_variable =''
         'vars2': {
             'type': 'int'
         }
-    },
+    }
     'main': {
         'tipo': 'void',
         'param': {
@@ -152,7 +153,7 @@ lex.lex()
 ##gramatic rules
 def p_program(p):
     '''
-    program : PROGRAM ID r_registrar_programa COLON auxVar auxFuncion MAIN bloque
+    program : PROGRAM ID r_registrar_programa COLON auxVar auxFuncion MAIN r_registrar_main L_PARENT R_PARENT auxVar bloque
     '''
     print(symbols)
 
@@ -170,8 +171,8 @@ def p_auxVar(p):
 
 def p_var(p):
     '''
-    var : tipo COLON lista_ids auxLista_idsVar SEMICOLON
-        | tipo COLON lista_ids auxLista_idsVar SEMICOLON var
+    var : tipo COLON lista_ids_asignacion auxLista_idsVar_asignacion SEMICOLON
+        | tipo COLON lista_ids_asignacion auxLista_idsVar_asignacion SEMICOLON var
     '''
 
 def p_r_registrar_variable(p):
@@ -180,7 +181,6 @@ def p_r_registrar_variable(p):
     '''
     global symbols, current_variable
     current_variable = p[-1]
-    print(current_variable)
     symbols[current_func][current_variable] = {'type':current_tipo}
     
 
@@ -191,16 +191,21 @@ def p_tipo(p):
         | CHAR r_registrar_tipo
     ''' 
 
-def p_auxLista_idsVar(p):
+def p_lista_ids(p):
     '''
-    auxLista_idsVar : COMA lista_ids auxLista_idsVar
+    lista_ids : ID casilla casilla 
+    '''
+
+def p_auxLista_idsVar_asignacion(p):
+    '''
+    auxLista_idsVar_asignacion : COMA lista_ids_asignacion auxLista_idsVar_asignacion
             | empty  
     ''' 
 
-def p_lista_ids(p):
+def p_lista_ids_asignacion(p):
     '''
-    lista_ids : ID r_registrar_variable casilla casilla 
-    '''
+    lista_ids_asignacion : ID r_registrar_variable casilla casilla 
+   '''
 
 def p_casilla(p):
     '''
@@ -238,6 +243,16 @@ def p_r_registrar_func_name(p):
         'params': {}
     }
 
+def p_r_registrar_main(p):
+    '''
+    r_registrar_main : 
+    '''
+    global symbols, current_func
+    current_func = p[-1]
+    symbols[current_func]= {
+        'params': {}
+    }
+
 def p_r_registrar_tipo(p):
     '''r_registrar_tipo : '''
     global current_tipo
@@ -252,10 +267,19 @@ def p_tipoFuncion(p):
 
 def p_auxParametro(p):
     '''
-    auxParametro : tipo ID
-                | tipo ID COMA auxParametro
+    auxParametro : tipo ID r_registrar_parametro
+                | tipo ID r_registrar_parametro COMA auxParametro
                 | empty
     '''
+
+def p_r_registrar_parametro(p):
+    '''
+    r_registrar_parametro :
+    '''
+    global symbols, current_param
+    current_param = p[-1]
+    symbols[current_func]['params'][current_param] = {'type':current_tipo}
+
 
 def p_bloque(p):
     '''
