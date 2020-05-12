@@ -16,7 +16,7 @@ var int : i;
 }
 
 funcion void inicia(int y): 
-var int : x;
+
 {
     x = 0;
     while (x < 11) do
@@ -26,7 +26,10 @@ var int : x;
     }
 }
 
-main
+main()
+var int : x;
+int : arr[10], otroArr[10];
+float : ejemplo;
 {
     read(p); j = p*2;
     inicia(p*j-5);
