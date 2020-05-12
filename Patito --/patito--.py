@@ -181,7 +181,13 @@ def p_r_registrar_variable(p):
     '''
     global symbols, current_variable
     current_variable = p[-1]
-    symbols[current_func][current_variable] = {'type':current_tipo}
+    if symbols[current_func].get(current_variable) is None:
+        symbols[current_func][current_variable] = {'type':current_tipo}
+    else: 
+        print("Ño la variable " + current_variable + " Se repite OWO!!")
+        sys.exit()
+
+    
     
 
 def p_tipo(p):
@@ -231,17 +237,20 @@ def p_funcion(p):
     funcion : FUNCION tipoFuncion ID r_registrar_func_name L_PARENT auxParametro R_PARENT COLON auxVar bloque
             | empty
     '''
-
 def p_r_registrar_func_name(p):
     '''
     r_registrar_func_name : 
     '''
     global symbols, current_func
     current_func = p[-1]
-    symbols[current_func]= {
-        'type': current_tipo,
-        'params': {}
-    }
+    if symbols.get(current_func) is None:
+        symbols[current_func]= {
+            'type': current_tipo,
+            'params': {}
+        }
+    else :
+        print("nel prro, funcion repetida " + current_func)
+        sys.exit()
 
 def p_r_registrar_main(p):
     '''
@@ -278,7 +287,8 @@ def p_r_registrar_parametro(p):
     '''
     global symbols, current_param
     current_param = p[-1]
-    symbols[current_func]['params'][current_param] = {'type':current_tipo}
+    symbols[current_func]['params'][current_param] = {'type':current_tipo}    
+
 
 
 def p_bloque(p):
