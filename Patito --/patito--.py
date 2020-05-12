@@ -1,7 +1,45 @@
+# Grámatica
+
 import ply.lex as lex
 import ply.yacc as yacc
 import sys
 
+symbols = {
+    'name': '',
+    'global': {}
+}
+current_tipo = ''
+current_func = 'global'
+current_variable =''
+
+'''symbols[current_func]['vars'][p[-1]] = {
+    'tipo': current_tipo
+}'''
+'''symbols = {
+    'global': {
+        'vars1': {
+            'type': 'string'
+        },
+        'vars2': {
+            'type': 'int'
+        }
+    },
+    'main': {
+        'tipo': 'void',
+        'param': {
+            'aux2': {
+                'tipo': 'int',
+                'address': 1000
+            }
+        },
+        'vars': {
+            'aux': {
+                'tipo': 'int',
+                'address': 1000
+            }
+        }
+    }
+}'''
 
 success = True
 
@@ -114,8 +152,15 @@ lex.lex()
 ##gramatic rules
 def p_program(p):
     '''
-    program : PROGRAM ID COLON auxVar auxFuncion MAIN bloque
+    program : PROGRAM ID r_registrar_programa COLON auxVar auxFuncion MAIN bloque
     '''
+    print(symbols)
+
+def p_r_registrar_programa(p):
+    '''
+    r_registrar_programa :
+    '''
+    symbols['name'] = p[-1]
 
 def p_auxVar(p):
     '''
@@ -129,11 +174,21 @@ def p_var(p):
         | tipo COLON lista_ids auxLista_idsVar SEMICOLON var
     '''
 
+def p_r_registrar_variable(p):
+    '''
+    r_registrar_variable :
+    '''
+    global symbols, current_variable
+    current_variable = p[-1]
+    print(current_variable)
+    symbols[current_func][current_variable] = {'type':current_tipo}
+    
+
 def p_tipo(p):
     '''
-    tipo : INT
-        | FLOAT
-        | CHAR
+    tipo : INT r_registrar_tipo
+        | FLOAT r_registrar_tipo
+        | CHAR r_registrar_tipo
     ''' 
 
 def p_auxLista_idsVar(p):
@@ -144,7 +199,7 @@ def p_auxLista_idsVar(p):
 
 def p_lista_ids(p):
     '''
-    lista_ids : ID casilla casilla 
+    lista_ids : ID r_registrar_variable casilla casilla 
     '''
 
 def p_casilla(p):
@@ -168,14 +223,31 @@ def p_auxFuncion(p):
 
 def p_funcion(p):
     '''
-    funcion : FUNCION tipoFuncion ID L_PARENT auxParametro R_PARENT COLON auxVar bloque
+    funcion : FUNCION tipoFuncion ID r_registrar_func_name L_PARENT auxParametro R_PARENT COLON auxVar bloque
             | empty
     '''
+
+def p_r_registrar_func_name(p):
+    '''
+    r_registrar_func_name : 
+    '''
+    global symbols, current_func
+    current_func = p[-1]
+    symbols[current_func]= {
+        'type': current_tipo,
+        'params': {}
+    }
+
+def p_r_registrar_tipo(p):
+    '''r_registrar_tipo : '''
+    global current_tipo
+    current_tipo = p[-1]
+    
 
 def p_tipoFuncion(p):
     '''
     tipoFuncion : tipo
-                | VOID
+                | VOID r_registrar_tipo
     '''
 
 def p_auxParametro(p):

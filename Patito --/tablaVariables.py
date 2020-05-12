@@ -3,6 +3,16 @@ import sys
 
 symbols = {}
 
+symbols = {
+    'main': {
+        'param': {
+
+        }
+        'vars': {
+
+        }
+    }
+}
 
 ##variables utiles
 usedLocal = False
