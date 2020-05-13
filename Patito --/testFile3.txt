@@ -1,0 +1,60 @@
+program patito:
+var int : i,j,p; 
+int : Arreglo[10], OtroArreglo[10];
+float : valor;
+int : Matriz[3][8], OtraMatrix[3][3];
+
+funcion int fact(int j):
+var int : i;
+{
+    i = j + (p - j * 2 + j);
+    if (j == 1) so {
+        return(j);
+    } else {
+        return(j * fact(j-1) );
+    }
+}
+
+funcion void inicia(int y): 
+
+{
+    x = 0;
+    while (x < 11) do
+    {
+        Arreglo[x] = y * x;
+        x = x + 1;
+    }
+}
+
+main()
+var int : x;
+int : arr[10], otroArr[10];
+float : ejemplo;
+{
+    read(p); j = p*2;
+    inicia(p*j-5);
+    from i = 0 to 9 do {
+        Arreglo[i] = Arreglo[i] * fact(Arreglo[i]-p);
+    }
+    OtroArreglo = Arreglo;
+    from j = 0 to 2 do {
+        from k = 0 to 7 do  {
+            Matriz[j][k] = OtroArreglo[j + k - fact(p) + p * k ] * p + j;
+        }
+    }
+
+    from j = 0 to 2 do {
+        from k = 0 to 2 do {
+            OtraMatrix[j][k] = k + j;
+        }
+    }
+
+    valor = OtraMatrix$;
+
+    write("el determinante es:", valor);
+ 
+    while (i>=0) do {
+        write("resultado", Arreglo[i], fact(i+2)*valor);
+        i = i-1;
+    }
+}
