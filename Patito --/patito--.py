@@ -443,21 +443,53 @@ def p_r_check_plus(p):
             Pila_Types.append(result_Type)
         else:
             pass
+    if Pila_Oper[len(Pila_Oper)-1] == '*' or Pila_Oper[len(Pila_Oper)-1] == '/':
+        opDer = Pila_Names.pop()
+        typeDer = Pila_Types.pop() 
+        opIzq = Pila_Names.pop()
+        typeIzq = Pila_Types.pop()
+        operador = Pila_Oper.pop()
+        result_Type = cuboSemantico.typeOperator[typeIzq][typeDer][operador]
+        if result_Type is not None :
+            termporalResultado = get_temp_dir(result_Type)
+            cuad = [operador, opIzq,opDer,termporalResultado]
+            quadruples.append(cuad)
+            Pila_Oper.append(termporalResultado)
+            Pila_Types.append(result_Type)
+        else:
+            pass
 
     
     
 
 def get_temp_dir(current_type):
     global temp_dir_count
+    global next_float
+    global next_int
+    global next_char
+    global next_bool
     switcher = {
     "int": 0,
     "float": 1,
     "char": 2,
-    "string": 3
+    "bool": 3
     }
     e = None
     result = switcher.get(current_type, -1)
-    return result
+    resultadoOperacion = 0
+    if result == 0:
+        next_int = next_int + 1
+        resultadoOperacion = next_int
+    if result == 1:
+        next_float = next_float + 1
+        resultadoOperacion = next_float
+    if result == 2:
+        next_char = next_char + 1
+        resultadoOperacion = next_char
+    if result == 3:
+        next_bool = next_bool + 1
+        resultadoOperacion = next_bool
+    return resultadoOperacion
 
 
 
