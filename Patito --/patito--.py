@@ -31,7 +31,8 @@ ADDRESS_SPACE = 1000
 # direcciones locales y globales
 GLOBAL_BASE = 0
 LOCAL_BASE = 10000
-MAX_BASE = 20000
+CTE_BASE = 20000
+MAX_BASE = 30000
 
 #contador inicial de apuntador a direccion actual
 next_int = INT_BASE
@@ -63,7 +64,7 @@ def getAddress(tipo):
         if aux >= LOCAL_BASE and scope_address == GLOBAL_BASE: ##checar que no se llenen las dir globales
             print("Error, espacio de memoria insuficiente para variables globales")
             sys.exit()        
-        if aux >= MAX_BASE and scope_address == LOCAL_BASE: ##checar que no se llenen las dir locales
+        if aux >= CTE_BASE and scope_address == LOCAL_BASE: ##checar que no se llenen las dir locales
             print("Error, espacio de memoria insuficiente para variables locales")
             sys.exit()       
         next_int += 1
@@ -74,11 +75,14 @@ def getAddress(tipo):
             # ERROR: Too many variables 
             print("Error, espacio de memoria insuficiente para flotantes")
             sys.exit()
+        print('Aqui esta aux')
+        
         aux = scope_address + next_float
+        print(aux)
         if aux >= LOCAL_BASE and scope_address == GLOBAL_BASE:
             print("Error, espacio de memoria insuficiente para variables globales")
             sys.exit()        
-        if aux >= MAX_BASE and scope_address == LOCAL_BASE:
+        if aux >= CTE_BASE and scope_address == LOCAL_BASE:
             print("Error, espacio de memoria insuficiente para variables locales")
             sys.exit()      
         next_float += 1
@@ -93,7 +97,7 @@ def getAddress(tipo):
         if aux >= LOCAL_BASE and scope_address == GLOBAL_BASE:
             print("Error, espacio de memoria insuficiente para variables globales")
             sys.exit()        
-        if aux >= MAX_BASE and scope_address == LOCAL_BASE:
+        if aux >= CTE_BASE and scope_address == LOCAL_BASE:
             print("Error, espacio de memoria insuficiente para variables locales")
             sys.exit()      
         next_char += 1
@@ -108,7 +112,7 @@ def getAddress(tipo):
         if aux >= LOCAL_BASE and scope_address == GLOBAL_BASE:
             print("Error, espacio de memoria insuficiente para variables globales")
             sys.exit()        
-        if aux >= MAX_BASE and scope_address == LOCAL_BASE:
+        if aux >= CTE_BASE and scope_address == LOCAL_BASE:
             print("Error, espacio de memoria insuficiente para variables locales")
             sys.exit()      
         next_bool += 1
@@ -400,7 +404,7 @@ def p_asignacion(p):
 
 def p_exp(p):
     '''
-    exp : t auxExp r_check_plus
+    exp : t auxExp r_check_mult
     '''
 
 def p_auxExp(p):
@@ -420,78 +424,53 @@ def p_r_push_operator(p):
 
 def p_t(p):
     '''
-    t : f auxT
+    t : f auxT r_check_sum
     '''
 
-def p_r_check_plus(p):
+def p_r_check_sum(p):
     '''
-    r_check_plus :
+    r_check_sum :
     '''
-    print(Pila_Oper)
-    if Pila_Oper[len(Pila_Oper)-1] == '+' or Pila_Oper[len(Pila_Oper)-1] == '-':
-        opDer = Pila_Names.pop()
-        typeDer = Pila_Types.pop() 
-        opIzq = Pila_Names.pop()
-        typeIzq = Pila_Types.pop()
-        operador = Pila_Oper.pop()
-        result_Type = cuboSemantico.typeOperator[typeIzq][typeDer][operador]
-        if result_Type is not None :
-            termporalResultado = get_temp_dir(result_Type)
-            cuad = [operador, opIzq,opDer,termporalResultado]
-            quadruples.append(cuad)
-            Pila_Oper.append(termporalResultado)
-            Pila_Types.append(result_Type)
-        else:
-            pass
-    if Pila_Oper[len(Pila_Oper)-1] == '*' or Pila_Oper[len(Pila_Oper)-1] == '/':
-        opDer = Pila_Names.pop()
-        typeDer = Pila_Types.pop() 
-        opIzq = Pila_Names.pop()
-        typeIzq = Pila_Types.pop()
-        operador = Pila_Oper.pop()
-        result_Type = cuboSemantico.typeOperator[typeIzq][typeDer][operador]
-        if result_Type is not None :
-            termporalResultado = get_temp_dir(result_Type)
-            cuad = [operador, opIzq,opDer,termporalResultado]
-            quadruples.append(cuad)
-            Pila_Oper.append(termporalResultado)
-            Pila_Types.append(result_Type)
-        else:
-            pass
-
-    
-    
-
-def get_temp_dir(current_type):
-    global temp_dir_count
-    global next_float
-    global next_int
-    global next_char
-    global next_bool
-    switcher = {
-    "int": 0,
-    "float": 1,
-    "char": 2,
-    "bool": 3
-    }
-    e = None
-    result = switcher.get(current_type, -1)
-    resultadoOperacion = 0
-    if result == 0:
-        next_int = next_int + 1
-        resultadoOperacion = next_int
-    if result == 1:
-        next_float = next_float + 1
-        resultadoOperacion = next_float
-    if result == 2:
-        next_char = next_char + 1
-        resultadoOperacion = next_char
-    if result == 3:
-        next_bool = next_bool + 1
-        resultadoOperacion = next_bool
-    return resultadoOperacion
+    if len(Pila_Oper) > 1 :
+        if Pila_Oper[len(Pila_Oper)-1] == '+' or Pila_Oper[len(Pila_Oper)-1] == '-':
+            opDer = Pila_Names.pop()
+            typeDer = Pila_Types.pop() 
+            opIzq = Pila_Names.pop()
+            typeIzq = Pila_Types.pop()
+            operador = Pila_Oper.pop()
+            result_Type = cuboSemantico.typeOperator[typeIzq][typeDer][operador]
+            if result_Type is not None :
+                termporalResultado = getAddress(result_Type)
+                cuad = [operador, opIzq,opDer,termporalResultado]
+                quadruples.append(cuad)
+                Pila_Names.append(termporalResultado)
+                Pila_Types.append(result_Type)
+            else:
+                print("Error, en el match *, / de tipos")
+                sys.exit() 
 
 
+def p_r_check_mult(p):
+    '''
+    r_check_mult :
+    '''
+    if len(Pila_Oper) > 1 :
+        if Pila_Oper[len(Pila_Oper)-1] == '*' or Pila_Oper[len(Pila_Oper)-1] == '/':
+            opDer = Pila_Names.pop()
+            typeDer = Pila_Types.pop() 
+            opIzq = Pila_Names.pop()
+            typeIzq = Pila_Types.pop()
+            operador = Pila_Oper.pop()
+            result_Type = cuboSemantico.typeOperator[typeIzq][typeDer][operador]
+            if result_Type is not None :
+                termporalResultado = getAddress(result_Type)
+                cuad = [operador, opIzq,opDer,termporalResultado]
+                quadruples.append(cuad)
+                Pila_Names.append(termporalResultado)
+                Pila_Types.append(result_Type)
+            else:
+                print("Error, en el match +, - de tipos")
+                sys.exit() 
 
 def p_auxT(p):
     '''
