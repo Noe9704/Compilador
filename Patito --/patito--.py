@@ -317,7 +317,9 @@ def p_r_pushName(p):
     ##print(current_variable)
     #symbols[current_func]['vars'][current_variable]['address']
     #symbols[current_func]['vars'][current_variable]['address']
-    Pila_Names.append(symbols[current_func]['vars'].get(p[-1])[0])
+    if(symbols[current_func]['vars'].get(p[-1]) is not None):
+        print(symbols[current_func]['vars'].get(p[-1])['address'])
+    #Pila_Names.append(symbols[current_func]['vars'].get(p[-1]))
 
 
 
