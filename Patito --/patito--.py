@@ -122,6 +122,8 @@ Pila_Types = []
 Pila_Oper = [] 
 
 
+
+
 '''symbols[current_func]['vars'][p[-1]] = {
     'tipo': current_tipo,
     'address': get_address()
@@ -283,6 +285,7 @@ def p_program(p):
     print(symbols)
     print(quadruples)
     print(Pila_Names)
+    print(Pila_Oper)
 
 def p_auxVar(p):
     '''
@@ -305,22 +308,19 @@ def p_tipo(p):
 
 def p_lista_ids(p):
     '''
-    lista_ids : ID r_pushName casilla casilla 
+    lista_ids : ID r_push_Name casilla casilla 
     '''
 
-def p_r_pushName(p):
+def p_r_push_Name(p):
     '''
-    r_pushName : 
+    r_push_Name : 
     '''
-    #print(symbols[current_func]['vars'].get(p[-1]))
-    ##print(symbols[current_func]['vars'])
-    ##print(current_variable)
-    #symbols[current_func]['vars'][current_variable]['address']
-    #symbols[current_func]['vars'][current_variable]['address']
     if(symbols[current_func]['vars'].get(p[-1]) is not None):
-        print(symbols[current_func]['vars'].get(p[-1])['address'])
-    #Pila_Names.append(symbols[current_func]['vars'].get(p[-1]))
-
+        Pila_Names.append(symbols[current_func]['vars'].get(p[-1])['address'])
+        Pila_Types.append(symbols[current_func]['vars'].get(p[-1])['type'])
+    elif(symbols['global']['vars'].get(p[-1]) is not None):
+        Pila_Names.append(symbols['global']['vars'].get(p[-1])['address'])
+        Pila_Types.append(symbols['global']['vars'].get(p[-1])['type'])
 
 
 def p_auxLista_idsVar_asignacion(p):
@@ -400,25 +400,71 @@ def p_asignacion(p):
 
 def p_exp(p):
     '''
-    exp : t auxExp
+    exp : t auxExp r_check_plus
     '''
 
 def p_auxExp(p):
     '''
-    auxExp : PLUS exp
-            | MINUS exp
+    auxExp : PLUS r_push_operator exp
+            | MINUS r_push_operator exp
             | empty
     '''
+
+def p_r_push_operator(p):
+    '''
+    r_push_operator : 
+    '''
+    Pila_Oper.append(p[-1])
+
+
 
 def p_t(p):
     '''
     t : f auxT
     '''
 
+def p_r_check_plus(p):
+    '''
+    r_check_plus :
+    '''
+    print(Pila_Oper)
+    if Pila_Oper[len(Pila_Oper)-1] == '+' or Pila_Oper[len(Pila_Oper)-1] == '-':
+        opDer = Pila_Names.pop()
+        typeDer = Pila_Types.pop() 
+        opIzq = Pila_Names.pop()
+        typeIzq = Pila_Types.pop()
+        operador = Pila_Oper.pop()
+        result_Type = cuboSemantico.typeOperator[typeIzq][typeDer][operador]
+        if result_Type is not None :
+            termporalResultado = get_temp_dir(result_Type)
+            cuad = [operador, opIzq,opDer,termporalResultado]
+            quadruples.append(cuad)
+            Pila_Oper.append(termporalResultado)
+            Pila_Types.append(result_Type)
+        else:
+            pass
+
+    
+    
+
+def get_temp_dir(current_type):
+    global temp_dir_count
+    switcher = {
+    "int": 0,
+    "float": 1,
+    "char": 2,
+    "string": 3
+    }
+    e = None
+    result = switcher.get(current_type, -1)
+    return result
+
+
+
 def p_auxT(p):
     '''
-    auxT : MULT t
-        | DIV t
+    auxT : MULT r_push_operator t
+        | DIV r_push_operator t
         | MONEY t
         | EXCLAMATION t
         | QUESTION t
@@ -473,8 +519,7 @@ def p_z(p):
 
 def p_var_cte(p):
     '''
-    var_cte : ID
-            | CTE_I
+    var_cte : CTE_I
             | CTE_F
     '''
 
