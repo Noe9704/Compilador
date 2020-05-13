@@ -157,12 +157,6 @@ def p_program(p):
     '''
     print(symbols)
 
-def p_r_registrar_programa(p):
-    '''
-    r_registrar_programa :
-    '''
-    symbols['name'] = p[-1]
-
 def p_auxVar(p):
     '''
     auxVar : VAR var auxVar 
@@ -174,21 +168,6 @@ def p_var(p):
     var : tipo COLON lista_ids_asignacion auxLista_idsVar_asignacion SEMICOLON
         | tipo COLON lista_ids_asignacion auxLista_idsVar_asignacion SEMICOLON var
     '''
-
-def p_r_registrar_variable(p):
-    '''
-    r_registrar_variable :
-    '''
-    global symbols, current_variable
-    current_variable = p[-1]
-    if symbols[current_func].get(current_variable) is None:
-        symbols[current_func][current_variable] = {'type':current_tipo}
-    else: 
-        print("Ño la variable " + current_variable + " Se repite OWO!!")
-        sys.exit()
-
-    
-    
 
 def p_tipo(p):
     '''
@@ -237,36 +216,6 @@ def p_funcion(p):
     funcion : FUNCION tipoFuncion ID r_registrar_func_name L_PARENT auxParametro R_PARENT COLON auxVar bloque
             | empty
     '''
-def p_r_registrar_func_name(p):
-    '''
-    r_registrar_func_name : 
-    '''
-    global symbols, current_func
-    current_func = p[-1]
-    if symbols.get(current_func) is None:
-        symbols[current_func]= {
-            'type': current_tipo,
-            'params': {}
-        }
-    else :
-        print("nel prro, funcion repetida " + current_func)
-        sys.exit()
-
-def p_r_registrar_main(p):
-    '''
-    r_registrar_main : 
-    '''
-    global symbols, current_func
-    current_func = p[-1]
-    symbols[current_func]= {
-        'params': {}
-    }
-
-def p_r_registrar_tipo(p):
-    '''r_registrar_tipo : '''
-    global current_tipo
-    current_tipo = p[-1]
-    
 
 def p_tipoFuncion(p):
     '''
@@ -280,16 +229,6 @@ def p_auxParametro(p):
                 | tipo ID r_registrar_parametro COMA auxParametro
                 | empty
     '''
-
-def p_r_registrar_parametro(p):
-    '''
-    r_registrar_parametro :
-    '''
-    global symbols, current_param
-    current_param = p[-1]
-    symbols[current_func]['params'][current_param] = {'type':current_tipo}    
-
-
 
 def p_bloque(p):
     '''
@@ -486,7 +425,74 @@ def p_error(p):
     success = False
     print("Error de sintaxis en '%s'" % p)
 
+
+## rules
+def p_r_registrar_programa(p):
+    '''
+    r_registrar_programa :
+    '''
+    symbols['name'] = p[-1]
+
+def p_r_registrar_variable(p):
+    '''
+    r_registrar_variable :
+    '''
+    global symbols, current_variable
+    current_variable = p[-1]
+    if symbols[current_func].get(current_variable) is None:
+        symbols[current_func][current_variable] = {
+            'type':current_tipo,
+            'address':''
+        }
+    else: 
+        print("Ño la variable " + current_variable + " Se repite OWO!!")
+        sys.exit()
+
+def p_r_registrar_func_name(p):
+    '''
+    r_registrar_func_name : 
+    '''
+    global symbols, current_func
+    current_func = p[-1]
+    if symbols.get(current_func) is None:
+        symbols[current_func]= {
+            'type': current_tipo,
+            'params': {}
+        }
+    else :
+        print("nel prro, funcion repetida " + current_func)
+        sys.exit()
+
+def p_r_registrar_main(p):
+    '''
+    r_registrar_main : 
+    '''
+    global symbols, current_func
+    current_func = p[-1]
+    symbols[current_func]= {
+        'params': {}
+    }
+
+def p_r_registrar_tipo(p):
+    '''r_registrar_tipo : '''
+    global current_tipo
+    current_tipo = p[-1]
+
+def p_r_registrar_parametro(p):
+    '''
+    r_registrar_parametro :
+    '''
+    global symbols, current_param
+    current_param = p[-1]
+    symbols[current_func]['params'][current_param] = {
+        'type':current_tipo,
+        'address': ''
+    }    
+
     
+
+
+
 parser = yacc.yacc()
 
 ##caso de prueba en el que falla
