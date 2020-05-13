@@ -3,18 +3,86 @@
 import ply.lex as lex
 import ply.yacc as yacc
 import sys
+import cuboSemantico
 
 symbols = {
     'name': '',
-    'global': {}
+    'global': {
+        'vars': {}
+    }
 }
 current_tipo = ''
 current_func = 'global'
 current_variable =''
 current_param = ''
 
+# Type bases
+INT_BASE = 0
+FLOAT_BASE = 1000
+CHAR_BASE = 2000
+BOOL_BASE = 3000
+
+ADDRESS_SPACE = 1000
+
+# Scope bases
+GLOBAL_BASE = 0
+LOCAL_BASE = 10000
+
+next_int = INT_BASE
+next_float = FLOAT_BASE
+next_char = CHAR_BASE
+bool_base = BOOL_BASE
+
+def newFunction():
+    global next_int, next_float, next_char, next_bool
+    next_int = INT_BASE
+    next_float = FLOAT_BASE
+    next_char = CHAR_BASE
+    bool_base = BOOL_BASE
+
+def getAddress(tipo):
+    if current_func == 'global':
+        scope_address = GLOBAL_BASE
+    else:
+        scope_address = LOCAL_BASE
+    if tipo == 'int':
+        global next_int
+        if next_int >= FLOAT_BASE:
+            # ERROR: Too many variables 
+            pass
+        aux = scope_address + next_int
+        next_int += 1
+        return aux
+    elif tipo == 'float':
+        global next_float
+        if next_float >= CHAR_BASE:
+            # ERROR: Too many variables 
+            pass
+        aux = scope_address + next_float
+        next_float += 1
+        return aux
+    elif tipo == 'char':
+        global next_char
+        if next_char >= BOOL_BASE:
+            # ERROR: Too many variables 
+            pass
+        aux = scope_address + next_char
+        next_char += 1
+        return aux
+    elif tipo == 'bool':
+        global next_bool
+        if next_int >= BOOL_BASE+ADDRESS_SPACE:
+            # ERROR: Too many variables 
+            pass
+        aux = scope_address + next_bool
+        next_bool += 1
+        return aux
+
+quadruples = []
+
 '''symbols[current_func]['vars'][p[-1]] = {
-    'tipo': current_tipo
+    'tipo': current_tipo,
+    'address': get_address()
 }'''
 '''symbols = {
     'global': {
@@ -36,7 +104,22 @@ current_param = ''
         'vars': {
             'aux': {
                 'tipo': 'int',
+                'address': 1001
+            }
+        }
+    }
+    'doSomething: {
+        'tipo': 'void',
+        'param': {
+            'aux2': {
+                'tipo': 'int',
                 'address': 1000
+            }
+        },
+        'vars': {
+            'aux': {
+                'tipo': 'int',
+                'address': 1001
             }
         }
     }
@@ -156,6 +239,7 @@ def p_program(p):
     program : PROGRAM ID r_registrar_programa COLON auxVar auxFuncion MAIN r_registrar_main L_PARENT R_PARENT auxVar bloque
     '''
     print(symbols)
+    print(quadruples)
 
 def p_auxVar(p):
     '''
@@ -440,9 +524,9 @@ def p_r_registrar_variable(p):
     global symbols, current_variable
     current_variable = p[-1]
     if symbols[current_func].get(current_variable) is None:
-        symbols[current_func][current_variable] = {
+        symbols[current_func]['vars'][current_variable] = {
             'type':current_tipo,
-            'address':''
+            'address':getAddress(current_tipo)
         }
     else: 
         print("Ño la variable " + current_variable + " Se repite OWO!!")
@@ -454,10 +538,12 @@ def p_r_registrar_func_name(p):
     '''
     global symbols, current_func
     current_func = p[-1]
+    newFunction()
     if symbols.get(current_func) is None:
         symbols[current_func]= {
             'type': current_tipo,
-            'params': {}
+            'params': {},
+            'vars': {}
         }
     else :
         print("nel prro, funcion repetida " + current_func)
@@ -470,7 +556,8 @@ def p_r_registrar_main(p):
     global symbols, current_func
     current_func = p[-1]
     symbols[current_func]= {
-        'params': {}
+        'params': {},
+        'vars': {}
     }
 
 def p_r_registrar_tipo(p):
@@ -486,7 +573,7 @@ def p_r_registrar_parametro(p):
     current_param = p[-1]
     symbols[current_func]['params'][current_param] = {
         'type':current_tipo,
-        'address': ''
+        'address': getAddress(current_tipo)
     }    
 
     

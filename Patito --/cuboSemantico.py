@@ -1,3 +1,8 @@
+'''
+tipo = typeOperator['int']['int']['+']
+if tipo is None:
+    ERROR
+'''
 
 typeOperator = {
     "int" : {
@@ -9,8 +14,8 @@ typeOperator = {
             ">" : "bool",
             "<" : "bool",
             "==" : "bool",
-            "and" : "error",
-            "or" : "error"            
+            "and" : None,
+            "or" : None            
         },
         "float" : {
             "+" : "float",
@@ -20,30 +25,30 @@ typeOperator = {
             ">" : "bool",
             "<" : "bool",
             "==" : "bool",
-            "and" : "error",
-            "or" : "error"            
+            "and" : None,
+            "or" : None            
         },
         "char" : {
-            "+" : "error",
-            "-" : "error",
-            "*" : "error",
-            "/" : "error",
-            ">" : "error",
-            "<" : "error",
-            "==" : "error",
-            "and" : "error",
-            "or" : "error"
+            "+" : None,
+            "-" : None,
+            "*" : None,
+            "/" : None,
+            ">" : None,
+            "<" : None,
+            "==" : None,
+            "and" : None,
+            "or" : None
         },
         "bool" : {
-            "+" : "error",
-            "-" : "error",
-            "*" : "error",
-            "/" : "error",
-            ">" : "error",
-            "<" : "error",
-            "==" : "error",
-            "and" : "error",
-            "or" : "error"
+            "+" : None,
+            "-" : None,
+            "*" : None,
+            "/" : None,
+            ">" : None,
+            "<" : None,
+            "==" : None,
+            "and" : None,
+            "or" : None
         }
     },
     "float" : {
@@ -55,8 +60,8 @@ typeOperator = {
             ">" : "bool",
             "<" : "bool",
             "==" : "bool",
-            "and" : "error",
-            "or" : "error"            
+            "and" : None,
+            "or" : None            
         },
         "float" : {
             "+" : "float",
@@ -66,119 +71,119 @@ typeOperator = {
             ">" : "bool",
             "<" : "bool",
             "==" : "bool",
-            "and" : "error",
-            "or" : "error"            
+            "and" : None,
+            "or" : None            
         },
         "char" : {
-            "+" : "error",
-            "-" : "error",
-            "*" : "error",
-            "/" : "error",
-            ">" : "error",
-            "<" : "error",
-            "==" : "error",
-            "and" : "error",
-            "or" : "error"
+            "+" : None,
+            "-" : None,
+            "*" : None,
+            "/" : None,
+            ">" : None,
+            "<" : None,
+            "==" : None,
+            "and" : None,
+            "or" : None
         },
         "bool" : {
-            "+" : "error",
-            "-" : "error",
-            "*" : "error",
-            "/" : "error",
-            ">" : "error",
-            "<" : "error",
-            "==" : "error",
-            "and" : "error",
-            "or" : "error"
+            "+" : None,
+            "-" : None,
+            "*" : None,
+            "/" : None,
+            ">" : None,
+            "<" : None,
+            "==" : None,
+            "and" : None,
+            "or" : None
         }
     },
     "char" : {
         "int" : {
-            "+" : "error",
-            "-" : "error",
-            "*" : "error",
-            "/" : "error",
-            ">" : "error",
-            "<" : "error",
-            "==" : "error",
-            "and" : "error",
-            "or" : "error"            
+            "+" : None,
+            "-" : None,
+            "*" : None,
+            "/" : None,
+            ">" : None,
+            "<" : None,
+            "==" : None,
+            "and" : None,
+            "or" : None            
         },
         "float" : {
-            "+" : "error",
-            "-" : "error",
-            "*" : "error",
-            "/" : "error",
-            ">" : "error",
-            "<" : "error",
-            "==" : "error",
-            "and" : "error",
-            "or" : "error"            
+            "+" : None,
+            "-" : None,
+            "*" : None,
+            "/" : None,
+            ">" : None,
+            "<" : None,
+            "==" : None,
+            "and" : None,
+            "or" : None            
         },
         "char" : {
             "+" : "char",
-            "-" : "error",
-            "*" : "error",
-            "/" : "error",
-            ">" : "error",
-            "<" : "error",
+            "-" : None,
+            "*" : None,
+            "/" : None,
+            ">" : None,
+            "<" : None,
             "==" : "bool",
-            "and" : "error",
-            "or" : "error"
+            "and" : None,
+            "or" : None
         },
         "bool" : {
-            "+" : "error",
-            "-" : "error",
-            "*" : "error",
-            "/" : "error",
-            ">" : "error",
-            "<" : "error",
-            "==" : "error",
-            "and" : "error",
-            "or" : "error"
+            "+" : None,
+            "-" : None,
+            "*" : None,
+            "/" : None,
+            ">" : None,
+            "<" : None,
+            "==" : None,
+            "and" : None,
+            "or" : None
         }
     },
     "bool" : {
         "int" : {
-            "+" : "error",
-            "-" : "error",
-            "*" : "error",
-            "/" : "error",
-            ">" : "error",
-            "<" : "error",
-            "==" : "error",
-            "and" : "error",
-            "or" : "error"            
+            "+" : None,
+            "-" : None,
+            "*" : None,
+            "/" : None,
+            ">" : None,
+            "<" : None,
+            "==" : None,
+            "and" : None,
+            "or" : None            
         },
         "float" : {
-            "+" : "error",
-            "-" : "error",
-            "*" : "error",
-            "/" : "error",
-            ">" : "error",
-            "<" : "error",
-            "==" : "error",
-            "and" : "error",
-            "or" : "error"            
+            "+" : None,
+            "-" : None,
+            "*" : None,
+            "/" : None,
+            ">" : None,
+            "<" : None,
+            "==" : None,
+            "and" : None,
+            "or" : None            
         },
         "char" : {
-            "+" : "error",
-            "-" : "error",
-            "*" : "error",
-            "/" : "error",
-            ">" : "error",
-            "<" : "error",
-            "==" : "error",
-            "and" : "error",
-            "or" : "error"
+            "+" : None,
+            "-" : None,
+            "*" : None,
+            "/" : None,
+            ">" : None,
+            "<" : None,
+            "==" : None,
+            "and" : None,
+            "or" : None
         },
         "bool" : {
-            "+" : "error",
-            "-" : "error",
-            "*" : "error",
-            "/" : "error",
-            ">" : "error",
-            "<" : "error",
+            "+" : None,
+            "-" : None,
+            "*" : None,
+            "/" : None,
+            ">" : None,
+            "<" : None,
             "==" : "bool",
             "and" : "bool",
             "or" : "bool"
