@@ -404,7 +404,7 @@ def p_asignacion(p):
 
 def p_exp(p):
     '''
-    exp : t auxExp r_check_mult
+    exp : t auxExp r_check_sum
     '''
 
 def p_auxExp(p):
@@ -424,14 +424,14 @@ def p_r_push_operator(p):
 
 def p_t(p):
     '''
-    t : f auxT r_check_sum
+    t : f auxT r_check_mult
     '''
 
 def p_r_check_sum(p):
     '''
     r_check_sum :
     '''
-    if len(Pila_Oper) > 1 :
+    if len(Pila_Oper) > 0 :
         if Pila_Oper[len(Pila_Oper)-1] == '+' or Pila_Oper[len(Pila_Oper)-1] == '-':
             opDer = Pila_Names.pop()
             typeDer = Pila_Types.pop() 
@@ -454,7 +454,7 @@ def p_r_check_mult(p):
     '''
     r_check_mult :
     '''
-    if len(Pila_Oper) > 1 :
+    if len(Pila_Oper) > 0 :
         if Pila_Oper[len(Pila_Oper)-1] == '*' or Pila_Oper[len(Pila_Oper)-1] == '/':
             opDer = Pila_Names.pop()
             typeDer = Pila_Types.pop() 
@@ -522,11 +522,24 @@ def p_auxX(p):
 def p_z(p):
     '''
     z : var_cte
-        | L_PARENT exp R_PARENT
+        | r_false_add_bottom L_PARENT exp R_PARENT r_false_quit_bottom
         | lista_ids
         | llamada
         | empty
     '''
+
+def p_r_false_add_bottom(p):
+    '''
+    r_false_add_bottom :
+    '''
+    Pila_Oper.append("B")
+
+def p_r_false_quit_bottom(p):
+    '''
+    r_false_quit_bottom :
+    '''
+    Pila_Oper.pop()
+
 
 def p_var_cte(p):
     '''
