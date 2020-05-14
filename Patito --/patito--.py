@@ -39,6 +39,7 @@ next_int = INT_BASE
 next_float = FLOAT_BASE
 next_char = CHAR_BASE
 bool_base = BOOL_BASE
+next_bool = BOOL_BASE
 
 ##funcion para reiniciar al contador de direcciones
 def newFunction():
@@ -47,6 +48,7 @@ def newFunction():
     next_float = FLOAT_BASE
     next_char = CHAR_BASE
     bool_base = BOOL_BASE
+    next_bool = BOOL_BASE
 
 ##funcion para asignar direcciones de memoria
 def getAddress(tipo):
@@ -104,8 +106,7 @@ def getAddress(tipo):
         return aux
     elif tipo == 'bool':
         global next_bool
-        if next_int >= BOOL_BASE+ADDRESS_SPACE: ### checar que no se pase del limite de las bool
-            # ERROR: Too many variables 
+        if next_bool >= BOOL_BASE + ADDRESS_SPACE: ### checar que no se pase del limite de las bool
             print("Error, espacio de memoria insuficiente para booleanos")
             sys.exit()
         aux = scope_address + next_bool
@@ -201,6 +202,8 @@ tokens = [
     'MINUS',
     'MULT',
     'DIV',
+    'AND',
+    'OR',
     'MONEY',
     'EXCLAMATION',
     'QUESTION'    
@@ -223,8 +226,6 @@ reserverd = {
     'from' : 'FROM',
     'to' : 'TO',
     'do' : 'DO',
-    'and' : 'AND',
-    'or' : 'OR',
     'return' : 'RETURN',
     'read' : 'READ',
     'write' : 'WRITE',
@@ -255,6 +256,8 @@ t_PLUS = r'\+'
 t_MINUS = r'\-'
 t_MULT = r'\*'
 t_DIV = r'\/'
+t_AND = r'\&'
+t_OR = r'\|'
 t_MONEY = r'\$'
 t_EXCLAMATION = r'\¡' 
 t_QUESTION = r'\?'
@@ -286,10 +289,12 @@ def p_program(p):
     '''
     program : PROGRAM ID r_registrar_programa COLON auxVar auxFuncion MAIN r_registrar_main L_PARENT R_PARENT auxVar bloque
     '''
+
     print(symbols)
     print(quadruples)
     print(Pila_Names)
     print(Pila_Oper)
+
 
 def p_auxVar(p):
     '''
@@ -348,7 +353,7 @@ def p_casillaVar(p):
     '''
     casillaVar : CTE_I
                 | ID
-                | exp
+                | exp 
     '''
 
 def p_auxFuncion(p):
@@ -399,8 +404,31 @@ def p_estatuto(p):
 
 def p_asignacion(p):
     '''
-    asignacion : lista_ids EQUAL exp SEMICOLON
+    asignacion : lista_ids EQUAL r_push_operator exp r_check_equal SEMICOLON
     '''
+
+def p_r_check_equal(p):
+    '''
+    r_check_equal :
+    '''
+    if len(Pila_Oper) > 0 :
+        if Pila_Oper[len(Pila_Oper)-1] == '=':
+            opDer = Pila_Names.pop()
+            typeDer = Pila_Types.pop() 
+            opIzq = Pila_Names.pop()
+            typeIzq = Pila_Types.pop()
+            operador = Pila_Oper.pop()
+            result_Type = cuboSemantico.typeOperator[typeIzq][typeDer][operador]
+            if result_Type is not None :
+                termporalResultado = getAddress(result_Type)
+                cuad = [operador, opDer,None,opIzq]
+                quadruples.append(cuad)
+                Pila_Names.append(termporalResultado)
+                Pila_Types.append(result_Type)
+            else:
+                print("Error, en el match de tipos")
+                sys.exit() 
+
 
 def p_exp(p):
     '''
@@ -409,8 +437,8 @@ def p_exp(p):
 
 def p_auxExp(p):
     '''
-    auxExp : PLUS r_push_operator exp
-            | MINUS r_push_operator exp
+    auxExp : PLUS r_push_operator exp 
+            | MINUS r_push_operator exp 
             | empty
     '''
 
@@ -484,49 +512,133 @@ def p_auxT(p):
 
 def p_f(p):
     '''
-    f : m auxF
+    f : m auxF r_check_Comparison
     '''
 
 def p_auxF(p):
     '''
-    auxF : LESSTHAN f
-        | GREATERTHAN f
-        | LESSEQUALTHAN f
-        | GREATEREQUALTHAN f
-        | EQUALX2 f
+    auxF : LESSTHAN r_push_operator f
+        | GREATERTHAN r_push_operator f
+        | LESSEQUALTHAN r_push_operator f
+        | GREATEREQUALTHAN r_push_operator f
+        | EQUALX2 r_push_operator f
         | empty
     '''
 
+def p_r_check_Comparison(p):
+    '''
+    r_check_Comparison : 
+    '''
+    if len(Pila_Oper) > 0 :
+        if Pila_Oper[len(Pila_Oper)-1] == '<' or Pila_Oper[len(Pila_Oper)-1] == '>' or Pila_Oper[len(Pila_Oper)-1] == '<=' or Pila_Oper[len(Pila_Oper)-1] == '>=' or Pila_Oper[len(Pila_Oper)-1] == '==':       
+            opDer = Pila_Names.pop()
+            typeDer = Pila_Types.pop() 
+            opIzq = Pila_Names.pop()
+            typeIzq = Pila_Types.pop()
+            operador = Pila_Oper.pop()
+            result_Type = cuboSemantico.typeOperator[typeIzq][typeDer][operador]
+            if result_Type is not None :
+                if operador == '<' :
+                    resultado = opIzq < opDer
+
+                elif operador == '>' :
+                    resultado = opIzq > opDer
+
+                elif operador == '<=' :
+                    resultado = opIzq <= opDer
+
+                elif operador == '>=' :
+                    resultado = opIzq >= opDer
+
+                elif operador == '==':
+                    resultado = opIzq == opDer
+
+                termporalResultado = getAddress(result_Type)
+                cuad = [operador, opIzq,opDer,termporalResultado]
+                quadruples.append(cuad)
+                Pila_Names.append(termporalResultado)
+                Pila_Types.append(result_Type)
+
+            else:
+                print("Error, en el match de tipos de comparacion")
+                sys.exit() 
+
+
+
 def p_m(p):
     '''
-    m : x auxM
+    m : x auxM r_check_OR
     '''
 
 def p_auxM(p):
     '''
-    auxM : OR m
+    auxM : OR r_push_operator m
         | empty
     '''
 
+def p_r_check_OR(p):
+    '''
+    r_check_OR : 
+    '''
+    if len(Pila_Oper) > 0 :
+        if Pila_Oper[len(Pila_Oper)-1] == '|':
+            opDer = Pila_Names.pop()
+            typeDer = Pila_Types.pop() 
+            opIzq = Pila_Names.pop()
+            typeIzq = Pila_Types.pop()
+            operador = Pila_Oper.pop()
+            result_Type = cuboSemantico.typeOperator[typeIzq][typeDer][operador]
+            if result_Type is not None :
+                termporalResultado = getAddress(result_Type)
+                cuad = [operador, opIzq,opDer,termporalResultado]
+                quadruples.append(cuad)
+                Pila_Names.append(termporalResultado)
+                Pila_Types.append(result_Type)
+            else:
+                print("Error, en el match de tipos")
+                sys.exit() 
+
 def p_x(p):
     '''
-    x : z auxX
+    x : z auxX 
     '''
 
 def p_auxX(p):
     '''
-    auxX : AND z
+    auxX : AND r_push_operator z
         | empty
     '''
 
 def p_z(p):
     '''
-    z : var_cte
+    z : var_cte 
         | r_false_add_bottom L_PARENT exp R_PARENT r_false_quit_bottom
         | lista_ids
         | llamada
         | empty
     '''
+
+def p_r_check_And(p):
+    '''
+    r_check_And : 
+    '''
+    if len(Pila_Oper) > 0 :
+        if Pila_Oper[len(Pila_Oper)-1] == '&' or Pila_Oper[len(Pila_Oper)-1] == '|':
+            opDer = Pila_Names.pop()
+            typeDer = Pila_Types.pop() 
+            opIzq = Pila_Names.pop()
+            typeIzq = Pila_Types.pop()
+            operador = Pila_Oper.pop()
+            result_Type = cuboSemantico.typeOperator[typeIzq][typeDer][operador]
+            if result_Type is not None :
+                termporalResultado = getAddress(result_Type)
+                cuad = [operador, opIzq,opDer,termporalResultado]
+                quadruples.append(cuad)
+                Pila_Names.append(termporalResultado)
+                Pila_Types.append(result_Type)
+            else:
+                print("Error, en el match de tipos")
+                sys.exit() 
 
 def p_r_false_add_bottom(p):
     '''
