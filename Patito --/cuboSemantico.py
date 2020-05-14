@@ -1,6 +1,6 @@
 '''
 tipo = typeOperator['int']['int']['+']
-if tipo is None:
+if tipo is "bool":
     ERROR
 '''
 
@@ -15,7 +15,7 @@ typeOperator = {
             ">" : "bool",
             "<" : "bool",
             "==" : "bool",
-            "&" : None,
+            "&" : "bool",
             "|" : "bool"            
         },
         "float" : {
@@ -27,14 +27,14 @@ typeOperator = {
             ">" : "bool",
             "<" : "bool",
             "==" : "bool",
-            "&" : None,
+            "&" : "bool",
             "|" : "bool"            
         },
         "char" : {
-            "+" : None,
-            "-" : None,
-            "*" : None,
-            "/" : None,
+            "+" : "bool",
+            "-" : "bool",
+            "*" : "bool",
+            "/" : "bool",
             "=" : None,
             ">" : None,
             "<" : None,
@@ -43,16 +43,16 @@ typeOperator = {
             "|" : None
         },
         "bool" : {
-            "+" : None,
-            "-" : None,
-            "*" : None,
-            "/" : None,
-            "=" : None,
-            ">" : None,
-            "<" : None,
-            "==" : None,
-            "&" : None,
-            "|" : None
+            "+" : "bool",
+            "-" : "bool",
+            "*" : "bool",
+            "/" : "bool",
+            "=" : "bool",
+            ">" : "bool",
+            "<" : "bool",
+            "==" : "bool",
+            "&" : "bool",
+            "|" : "bool"
         }
     },
     "float" : {
@@ -81,10 +81,10 @@ typeOperator = {
             "|" : "bool"           
         },
         "char" : {
-            "+" : None,
-            "-" : None,
-            "*" : None,
-            "/" : None,
+            "+" : "bool",
+            "-" : "bool",
+            "*" : "bool",
+            "/" : "bool",
             "=" : None,
             ">" : None,
             "<" : None,
@@ -93,16 +93,16 @@ typeOperator = {
             "|" : None
         },
         "bool" : {
-            "+" : None,
-            "-" : None,
-            "*" : None,
-            "/" : None,
-            "=" : None,
-            ">" : None,
-            "<" : None,
-            "==" : None,
-            "&" : None,
-            "|" : None
+            "+" : "bool",
+            "-" : "bool",
+            "*" : "bool",
+            "/" : "bool",
+            "=" : "bool",
+            ">" : "bool",
+            "<" : "bool",
+            "==" : "bool",
+            "&" : "bool",
+            "|" : "bool"
         }
     },
     "char" : {
@@ -115,8 +115,8 @@ typeOperator = {
             ">" : None,
             "<" : None,
             "==" : None,
-            "&" : None,
-            "|" : None            
+            "&" : "bool",
+            "|" : "bool"            
         },
         "float" : {
             "+" : None,
@@ -127,11 +127,11 @@ typeOperator = {
             ">" : None,
             "<" : None,
             "==" : None,
-            "&" : None,
-            "|" : None            
+            "&" : "bool",
+            "|" : "bool"            
         },
         "char" : {
-            "+" : "char",
+            "+" : None,
             "-" : None,
             "*" : None,
             "/" : None,
@@ -139,8 +139,8 @@ typeOperator = {
             ">" : None,
             "<" : None,
             "==" : "bool",
-            "&" : None,
-            "|" : None
+            "&" : "bool",
+            "|" : "bool"
         },
         "bool" : {
             "+" : None,
@@ -151,33 +151,33 @@ typeOperator = {
             ">" : None,
             "<" : None,
             "==" : None,
-            "&" : None,
-            "|" : None
+            "&" : "bool",
+            "|" : "bool"
         }
     },
     "bool" : {
         "int" : {
-            "+" : None,
-            "-" : None,
-            "*" : None,
-            "/" : None,
-            "=" : None,
-            ">" : None,
-            "<" : None,
-            "==" : None,
-            "&" : None,
-            "|" : None            
+            "+" : "bool",
+            "-" : "bool",
+            "*" : "bool",
+            "/" : "bool",
+            "=" : "bool",
+            ">" : "bool",
+            "<" : "bool",
+            "==" : "bool",
+            "&" : "bool",
+            "|" : "bool"            
         },
         "float" : {
-            "+" : None,
-            "-" : None,
-            "*" : None,
-            "/" : None,
-            ">" : None,
-            "<" : None,
-            "==" : None,
-            "&" : None,
-            "|" : None            
+            "+" : "bool",
+            "-" : "bool",
+            "*" : "bool",
+            "/" : "bool",
+            ">" : "bool",
+            "<" : "bool",
+            "==" : "bool",
+            "&" : "bool",
+            "|" : "bool"            
         },
         "char" : {
             "+" : None,
@@ -187,17 +187,17 @@ typeOperator = {
             ">" : None,
             "<" : None,
             "==" : None,
-            "&" : None,
-            "|" : None
+            "&" : "bool",
+            "|" : "bool"
         },
         "bool" : {
-            "+" : None,
-            "-" : None,
-            "*" : None,
-            "/" : None,
+            "+" : "bool",
+            "-" : "bool",
+            "*" : "bool",
+            "/" : "bool",
             "=" : "bool",
             ">" : "bool",
-            "<" : None,
+            "<" : "bool",
             "==" : "bool",
             "&" : "bool",
             "|" : "bool"
@@ -207,14 +207,3 @@ typeOperator = {
 
 def ReturnType(opA,opB,operator):
     return typeOperator[opA][opB][operator]
-
-    
-    
-
-
-
-
-
-
-
-
