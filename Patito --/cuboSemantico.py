@@ -11,44 +11,48 @@ typeOperator = {
             "-" : "int",
             "*" : "int",
             "/" : "int",
+            "=" : "int",
             ">" : "bool",
             "<" : "bool",
             "==" : "bool",
-            "and" : None,
-            "or" : None            
+            "&" : None,
+            "|" : "bool"            
         },
         "float" : {
             "+" : "float",
             "-" : "float",
             "*" : "float",
             "/" : "float",
+            "=" : "float",
             ">" : "bool",
             "<" : "bool",
             "==" : "bool",
-            "and" : None,
-            "or" : None            
+            "&" : None,
+            "|" : "bool"            
         },
         "char" : {
             "+" : None,
             "-" : None,
             "*" : None,
             "/" : None,
+            "=" : None,
             ">" : None,
             "<" : None,
             "==" : None,
-            "and" : None,
-            "or" : None
+            "&" : None,
+            "|" : None
         },
         "bool" : {
             "+" : None,
             "-" : None,
             "*" : None,
             "/" : None,
+            "=" : None,
             ">" : None,
             "<" : None,
             "==" : None,
-            "and" : None,
-            "or" : None
+            "&" : None,
+            "|" : None
         }
     },
     "float" : {
@@ -57,44 +61,48 @@ typeOperator = {
             "-" : "float",
             "*" : "float",
             "/" : "float",
+            "=" : "float",
             ">" : "bool",
             "<" : "bool",
             "==" : "bool",
-            "and" : None,
-            "or" : None            
+            "&" : "bool",
+            "|" : "bool"            
         },
         "float" : {
             "+" : "float",
             "-" : "float",
             "*" : "float",
             "/" : "float",
+            "=" : "float",
             ">" : "bool",
             "<" : "bool",
             "==" : "bool",
-            "and" : None,
-            "or" : None            
+            "&" : "bool",
+            "|" : "bool"           
         },
         "char" : {
             "+" : None,
             "-" : None,
             "*" : None,
             "/" : None,
+            "=" : None,
             ">" : None,
             "<" : None,
             "==" : None,
-            "and" : None,
-            "or" : None
+            "&" : None,
+            "|" : None
         },
         "bool" : {
             "+" : None,
             "-" : None,
             "*" : None,
             "/" : None,
+            "=" : None,
             ">" : None,
             "<" : None,
             "==" : None,
-            "and" : None,
-            "or" : None
+            "&" : None,
+            "|" : None
         }
     },
     "char" : {
@@ -103,44 +111,48 @@ typeOperator = {
             "-" : None,
             "*" : None,
             "/" : None,
+            "=" : None,
             ">" : None,
             "<" : None,
             "==" : None,
-            "and" : None,
-            "or" : None            
+            "&" : None,
+            "|" : None            
         },
         "float" : {
             "+" : None,
             "-" : None,
             "*" : None,
             "/" : None,
+            "=" : None,
             ">" : None,
             "<" : None,
             "==" : None,
-            "and" : None,
-            "or" : None            
+            "&" : None,
+            "|" : None            
         },
         "char" : {
             "+" : "char",
             "-" : None,
             "*" : None,
             "/" : None,
+            "=" : "char",
             ">" : None,
             "<" : None,
             "==" : "bool",
-            "and" : None,
-            "or" : None
+            "&" : None,
+            "|" : None
         },
         "bool" : {
             "+" : None,
             "-" : None,
             "*" : None,
             "/" : None,
+            "=" : None,
             ">" : None,
             "<" : None,
             "==" : None,
-            "and" : None,
-            "or" : None
+            "&" : None,
+            "|" : None
         }
     },
     "bool" : {
@@ -149,11 +161,12 @@ typeOperator = {
             "-" : None,
             "*" : None,
             "/" : None,
+            "=" : None,
             ">" : None,
             "<" : None,
             "==" : None,
-            "and" : None,
-            "or" : None            
+            "&" : None,
+            "|" : None            
         },
         "float" : {
             "+" : None,
@@ -163,8 +176,8 @@ typeOperator = {
             ">" : None,
             "<" : None,
             "==" : None,
-            "and" : None,
-            "or" : None            
+            "&" : None,
+            "|" : None            
         },
         "char" : {
             "+" : None,
@@ -174,19 +187,20 @@ typeOperator = {
             ">" : None,
             "<" : None,
             "==" : None,
-            "and" : None,
-            "or" : None
+            "&" : None,
+            "|" : None
         },
         "bool" : {
             "+" : None,
             "-" : None,
             "*" : None,
             "/" : None,
-            ">" : None,
+            "=" : "bool",
+            ">" : "bool",
             "<" : None,
             "==" : "bool",
-            "and" : "bool",
-            "or" : "bool"
+            "&" : "bool",
+            "|" : "bool"
         }
     }
 }
