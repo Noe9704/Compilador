@@ -14,6 +14,8 @@ typeOperator = {
             "=" : "int",
             ">" : "bool",
             "<" : "bool",
+            ">=" : "bool",
+            "<=" : "bool",
             "==" : "bool",
             "&" : "bool",
             "|" : "bool"            
@@ -26,6 +28,8 @@ typeOperator = {
             "=" : "float",
             ">" : "bool",
             "<" : "bool",
+            ">=" : "bool",
+            "<=" : "bool",
             "==" : "bool",
             "&" : "bool",
             "|" : "bool"            
@@ -38,6 +42,8 @@ typeOperator = {
             "=" : None,
             ">" : None,
             "<" : None,
+            ">=" : None,
+            "<=" : None,
             "==" : None,
             "&" : None,
             "|" : None
@@ -50,6 +56,8 @@ typeOperator = {
             "=" : "bool",
             ">" : "bool",
             "<" : "bool",
+            ">=" : "bool",
+            "<=" : "bool",
             "==" : "bool",
             "&" : "bool",
             "|" : "bool"
@@ -64,6 +72,8 @@ typeOperator = {
             "=" : "float",
             ">" : "bool",
             "<" : "bool",
+            ">=" : "bool",
+            "<=" : "bool",
             "==" : "bool",
             "&" : "bool",
             "|" : "bool"            
@@ -76,6 +86,8 @@ typeOperator = {
             "=" : "float",
             ">" : "bool",
             "<" : "bool",
+            ">=" : "bool",
+            "<=" : "bool",
             "==" : "bool",
             "&" : "bool",
             "|" : "bool"           
@@ -88,6 +100,8 @@ typeOperator = {
             "=" : None,
             ">" : None,
             "<" : None,
+            ">=" : None,
+            "<=" : None,
             "==" : None,
             "&" : None,
             "|" : None
@@ -100,6 +114,8 @@ typeOperator = {
             "=" : "bool",
             ">" : "bool",
             "<" : "bool",
+            ">=" : "bool",
+            "<=" : "bool",
             "==" : "bool",
             "&" : "bool",
             "|" : "bool"
@@ -114,6 +130,8 @@ typeOperator = {
             "=" : None,
             ">" : None,
             "<" : None,
+            ">=" : None,
+            "<=" : None,
             "==" : None,
             "&" : "bool",
             "|" : "bool"            
@@ -126,6 +144,8 @@ typeOperator = {
             "=" : None,
             ">" : None,
             "<" : None,
+            ">=" : None,
+            "<=" : None,
             "==" : None,
             "&" : "bool",
             "|" : "bool"            
@@ -138,6 +158,8 @@ typeOperator = {
             "=" : "char",
             ">" : None,
             "<" : None,
+            ">=" : None,
+            "<=" : None,
             "==" : "bool",
             "&" : "bool",
             "|" : "bool"
@@ -150,6 +172,8 @@ typeOperator = {
             "=" : None,
             ">" : None,
             "<" : None,
+            ">=" : None,
+            "<=" : None,
             "==" : None,
             "&" : "bool",
             "|" : "bool"
@@ -164,6 +188,8 @@ typeOperator = {
             "=" : "bool",
             ">" : "bool",
             "<" : "bool",
+            ">=" : "bool",
+            "<=" : "bool",
             "==" : "bool",
             "&" : "bool",
             "|" : "bool"            
@@ -175,6 +201,8 @@ typeOperator = {
             "/" : "bool",
             ">" : "bool",
             "<" : "bool",
+            ">=" : "bool",
+            "<=" : "bool",
             "==" : "bool",
             "&" : "bool",
             "|" : "bool"            
@@ -186,6 +214,8 @@ typeOperator = {
             "/" : None,
             ">" : None,
             "<" : None,
+            ">=" : None,
+            "<=" : None,
             "==" : None,
             "&" : "bool",
             "|" : "bool"
@@ -198,6 +228,8 @@ typeOperator = {
             "=" : "bool",
             ">" : "bool",
             "<" : "bool",
+            ">=" : "bool",
+            "<=" : "bool",
             "==" : "bool",
             "&" : "bool",
             "|" : "bool"
