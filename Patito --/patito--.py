@@ -77,10 +77,10 @@ def getAddress(tipo):
             # ERROR: Too many variables 
             print("Error, espacio de memoria insuficiente para flotantes")
             sys.exit()
-        print('Aqui esta aux')
+        ##print('Aqui esta aux')
         
         aux = scope_address + next_float
-        print(aux)
+        ##print(aux)
         if aux >= LOCAL_BASE and scope_address == GLOBAL_BASE:
             print("Error, espacio de memoria insuficiente para variables globales")
             sys.exit()        
@@ -125,7 +125,9 @@ quadruples = []
 Pila_Names = []
 Pila_Types = []
 Pila_Oper = [] 
-
+pila_Variables_Globales = []
+pila_Variables_Generales = []
+pila_Variables_Funciones = []
 
 
 
@@ -289,10 +291,10 @@ def p_program(p):
     '''
     program : PROGRAM ID r_registrar_programa COLON auxVar auxFuncion MAIN r_registrar_main L_PARENT R_PARENT auxVar bloque
     '''
-
+   
     print(symbols)
     print(quadruples)
-    print(Pila_Names)
+    ##print(Pila_Names)
     print(Pila_Oper)
 
 
@@ -558,7 +560,6 @@ def p_r_check_Comparison(p):
                 quadruples.append(cuad)
                 Pila_Names.append(termporalResultado)
                 Pila_Types.append(result_Type)
-
             else:
                 print("Error, en el match de tipos de comparacion")
                 sys.exit() 
@@ -623,7 +624,7 @@ def p_r_check_And(p):
     r_check_And : 
     '''
     if len(Pila_Oper) > 0 :
-        if Pila_Oper[len(Pila_Oper)-1] == '&' or Pila_Oper[len(Pila_Oper)-1] == '|':
+        if Pila_Oper[len(Pila_Oper)-1] == '&' :
             opDer = Pila_Names.pop()
             typeDer = Pila_Types.pop() 
             opIzq = Pila_Names.pop()
@@ -677,19 +678,60 @@ def p_retorno(p):
 
 def p_lectura(p):
     '''
-    lectura : READ L_PARENT auxLectura R_PARENT SEMICOLON
+    lectura : READ r_push_operator  L_PARENT  auxLectura  R_PARENT r_check_Lectura SEMICOLON
     '''
+
+def p_r_check_Lectura(o):
+    '''
+    r_check_Lectura :
+    '''
+    if len(Pila_Oper) > 0 :
+        if Pila_Oper[len(Pila_Oper)-1] == 'READ':
+            opDer = Pila_Names.pop()
+            Pila_Types.pop()
+            operador = Pila_Oper.pop()
+            cuad = [operador, None,None,opDer]
+            quadruples.append(cuad)
+          
 
 def p_auxLectura(p):
     '''
-    auxLectura : lista_ids
-            | lista_ids COMA auxLectura
+    auxLectura : lista_ids 
+            | lista_ids  COMA auxLectura 
     '''
 
 def p_escritura(p):
     '''
-    escritura : WRITE L_PARENT auxEscritura R_PARENT SEMICOLON
+    escritura : WRITE r_push_operator L_PARENT auxEscritura R_PARENT r_check_Escritura SEMICOLON
     '''
+
+
+def p_r_check_Escritura(p):
+    '''
+    r_check_Escritura : 
+    '''
+    if len(Pila_Oper) > 0 :
+        if Pila_Oper[len(Pila_Oper)-1] == 'WRITE':
+            opDer = Pila_Names.pop()
+            Pila_Types.pop()
+            ##typeDer = Pila_Types.pop() 
+            ##opIzq = Pila_Names.pop()
+            ##typeIzq = Pila_Types.pop()
+            operador = Pila_Oper.pop()
+            ##result_Type = cuboSemantico.typeOperator[typeIzq][typeDer][operador]
+            ##if result_Type is not None :
+            ##termporalResultado = getAddress(opDer)
+            cuad = [operador, None,None,opDer]
+            quadruples.append(cuad)
+            ##    Pila_Names.append(termporalResultado)
+             ##   Pila_Types.append(result_Type)
+            ##else:
+            ##    print("Error, en el match de tipos")
+            ##    sys.exit() 
+
+
+
+
 
 def p_auxEscritura(p):
     '''
@@ -700,13 +742,13 @@ def p_auxEscritura(p):
 def p_auxString(p):
     '''
     auxString : CTE_STRING
-              | CTE_STRING COMA auxEscritura  
+              | CTE_STRING COMA auxEscritura 
     '''
 
 def p_auxExpEscritura(p):
     '''
-    auxExpEscritura : exp
-                    | exp COMA auxExpEscritura
+    auxExpEscritura : exp  
+                    | exp COMA auxExpEscritura 
     '''
 
 def p_decision(p):
@@ -759,16 +801,81 @@ def p_r_registrar_variable(p):
     '''
     r_registrar_variable :
     '''
-    global symbols, current_variable
+    global symbols, current_variable, pila_Variables_Globales, pila_Variables_Generales, pila_Variables_Funciones
+    aux_Funcion = ''
     current_variable = p[-1]
     if symbols[current_func].get(current_variable) is None:
+        if(current_func == 'global'):
+            pila_Variables_Globales.append(current_variable)
+        elif(current_func == 'main'):
+            pila_Variables_Generales.append(current_variable)
+        else :
+            pila_Variables_Funciones.append(tuple((current_func,current_variable)))
+            '''
+            pila_Variables_Funciones.append(current_variable)           
+            aux_Funcion = current_func
+            
+            if current_func != aux_Funcion :
+                pila_Variables_Funciones.clear()'''
+                    
         symbols[current_func]['vars'][current_variable] = {
-            'type':current_tipo,
-            'address':getAddress(current_tipo)
+                   'type':current_tipo,
+                   'address':getAddress(current_tipo)
         }
-    else: 
-        print("Ño la variable " + current_variable + " Se repite OWO!!")
-        sys.exit()
+        if variable_comun(pila_Variables_Globales, pila_Variables_Generales) is True:
+            print("Variable en main ya declarada globalmente")
+            sys.exit()
+        if duplicados_Tupla(pila_Variables_Funciones) is True:
+            print("Variable en funcion local repetida")
+            sys.exit()
+        #print("Globales")
+        #print(pila_Variables_Globales)
+        #print("main")
+        #print(pila_Variables_Generales)
+
+        ##print(current_func)
+        ##print(aux_Funcion)
+        ##print(pila_Variables_Funciones)
+        if len(pila_Variables_Globales) is not len(set(pila_Variables_Globales)):
+            print("Variable ya declarada en el espacio global")
+            sys.exit()
+        
+    else :
+        print("Error")
+
+
+
+def duplicados_Tupla(listaTupla): 
+      
+    flag = False
+    listaAuxiliar = []   
+    contador = 0
+    for key in listaTupla: 
+          
+        if key in listaAuxiliar:   
+            flag = True
+            continue
+          
+        else: 
+            contador = 0
+            for b in listaTupla: 
+                if b[0] == key[0] and b[1] == key[1]: 
+                    contador = contador + 1            
+            if(contador > 1):  
+                return True 
+            listaAuxiliar.append(key) 
+                       
+    if flag == False: 
+        return False
+
+def variable_comun(listaA,listaB):
+    resultado = False
+
+    for x in listaA:
+        for y in listaB:
+            if x == y:
+                resultado = True
+    return resultado
 
 def p_r_registrar_func_name(p):
     '''
@@ -784,7 +891,7 @@ def p_r_registrar_func_name(p):
             'vars': {}
         }
     else :
-        print("nel prro, funcion repetida " + current_func)
+        print("funcion repetida " + current_func)
         sys.exit()
 
 def p_r_registrar_main(p):
