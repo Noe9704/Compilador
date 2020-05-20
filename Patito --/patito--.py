@@ -4,6 +4,7 @@ import ply.lex as lex
 import ply.yacc as yacc
 import sys
 import cuboSemantico
+import pprint
 
 symbols = {
     'name': '',
@@ -291,11 +292,18 @@ def p_program(p):
     '''
     program : PROGRAM ID r_registrar_programa COLON auxVar auxFuncion MAIN r_registrar_main L_PARENT R_PARENT auxVar bloque
     '''
-   
-    print(symbols)
-    print(quadruples)
+    
+    #stuff.insert(0, stuff[:])
+    #pp = pprint.PrettyPrinter(indent=4)
+    #pp.pprint(stuff)
+    pp = pprint.PrettyPrinter(indent=4)
+    pp.pprint(symbols)
+    # print(symbols)
+    # quadruples.insert(0,quadruples[:])
+    pp.pprint(quadruples)
+    #print(quadruples)
     ##print(Pila_Names)
-    print(Pila_Oper)
+    #print(Pila_Oper)
 
 
 def p_auxVar(p):
@@ -601,7 +609,7 @@ def p_r_check_OR(p):
 
 def p_x(p):
     '''
-    x : z auxX 
+    x : z auxX r_check_And
     '''
 
 def p_auxX(p):

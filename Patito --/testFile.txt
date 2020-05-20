@@ -4,21 +4,20 @@ int : Arreglo[10], OtroArreglo[10];
 float : valor, valor1,valor2,valor4;
 int : Matriz[3][8], OtraMatrix[3][3];
 
-
 funcion int fact(int d):
 var int : x,y;
 {
-
-    read(y);
 }
 
 
 funcion void inicia(): 
 var int : w,x,t,p;
 {
+   if(x*t & t) so {
+      write(x);
+   }
 
 }
-
 
 main()
 var int : f, g,h;
@@ -26,11 +25,6 @@ int : arr[10], otroArr[10];
 char: v;
 float : ejemplo;
 {
-  
-   if((f <= h) | (g < h)) so
-   {
-      g = f + h;
-      write(g * f);
-   }
+
    
 }
