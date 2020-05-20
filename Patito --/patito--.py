@@ -440,15 +440,15 @@ def p_r_check_equal(p):
                 sys.exit() 
 
 
-def p_exp(p):
+def p_m(p):
     '''
-    exp : t auxExp r_check_sum
+    m : t auxM r_check_sum
     '''
 
-def p_auxExp(p):
+def p_auxM(p):
     '''
-    auxExp : PLUS r_push_operator exp 
-            | MINUS r_push_operator exp 
+    auxM : PLUS r_push_operator m
+            | MINUS r_push_operator m
             | empty
     '''
 
@@ -462,7 +462,7 @@ def p_r_push_operator(p):
 
 def p_t(p):
     '''
-    t : f auxT r_check_mult
+    t : z auxT r_check_mult
     '''
 
 def p_r_check_sum(p):
@@ -574,14 +574,14 @@ def p_r_check_Comparison(p):
 
 
 
-def p_m(p):
+def p_exp(p):
     '''
-    m : x auxM r_check_OR
+    exp : x auxExp r_check_OR
     '''
 
-def p_auxM(p):
+def p_auxExp(p):
     '''
-    auxM : OR r_push_operator m
+    auxExp : OR r_push_operator exp
         | empty
     '''
 
@@ -609,12 +609,12 @@ def p_r_check_OR(p):
 
 def p_x(p):
     '''
-    x : z auxX r_check_And
+    x : f auxX r_check_And
     '''
 
 def p_auxX(p):
     '''
-    auxX : AND r_push_operator z
+    auxX : AND r_push_operator f
         | empty
     '''
 
