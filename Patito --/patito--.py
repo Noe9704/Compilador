@@ -686,12 +686,13 @@ def p_r_check_Lectura(o):
     r_check_Lectura :
     '''
     if len(Pila_Oper) > 0 :
-        if Pila_Oper[len(Pila_Oper)-1] == 'READ':
+        if Pila_Oper[len(Pila_Oper)-1] == 'read':
             opDer = Pila_Names.pop()
             Pila_Types.pop()
             operador = Pila_Oper.pop()
             cuad = [operador, None,None,opDer]
             quadruples.append(cuad)
+    
           
 
 def p_auxLectura(p):
@@ -711,26 +712,12 @@ def p_r_check_Escritura(p):
     r_check_Escritura : 
     '''
     if len(Pila_Oper) > 0 :
-        if Pila_Oper[len(Pila_Oper)-1] == 'WRITE':
+        if Pila_Oper[len(Pila_Oper)-1] == 'write':
             opDer = Pila_Names.pop()
             Pila_Types.pop()
-            ##typeDer = Pila_Types.pop() 
-            ##opIzq = Pila_Names.pop()
-            ##typeIzq = Pila_Types.pop()
             operador = Pila_Oper.pop()
-            ##result_Type = cuboSemantico.typeOperator[typeIzq][typeDer][operador]
-            ##if result_Type is not None :
-            ##termporalResultado = getAddress(opDer)
             cuad = [operador, None,None,opDer]
             quadruples.append(cuad)
-            ##    Pila_Names.append(termporalResultado)
-             ##   Pila_Types.append(result_Type)
-            ##else:
-            ##    print("Error, en el match de tipos")
-            ##    sys.exit() 
-
-
-
 
 
 def p_auxEscritura(p):
