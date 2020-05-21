@@ -13,9 +13,25 @@ var int : x,y;
 funcion void inicia(): 
 var int : w,x,t,p;
 {
-   if(x*t & t) so {
-      write(x);
+   if(x < x) so 
+   {
+      
+      write(w+x+t);
+      if(p > x) so{
+         w = p + x;
+         write(w);
+      }
+      else{
+         w = p - x;
+         write(w);
+      }
    }
+   else{
+      write(p);
+   }
+
+   x = t + p;
+ 
 
 }
 
