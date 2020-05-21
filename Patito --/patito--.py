@@ -298,9 +298,11 @@ def p_program(p):
     #pp.pprint(stuff)
     pp = pprint.PrettyPrinter(indent=4)
     pp.pprint(symbols)
+    pp.pprint(pila_Variables_Funciones)
     # print(symbols)
     # quadruples.insert(0,quadruples[:])
     pp.pprint(quadruples)
+    pp.pprint(Pila_Names)
     #print(quadruples)
     ##print(Pila_Names)
     #print(Pila_Oper)
@@ -340,6 +342,9 @@ def p_r_push_Name(p):
     elif(symbols['global']['vars'].get(p[-1]) is not None):
         Pila_Names.append(symbols['global']['vars'].get(p[-1])['address'])
         Pila_Types.append(symbols['global']['vars'].get(p[-1])['type'])
+    else :
+        print("Error, variable no definida")
+        sys.exit()
 
 
 def p_auxLista_idsVar_asignacion(p):
@@ -711,7 +716,7 @@ def p_auxLectura(p):
 
 def p_escritura(p):
     '''
-    escritura : WRITE r_push_operator L_PARENT auxEscritura R_PARENT r_check_Escritura SEMICOLON
+    escritura : WRITE r_push_operator L_PARENT auxEscritura R_PARENT SEMICOLON
     '''
 
 
@@ -727,24 +732,41 @@ def p_r_check_Escritura(p):
             cuad = [operador, None,None,opDer]
             quadruples.append(cuad)
 
+def p_r_check_Escritura_String(p):
+    '''
+    r_check_Escritura_String :
+    '''
+    if len(Pila_Oper) > 0 :
+            if Pila_Oper[len(Pila_Oper)-1] == 'write':
+                operador = Pila_Oper.pop()
+                cuad = [operador,None,None,p[-1]]
+                quadruples.append(cuad)
+                
 
 def p_auxEscritura(p):
     '''
     auxEscritura : auxString 
-                 | auxExpEscritura
+                 | auxExpEscritura 
     '''
 
 def p_auxString(p):
     '''
-    auxString : CTE_STRING
-              | CTE_STRING COMA auxEscritura 
+    auxString : CTE_STRING r_check_Escritura_String
+              | CTE_STRING r_check_Escritura_String COMA r_pushOtherWrite auxEscritura 
     '''
 
 def p_auxExpEscritura(p):
     '''
-    auxExpEscritura : exp  
-                    | exp COMA auxExpEscritura 
+    auxExpEscritura : exp r_check_Escritura 
+                    | exp r_check_Escritura COMA r_pushOtherWrite auxExpEscritura 
     '''
+
+def p_r_pushOtherWrite(p):
+    '''
+    r_pushOtherWrite : 
+    '''
+    Pila_Oper.append("write")
+
 
 def p_decision(p):
     '''
@@ -799,6 +821,7 @@ def p_r_registrar_variable(p):
     global symbols, current_variable, pila_Variables_Globales, pila_Variables_Generales, pila_Variables_Funciones
     aux_Funcion = ''
     current_variable = p[-1]
+
     if symbols[current_func].get(current_variable) is None:
         if(current_func == 'global'):
             pila_Variables_Globales.append(current_variable)
