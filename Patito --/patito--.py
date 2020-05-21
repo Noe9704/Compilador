@@ -697,6 +697,7 @@ def p_retorno(p):
     retorno : RETURN L_PARENT exp R_PARENT SEMICOLON
     '''
 
+
 def p_lectura(p):
     '''
     lectura : READ r_push_operator  L_PARENT  auxLectura  R_PARENT r_check_Lectura SEMICOLON
@@ -835,8 +836,40 @@ def p_repeticion(p):
 
 def p_condicional(p):
     '''
-    condicional : WHILE L_PARENT exp R_PARENT DO bloque
+    condicional : WHILE r_checkWhile L_PARENT exp R_PARENT r_checkWhileB DO bloque r_checkWhileC
     '''
+
+def p_r_checkWhile(p):
+    '''
+    r_checkWhile :
+    '''
+    Pila_Saltos.append(len(quadruples))
+
+def p_r_checkWhileB(p):
+    '''
+    r_checkWhileB :
+    '''
+    exp_Type = Pila_Types.pop()
+    ##exp_Name = Pila_Names.pop()
+    if exp_Type != "bool" :
+        print("Error de tipo")
+        sys.exit()
+    else :
+        result = Pila_Names.pop()
+        cuad = ["GOTOF", result,None,len(quadruples)-1]   
+        quadruples.append(cuad)
+        Pila_Saltos.append(len(quadruples)-1)
+
+def p_r_checkWhileC(p):
+    '''
+    r_checkWhileC :
+    '''
+    end = Pila_Saltos.pop()
+    regresa = Pila_Saltos.pop()
+    cuad = ["GOTO", None,None,regresa] 
+    quadruples.append(cuad)
+    fill(end,len(quadruples))  
+
 
 def p_nocondicional(p):
     '''
