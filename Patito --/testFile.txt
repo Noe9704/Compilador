@@ -13,8 +13,8 @@ var int : x,y;
 funcion void inicia(): 
 var int : w,x,t,p;
 {
-   if(x*t & t) so {
-      write(x);
+   if(x > t) so {
+      x = x + caca;
    }
 
 }
