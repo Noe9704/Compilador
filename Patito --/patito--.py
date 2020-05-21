@@ -129,6 +129,7 @@ Pila_Oper = []
 pila_Variables_Globales = []
 pila_Variables_Generales = []
 pila_Variables_Funciones = []
+Pila_Saltos = []
 
 
 
@@ -301,8 +302,15 @@ def p_program(p):
     pp.pprint(pila_Variables_Funciones)
     # print(symbols)
     # quadruples.insert(0,quadruples[:])
-    pp.pprint(quadruples)
-    pp.pprint(Pila_Names)
+    cont = 0
+    for x in quadruples :
+        print(cont,end="\t")
+        cont = cont + 1
+        pp.pprint(x)
+        
+    ##pp.pprint(Pila_Names)
+    print("tipos")
+    pp.pprint(Pila_Types)
     #print(quadruples)
     ##print(Pila_Names)
     #print(Pila_Oper)
@@ -770,14 +778,54 @@ def p_r_pushOtherWrite(p):
 
 def p_decision(p):
     '''
-    decision : IF L_PARENT exp R_PARENT SO bloque auxDecision
+    decision : IF L_PARENT exp R_PARENT r_checkIF SO bloque auxDecision r_checkIFB
     '''
+
+def p_r_checkIFB(p):
+    '''
+    r_checkIFB :
+    '''
+    end = Pila_Saltos.pop()
+    fill(end,len(quadruples))
+
+#Funcion que llena los distintos saltos que hay
+def fill(cuadr, salto):
+    quadruples[cuadr][3] = salto
+
+
+
+def p_r_checkIF(p):
+    '''
+    r_checkIF :
+    '''
+    exp_Type = Pila_Types.pop()
+    ##exp_Name = Pila_Names.pop()
+    if exp_Type != "bool" :
+        print("Error de tipo")
+        sys.exit()
+    else :
+        result = Pila_Names.pop()
+        cuad = ["GOTOF", result,None,"resultado_salto"]      
+        quadruples.append(cuad)
+        Pila_Saltos.append(len(quadruples)-1)
+
 
 def p_auxDecision(p):
     '''
-    auxDecision : ELSE bloque
+    auxDecision : r_checkElse ELSE bloque
                 | empty
     '''
+
+def p_r_checkElse(p):
+    '''
+    r_checkElse : 
+    '''
+    cuad = ["GOTO", None,None,len(quadruples)] 
+    quadruples.append(cuad)
+    falso = Pila_Saltos.pop()
+    Pila_Saltos.append(len(quadruples)-1)
+    fill(falso,len(quadruples))
+
 
 def p_repeticion(p):
     '''
