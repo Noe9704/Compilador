@@ -35,90 +35,99 @@ LOCAL_BASE = 10000
 CTE_BASE = 20000
 MAX_BASE = 30000
 
+global_next_int = GLOBAL_BASE + INT_BASE
+global_next_float = GLOBAL_BASE + FLOAT_BASE
+global_next_char = GLOBAL_BASE + CHAR_BASE
+global_bool_base = GLOBAL_BASE + BOOL_BASE
+global_next_bool = GLOBAL_BASE + BOOL_BASE
+
 #contador inicial de apuntador a direccion actual
-next_int = INT_BASE
-next_float = FLOAT_BASE
-next_char = CHAR_BASE
-bool_base = BOOL_BASE
-next_bool = BOOL_BASE
+next_int = LOCAL_BASE + INT_BASE
+next_float = LOCAL_BASE + FLOAT_BASE
+next_char = LOCAL_BASE + CHAR_BASE
+bool_base = LOCAL_BASE + BOOL_BASE
+next_bool = LOCAL_BASE + BOOL_BASE
 
 ##funcion para reiniciar al contador de direcciones
 def newFunction():
     global next_int, next_float, next_char, next_bool
-    next_int = INT_BASE
-    next_float = FLOAT_BASE
-    next_char = CHAR_BASE
-    bool_base = BOOL_BASE
-    next_bool = BOOL_BASE
+    next_int = LOCAL_BASE + INT_BASE
+    next_float = LOCAL_BASE + FLOAT_BASE
+    next_char = LOCAL_BASE + CHAR_BASE
+    bool_base = LOCAL_BASE + BOOL_BASE
+    next_bool = LOCAL_BASE + BOOL_BASE
+
+def getAddressAux():
+
 
 ##funcion para asignar direcciones de memoria
-def getAddress(tipo):
-    if current_func == 'global':
-        scope_address = GLOBAL_BASE
-    else:
-        scope_address = LOCAL_BASE
-    if tipo == 'int':
-        global next_int
-        if next_int >= FLOAT_BASE: ### checar que no se pase del limite de las enteras
-            # ERROR: Too many variables 
-            print("Error, espacio de memoria insuficiente para enteros")
-            sys.exit()
-        aux = scope_address + next_int
-        if aux >= LOCAL_BASE and scope_address == GLOBAL_BASE: ##checar que no se llenen las dir globales
-            print("Error, espacio de memoria insuficiente para variables globales")
-            sys.exit()        
-        if aux >= CTE_BASE and scope_address == LOCAL_BASE: ##checar que no se llenen las dir locales
-            print("Error, espacio de memoria insuficiente para variables locales")
-            sys.exit()       
-        next_int += 1
-        return aux
-    elif tipo == 'float':
-        global next_float
-        if next_float >= CHAR_BASE: ### checar que no se pase del limite de las flotantes
-            # ERROR: Too many variables 
-            print("Error, espacio de memoria insuficiente para flotantes")
-            sys.exit()
-        ##print('Aqui esta aux')
-        
-        aux = scope_address + next_float
-        ##print(aux)
-        if aux >= LOCAL_BASE and scope_address == GLOBAL_BASE:
-            print("Error, espacio de memoria insuficiente para variables globales")
-            sys.exit()        
-        if aux >= CTE_BASE and scope_address == LOCAL_BASE:
-            print("Error, espacio de memoria insuficiente para variables locales")
-            sys.exit()      
-        next_float += 1
-        return aux
-    elif tipo == 'char':
-        global next_char
-        if next_char >= BOOL_BASE: ### checar que no se pase del limite de las char
-            # ERROR: Too many variables 
-            print("Error, espacio de memoria insuficiente para char")
-            sys.exit()
-        aux = scope_address + next_char
-        if aux >= LOCAL_BASE and scope_address == GLOBAL_BASE:
-            print("Error, espacio de memoria insuficiente para variables globales")
-            sys.exit()        
-        if aux >= CTE_BASE and scope_address == LOCAL_BASE:
-            print("Error, espacio de memoria insuficiente para variables locales")
-            sys.exit()      
-        next_char += 1
-        return aux
-    elif tipo == 'bool':
-        global next_bool
-        if next_bool >= BOOL_BASE + ADDRESS_SPACE: ### checar que no se pase del limite de las bool
-            print("Error, espacio de memoria insuficiente para booleanos")
-            sys.exit()
-        aux = scope_address + next_bool
-        if aux >= LOCAL_BASE and scope_address == GLOBAL_BASE:
-            print("Error, espacio de memoria insuficiente para variables globales")
-            sys.exit()        
-        if aux >= CTE_BASE and scope_address == LOCAL_BASE:
-            print("Error, espacio de memoria insuficiente para variables locales")
-            sys.exit()      
-        next_bool += 1
-        return aux
+def getAddress(tipo, force_global=false):
+    if current_func == 'global' or force_global:
+        if tipo == 'int':
+            global global_next_int
+            aux = global_next_int  
+            if aux >= FLOAT_BASE or aux >= LOCAL_BASE or aux >= CTE_BASE: ### checar que no se pase del limite de las enteras
+                # ERROR: Too many variables 
+                print("Error, espacio de memoria insuficiente para enteros")
+                sys.exit()
+            global_next_int += 1
+            return aux
+    else: 
+        if tipo == 'int':
+            global next_int
+            aux = next_int  
+            if aux >= FLOAT_BASE or aux >= CTE_BASE: ### checar que no se pase del limite de las enteras
+                # ERROR: Too many variables 
+                print("Error, espacio de memoria insuficiente para enteros")
+                sys.exit()   
+            next_int += 1
+            return aux
+        elif tipo == 'float':
+            global next_float
+            if next_float >= CHAR_BASE: ### checar que no se pase del limite de las flotantes
+                # ERROR: Too many variables 
+                print("Error, espacio de memoria insuficiente para flotantes")
+                sys.exit()
+            ##print('Aqui esta aux')            
+            aux = scope_address + next_float
+            ##print(aux)
+            if aux >= LOCAL_BASE and scope_address == GLOBAL_BASE:
+                print("Error, espacio de memoria insuficiente para variables globales")
+                sys.exit()        
+            if aux >= CTE_BASE and scope_address == LOCAL_BASE:
+                print("Error, espacio de memoria insuficiente para variables locales")
+                sys.exit()      
+            next_float += 1
+            return aux
+        elif tipo == 'char':
+            global next_char
+            if next_char >= BOOL_BASE: ### checar que no se pase del limite de las char
+                # ERROR: Too many variables 
+                print("Error, espacio de memoria insuficiente para char")
+                sys.exit()
+            aux = scope_address + next_char
+            if aux >= LOCAL_BASE and scope_address == GLOBAL_BASE:
+                print("Error, espacio de memoria insuficiente para variables globales")
+                sys.exit()        
+            if aux >= CTE_BASE and scope_address == LOCAL_BASE:
+                print("Error, espacio de memoria insuficiente para variables locales")
+                sys.exit()      
+            next_char += 1
+            return aux
+        elif tipo == 'bool':
+            global next_bool
+            if next_bool >= BOOL_BASE + ADDRESS_SPACE: ### checar que no se pase del limite de las bool
+                print("Error, espacio de memoria insuficiente para booleanos")
+                sys.exit()
+            aux = scope_address + next_bool
+            if aux >= LOCAL_BASE and scope_address == GLOBAL_BASE:
+                print("Error, espacio de memoria insuficiente para variables globales")
+                sys.exit()        
+            if aux >= CTE_BASE and scope_address == LOCAL_BASE:
+                print("Error, espacio de memoria insuficiente para variables locales")
+                sys.exit()      
+            next_bool += 1
+            return aux
 
 quadruples = []
 
@@ -350,8 +359,11 @@ def p_r_push_Name(p):
     elif(symbols['global']['vars'].get(p[-1]) is not None):
         Pila_Names.append(symbols['global']['vars'].get(p[-1])['address'])
         Pila_Types.append(symbols['global']['vars'].get(p[-1])['type'])
+    elif(symbols[current_func]['params'].get(p[-1]) is not None):
+        Pila_Names.append(symbols[current_func]['params'].get(p[-1])['address'])
+        Pila_Types.append(symbols[current_func]['params'].get(p[-1])['type'])
     else :
-        print("Error, variable no definida")
+        print("Error, variable no definida en la funcion ", current_func)
         sys.exit()
 
 
@@ -677,7 +689,7 @@ def p_r_false_quit_bottom(p):
 
 def p_var_cte(p):
     '''
-    var_cte : CTE_I
+    var_cte : CTE_I 
             | CTE_F
     '''
 
@@ -694,9 +706,20 @@ def p_auxLlamada(p):
 
 def p_retorno(p):
     '''
-    retorno : RETURN L_PARENT exp R_PARENT SEMICOLON
+    retorno : RETURN r_push_operator L_PARENT exp R_PARENT r_checkReturn SEMICOLON
     '''
 
+def p_r_checkReturn(p):
+    '''
+    r_checkReturn :
+    '''
+    if len(Pila_Oper) > 0 :
+        if Pila_Oper[len(Pila_Oper)-1] == 'return':
+            opDer = Pila_Names.pop()
+            Pila_Types.pop()
+            operador = Pila_Oper.pop()
+            cuad = [operador, None,None,opDer]
+            quadruples.append(cuad)
 
 def p_lectura(p):
     '''
@@ -980,14 +1003,19 @@ def p_r_registrar_func_name(p):
     '''
     r_registrar_func_name : 
     '''
-    global symbols, current_func
+    global symbols, current_func 
     current_func = p[-1]
     newFunction()
     if symbols.get(current_func) is None:
         symbols[current_func]= {
             'type': current_tipo,
+            'start': quadruples.size(),
             'params': {},
             'vars': {}
+        }
+        symbols['global']['vars'][current_func] = {
+            'address': getAddress(current_tipo, force_global=True),
+            'type': current_tipo
         }
     else :
         print("funcion repetida " + current_func)
