@@ -69,10 +69,10 @@ def newFunction():
     next_char = LOCAL_BASE + CHAR_BASE
     bool_base = LOCAL_BASE + BOOL_BASE
     next_bool = LOCAL_BASE + BOOL_BASE
-
+"""
 def getAddressAux():
     pass
-    
+"""    
 ## Funcion para asignar direcciones de memoria
 def getAddress(tipo, force_global=False):
     ## Asignar direcciones a variables globales y a funciones
@@ -341,8 +341,8 @@ def p_program(p):
         pp.pprint(x)
         
     ##pp.pprint(Pila_Names)
-    print("tipos")
-    pp.pprint(Pila_Types)
+    print("Constantes")
+    pp.pprint(constants)
     #print(quadruples)
     ##print(Pila_Names)
     #print(Pila_Oper)
@@ -671,29 +671,61 @@ def p_r_false_quit_bottom(p):
 
 def p_var_cte(p):
     '''
-    var_cte : CTE_I r_registrar_Constante_Int
-            | CTE_F 
+    var_cte : CTE_I r_registrar_constante_int
+            | CTE_F r_registrar_constante_float
     '''
 
-def p_r_registrar_Constante_Int(p):
+def p_r_registrar_constante_int(p):
     '''
-    r_registrar_Constante_Int : 
+    r_registrar_constante_int : 
     '''
     global constants, current_variable,CTE_BASE, constant_next_int
     current_variable = p[-1]
+    aux = constant_next_int 
+
     if constants[current_func].get(current_variable) is None:
         if constant_next_int >= constant_next_float :
-            print("Error, espacio de constantes enteras lleno")
+            print("Error, espacio de constantes enteras lleno.")
             sys.exit()
-        aux =  + INT_BASE  
-        '''             
-        constants[current_func][address] = {
-                   'type':{}
+                    
+        constants[current_func][current_variable] = {
+                    'address': aux,
+                    'type': 'int'
         }
-        CTE_BASE += 1
-        '''
+        Pila_Names.append(aux)
+        Pila_Types.append('int')
+        constant_next_int += 1
     else :
-        print("Error")
+        dirr = constants[current_func][current_variable]['address']
+        Pila_Names.append(dirr)
+        Pila_Types.append('int')
+    
+        
+
+def p_r_registrar_constante_float(p):
+    '''
+    r_registrar_constante_float : 
+    '''
+    global constants, current_variable,CTE_BASE, constant_next_float
+    current_variable = p[-1]
+    aux = constant_next_float 
+
+    if constants[current_func].get(current_variable) is None:
+        if constant_next_float >= constant_next_char :
+            print("Error, espacio de constantes float lleno.")
+            sys.exit()
+         
+        constants[current_func][current_variable] = {
+                   'address': aux,
+                   'type': 'float'
+        }
+        Pila_Names.append(aux)
+        Pila_Types.append('float')
+        constant_next_float += 1
+    else :
+        dirr = constants[current_func][current_variable]['address']
+        Pila_Names.append(dirr)
+        Pila_Types.append('float')
 
 
 def p_llamada(p):
@@ -793,7 +825,7 @@ def p_auxString(p):
 def p_auxExpEscritura(p):
     '''
     auxExpEscritura : exp r_check_Escritura 
-                    | exp r_check_Escritura COMA r_pushOtherWrite auxExpEscritura 
+                    | exp r_check_Escritura COMA r_pushOtherWrite auxEscritura 
     '''
 
 def p_r_pushOtherWrite(p):
@@ -1008,9 +1040,7 @@ def p_r_registrar_func_name(p):
             'params': {},
             'vars': {}
         }
-        constants[current_func] ={
-            'address': {}
-        }
+        constants[current_func] ={}
 
         if current_tipo != "void" :
             symbols['global']['vars'][current_func] = {
