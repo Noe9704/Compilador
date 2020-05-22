@@ -72,6 +72,33 @@ def getAddress(tipo, force_global=false):
                 sys.exit()
             global_next_int += 1
             return aux
+        elif tipo == 'float':
+            global global_next_float
+            aux = global_next_float  
+            if aux >= CHAR_BASE or aux >= LOCAL_BASE or aux >= CTE_BASE: ### checar que no se pase del limite de las enteras
+                # ERROR: Too many variables 
+                print("Error, espacio de memoria insuficiente para flotantes")
+                sys.exit()
+            global_next_float += 1
+            return aux
+        elif tipo == 'char':
+            global global_next_char
+            aux = global_next_char
+            if aux >= BOOL_BASE or aux >= LOCAL_BASE or aux >= CTE_BASE: ### checar que no se pase del limite de las enteras
+                # ERROR: Too many variables 
+                print("Error, espacio de memoria insuficiente para caracteres")
+                sys.exit()
+            global_next_char += 1
+            return aux
+        elif tipo == 'bool':
+            global global_next_bool
+            aux = global_next_bool
+            if aux >= BOOL_BASE + ADDRESS_SPACE or aux >= LOCAL_BASE or aux >= CTE_BASE: ### checar que no se pase del limite de las enteras
+                # ERROR: Too many variables 
+                print("Error, espacio de memoria insuficiente para booleanos")
+                sys.exit()
+            global_next_bool += 1
+            return aux   
     else: 
         if tipo == 'int':
             global next_int
@@ -84,48 +111,30 @@ def getAddress(tipo, force_global=false):
             return aux
         elif tipo == 'float':
             global next_float
-            if next_float >= CHAR_BASE: ### checar que no se pase del limite de las flotantes
+            aux = next_float
+            if aux >= CHAR_BASE or aux >= CTE_BASE: ### checar que no se pase del limite de las flotantes
                 # ERROR: Too many variables 
                 print("Error, espacio de memoria insuficiente para flotantes")
                 sys.exit()
             ##print('Aqui esta aux')            
-            aux = scope_address + next_float
-            ##print(aux)
-            if aux >= LOCAL_BASE and scope_address == GLOBAL_BASE:
-                print("Error, espacio de memoria insuficiente para variables globales")
-                sys.exit()        
-            if aux >= CTE_BASE and scope_address == LOCAL_BASE:
-                print("Error, espacio de memoria insuficiente para variables locales")
-                sys.exit()      
             next_float += 1
             return aux
+            ##print(aux)
         elif tipo == 'char':
             global next_char
-            if next_char >= BOOL_BASE: ### checar que no se pase del limite de las char
+            aux = next_char
+            if aux >= BOOL_BASE or aux >= CTE_BASE: ### checar que no se pase del limite de las char
                 # ERROR: Too many variables 
                 print("Error, espacio de memoria insuficiente para char")
                 sys.exit()
-            aux = scope_address + next_char
-            if aux >= LOCAL_BASE and scope_address == GLOBAL_BASE:
-                print("Error, espacio de memoria insuficiente para variables globales")
-                sys.exit()        
-            if aux >= CTE_BASE and scope_address == LOCAL_BASE:
-                print("Error, espacio de memoria insuficiente para variables locales")
-                sys.exit()      
             next_char += 1
             return aux
         elif tipo == 'bool':
             global next_bool
-            if next_bool >= BOOL_BASE + ADDRESS_SPACE: ### checar que no se pase del limite de las bool
+            aux = next_bool
+            if aux >= BOOL_BASE + ADDRESS_SPACE or aux >= CTE_BASE: ### checar que no se pase del limite de las bool
                 print("Error, espacio de memoria insuficiente para booleanos")
                 sys.exit()
-            aux = scope_address + next_bool
-            if aux >= LOCAL_BASE and scope_address == GLOBAL_BASE:
-                print("Error, espacio de memoria insuficiente para variables globales")
-                sys.exit()        
-            if aux >= CTE_BASE and scope_address == LOCAL_BASE:
-                print("Error, espacio de memoria insuficiente para variables locales")
-                sys.exit()      
             next_bool += 1
             return aux
 
