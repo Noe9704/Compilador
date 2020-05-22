@@ -47,6 +47,13 @@ global_next_char = GLOBAL_BASE + CHAR_BASE
 global_bool_base = GLOBAL_BASE + BOOL_BASE
 global_next_bool = GLOBAL_BASE + BOOL_BASE
 
+
+constant_next_int = CTE_BASE + INT_BASE
+constant_next_float = CTE_BASE + FLOAT_BASE
+constant_next_char = CTE_BASE + CHAR_BASE
+constant_bool_base = CTE_BASE + BOOL_BASE
+constant_next_bool = CTE_BASE + BOOL_BASE
+
 #contador inicial de apuntador a direccion actual
 next_int = LOCAL_BASE + INT_BASE
 next_float = LOCAL_BASE + FLOAT_BASE
@@ -664,27 +671,27 @@ def p_r_false_quit_bottom(p):
 
 def p_var_cte(p):
     '''
-    var_cte : CTE_I r_registrar_Constante
-            | CTE_F r_registrar_Constante
+    var_cte : CTE_I r_registrar_Constante_Int
+            | CTE_F 
     '''
 
-def p_r_registrar_Constante(p):
+def p_r_registrar_Constante_Int(p):
     '''
-    r_registrar_Constante : 
+    r_registrar_Constante_Int : 
     '''
-    global constants, current_variable,CTE_BASE
+    global constants, current_variable,CTE_BASE, constant_next_int
     current_variable = p[-1]
-    print(current_func)
-    print(current_variable)
     if constants[current_func].get(current_variable) is None:
-        if CTE_BASE >= MAX_BASE :
-            print("Error, espacio de constantes lleno")
+        if constant_next_int >= constant_next_float :
+            print("Error, espacio de constantes enteras lleno")
             sys.exit()
-        aux = CTE_BASE                    
-        constants[current_func][current_variable] = {
-                   'address': aux
+        aux =  + INT_BASE  
+        '''             
+        constants[current_func][address] = {
+                   'type':{}
         }
         CTE_BASE += 1
+        '''
     else :
         print("Error")
 
