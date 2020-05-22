@@ -13,6 +13,12 @@ symbols = {
     }
 }
 
+constants = {
+    'global' :{
+        
+    }
+}
+
 ##declaracion de variables para abrir simbolos
 current_tipo = ''
 current_func = 'global'
@@ -58,85 +64,83 @@ def newFunction():
     next_bool = LOCAL_BASE + BOOL_BASE
 
 def getAddressAux():
-
-
-##funcion para asignar direcciones de memoria
-def getAddress(tipo, force_global=false):
+    pass
+    
+## Funcion para asignar direcciones de memoria
+def getAddress(tipo, force_global=False):
+    ## Asignar direcciones a variables globales y a funciones
     if current_func == 'global' or force_global:
+        ## Asignar direcciones a variables o funciones enteras
         if tipo == 'int':
-            global global_next_int
-            aux = global_next_int  
-            if aux >= FLOAT_BASE or aux >= LOCAL_BASE or aux >= CTE_BASE: ### checar que no se pase del limite de las enteras
-                # ERROR: Too many variables 
-                print("Error, espacio de memoria insuficiente para enteros")
+            global global_next_int ## Contador de la direccion actual
+            aux = global_next_int  ## Auxiliar para no modificar contador original
+            if aux >= FLOAT_BASE: ### checar que no se pase del limite de las enteras
+                print("Error, espacio de memoria insuficiente para variables globales enteras")
                 sys.exit()
-            global_next_int += 1
-            return aux
-        elif tipo == 'float':
-            global global_next_float
-            aux = global_next_float  
-            if aux >= CHAR_BASE or aux >= LOCAL_BASE or aux >= CTE_BASE: ### checar que no se pase del limite de las enteras
-                # ERROR: Too many variables 
+            global_next_int += 1 ## Actualiza la direccion 
+            return aux ## Se retorna la direccion actual
+        elif tipo == 'float': ## Asignar direcciones a variables o funciones flotantes
+            global global_next_float ## Contador de la direccion actual
+            aux = global_next_float   ## Auxiliar para no modificar contador original
+            if aux >= CHAR_BASE: ### checar que no se pase del limite de las flotantes               
                 print("Error, espacio de memoria insuficiente para flotantes")
                 sys.exit()
-            global_next_float += 1
-            return aux
-        elif tipo == 'char':
-            global global_next_char
-            aux = global_next_char
-            if aux >= BOOL_BASE or aux >= LOCAL_BASE or aux >= CTE_BASE: ### checar que no se pase del limite de las enteras
-                # ERROR: Too many variables 
+            global_next_float += 1 ## Actualiza la direccion 
+            return aux ## Se retorna la direccion actual
+        elif tipo == 'char': ## Asignar direcciones a variables o funciones de caracter
+            global global_next_char ## Contador de la direccion actual
+            aux = global_next_char  ## Auxiliar para no modificar contador original
+            if aux >= BOOL_BASE: ### checar que no se pase del limite de las caracteres             
                 print("Error, espacio de memoria insuficiente para caracteres")
                 sys.exit()
-            global_next_char += 1
-            return aux
-        elif tipo == 'bool':
-            global global_next_bool
-            aux = global_next_bool
-            if aux >= BOOL_BASE + ADDRESS_SPACE or aux >= LOCAL_BASE or aux >= CTE_BASE: ### checar que no se pase del limite de las enteras
-                # ERROR: Too many variables 
+            global_next_char += 1 ## Actualiza la direccion 
+            return aux ## Se retorna la direccion actual
+        elif tipo == 'bool':  ## Asignar direcciones a variables o funciones booleanas
+            global global_next_bool ## Contador de la direccion actual
+            aux = global_next_bool  ## Auxiliar para no modificar contador original
+            if aux >= BOOL_BASE + ADDRESS_SPACE: ### checar que no se pase del limite de las booleanas            
                 print("Error, espacio de memoria insuficiente para booleanos")
                 sys.exit()
-            global_next_bool += 1
-            return aux   
+            global_next_bool += 1 ## Actualiza la direccion 
+            return aux  ## Se retorna la direccion actual
+        
     else: 
-        if tipo == 'int':
-            global next_int
-            aux = next_int  
-            if aux >= FLOAT_BASE or aux >= CTE_BASE: ### checar que no se pase del limite de las enteras
-                # ERROR: Too many variables 
-                print("Error, espacio de memoria insuficiente para enteros")
+        if tipo == 'int':   ## Asignar direcciones a variables locales de tipo entero
+            global next_int ## Contador de la direccion actual
+            aux = next_int  ## Auxiliar para no modificar contador original
+            if aux >= LOCAL_BASE + FLOAT_BASE: ### checar que no se pase del limite de las enteras
+                print("Locales,Error, espacio de memoria insuficiente para enteros")
                 sys.exit()   
-            next_int += 1
-            return aux
-        elif tipo == 'float':
-            global next_float
-            aux = next_float
-            if aux >= CHAR_BASE or aux >= CTE_BASE: ### checar que no se pase del limite de las flotantes
+            next_int += 1 ## Actualiza la direccion 
+            return aux ## Se retorna la direccion actual
+        elif tipo == 'float': ## Asignar direcciones a variables locales de tipo flotante
+            global next_float ## Contador de la direccion actual
+            aux = next_float  ## Auxiliar para no modificar contador original
+            if aux >= LOCAL_BASE + CHAR_BASE: ### checar que no se pase del limite de las flotantes
                 # ERROR: Too many variables 
                 print("Error, espacio de memoria insuficiente para flotantes")
                 sys.exit()
             ##print('Aqui esta aux')            
-            next_float += 1
-            return aux
-            ##print(aux)
-        elif tipo == 'char':
-            global next_char
-            aux = next_char
-            if aux >= BOOL_BASE or aux >= CTE_BASE: ### checar que no se pase del limite de las char
+            next_float += 1 ## Actualiza la direccion 
+            return aux ## Se retorna la direccion actual
+        elif tipo == 'char': ## Asignar direcciones a variables locales de tipo char
+            global next_char ## Contador de la direccion actual
+            aux = next_char ## Auxiliar para no modificar contador original
+            if aux >= LOCAL_BASE + BOOL_BASE: ### checar que no se pase del limite de las char
                 # ERROR: Too many variables 
                 print("Error, espacio de memoria insuficiente para char")
                 sys.exit()
-            next_char += 1
-            return aux
-        elif tipo == 'bool':
-            global next_bool
-            aux = next_bool
-            if aux >= BOOL_BASE + ADDRESS_SPACE or aux >= CTE_BASE: ### checar que no se pase del limite de las bool
+            next_char += 1 ## Actualiza la direccion 
+            return aux ## Se retorna la direccion actual
+        elif tipo == 'bool': ## Asignar direcciones a variables locales de tipo bool
+            global next_bool ## Contador de la direccion actual
+            aux = next_bool  ## Auxiliar para no modificar contador original
+            if aux >= LOCAL_BASE + BOOL_BASE + ADDRESS_SPACE or aux >= CTE_BASE: ### checar que no se pase del limite de las bool
                 print("Error, espacio de memoria insuficiente para booleanos")
                 sys.exit()
-            next_bool += 1
-            return aux
+            next_bool += 1 ## Actualiza la direccion 
+            return aux  ## Se retorna la direccion actual
+
 
 quadruples = []
 
@@ -150,7 +154,7 @@ pila_Variables_Funciones = []
 Pila_Saltos = []
 
 
-
+## Ejemplo de la estructura de la tabla de simbolos
 '''symbols[current_func]['vars'][p[-1]] = {
     'tipo': current_tipo,
     'address': get_address()
@@ -196,6 +200,7 @@ Pila_Saltos = []
     }
 }'''
 
+## Variable para comprobar si el archivo se acepto correctamente
 success = True
 
 ##Declaration of tokens
@@ -291,13 +296,15 @@ t_CTE_C = r'(\'[^\']*\')'
 
 tokens = tokens + list(reserverd.values())
 
-##declaration for letters with words ex hola93
+
+## Funcion para declarar ID con expresiones regulares
 def t_ID(t):
     r'[a-zA-Z][a-zA-Z0-9]*'
     t.type = reserverd.get(t.value,'ID')
     return t
 
-##Lexer error function
+
+## Funcion para detectar simbolos no validos
 def t_error(t):
     global success
     success = False
@@ -306,7 +313,7 @@ def t_error(t):
  
 lex.lex()
 
-##gramatic rules
+## Regla gramatical 
 def p_program(p):
     '''
     program : PROGRAM ID r_registrar_programa COLON auxVar auxFuncion MAIN r_registrar_main L_PARENT R_PARENT auxVar bloque
@@ -357,24 +364,6 @@ def p_lista_ids(p):
     '''
     lista_ids : ID r_push_Name casilla casilla 
     '''
-
-def p_r_push_Name(p):
-    '''
-    r_push_Name : 
-    '''
-    if(symbols[current_func]['vars'].get(p[-1]) is not None):
-        Pila_Names.append(symbols[current_func]['vars'].get(p[-1])['address'])
-        Pila_Types.append(symbols[current_func]['vars'].get(p[-1])['type'])
-    elif(symbols['global']['vars'].get(p[-1]) is not None):
-        Pila_Names.append(symbols['global']['vars'].get(p[-1])['address'])
-        Pila_Types.append(symbols['global']['vars'].get(p[-1])['type'])
-    elif(symbols[current_func]['params'].get(p[-1]) is not None):
-        Pila_Names.append(symbols[current_func]['params'].get(p[-1])['address'])
-        Pila_Types.append(symbols[current_func]['params'].get(p[-1])['type'])
-    else :
-        print("Error, variable no definida en la funcion ", current_func)
-        sys.exit()
-
 
 def p_auxLista_idsVar_asignacion(p):
     '''
@@ -450,29 +439,6 @@ def p_asignacion(p):
     '''
     asignacion : lista_ids EQUAL r_push_operator exp r_check_equal SEMICOLON
     '''
-
-def p_r_check_equal(p):
-    '''
-    r_check_equal :
-    '''
-    if len(Pila_Oper) > 0 :
-        if Pila_Oper[len(Pila_Oper)-1] == '=':
-            opDer = Pila_Names.pop()
-            typeDer = Pila_Types.pop() 
-            opIzq = Pila_Names.pop()
-            typeIzq = Pila_Types.pop()
-            operador = Pila_Oper.pop()
-            result_Type = cuboSemantico.typeOperator[typeIzq][typeDer][operador]
-            if result_Type is not None :
-                termporalResultado = getAddress(result_Type)
-                cuad = [operador, opDer,None,opIzq]
-                quadruples.append(cuad)
-                Pila_Names.append(termporalResultado)
-                Pila_Types.append(result_Type)
-            else:
-                print("Error, en el match de tipos")
-                sys.exit() 
-
 
 def p_m(p):
     '''
@@ -698,9 +664,30 @@ def p_r_false_quit_bottom(p):
 
 def p_var_cte(p):
     '''
-    var_cte : CTE_I 
-            | CTE_F
+    var_cte : CTE_I r_registrar_Constante
+            | CTE_F r_registrar_Constante
     '''
+
+def p_r_registrar_Constante(p):
+    '''
+    r_registrar_Constante : 
+    '''
+    global constants, current_variable,CTE_BASE
+    current_variable = p[-1]
+    print(current_func)
+    print(current_variable)
+    if constants[current_func].get(current_variable) is None:
+        if CTE_BASE >= MAX_BASE :
+            print("Error, espacio de constantes lleno")
+            sys.exit()
+        aux = CTE_BASE                    
+        constants[current_func][current_variable] = {
+                   'address': aux
+        }
+        CTE_BASE += 1
+    else :
+        print("Error")
+
 
 def p_llamada(p):
     '''
@@ -927,6 +914,8 @@ def p_r_registrar_programa(p):
     '''
     symbols['name'] = p[-1]
 
+## Las reglas de registrar es para guardar en tabla de variables
+## Reglas de push son para guardar en pilas
 def p_r_registrar_variable(p):
     '''
     r_registrar_variable :
@@ -948,36 +937,26 @@ def p_r_registrar_variable(p):
             
             if current_func != aux_Funcion :
                 pila_Variables_Funciones.clear()'''
-                    
-        symbols[current_func]['vars'][current_variable] = {
-                   'type':current_tipo,
-                   'address':getAddress(current_tipo)
-        }
         if variable_comun(pila_Variables_Globales, pila_Variables_Generales) is True:
             print("Variable en main ya declarada globalmente")
             sys.exit()
         if duplicados_Tupla(pila_Variables_Funciones) is True:
             print("Variable en funcion local repetida")
             sys.exit()
-        #print("Globales")
-        #print(pila_Variables_Globales)
-        #print("main")
-        #print(pila_Variables_Generales)
-
-        ##print(current_func)
-        ##print(aux_Funcion)
-        ##print(pila_Variables_Funciones)
         if len(pila_Variables_Globales) is not len(set(pila_Variables_Globales)):
             print("Variable ya declarada en el espacio global")
-            sys.exit()
-        
+            sys.exit()            
+        symbols[current_func]['vars'][current_variable] = {
+                   'type':current_tipo,
+                   'address':getAddress(current_tipo)
+        }
+       
     else :
         print("Error")
 
 
 
-def duplicados_Tupla(listaTupla): 
-      
+def duplicados_Tupla(listaTupla):     
     flag = False
     listaAuxiliar = []   
     contador = 0
@@ -1018,17 +997,24 @@ def p_r_registrar_func_name(p):
     if symbols.get(current_func) is None:
         symbols[current_func]= {
             'type': current_tipo,
-            'start': quadruples.size(),
+            'start': len(quadruples),
             'params': {},
             'vars': {}
         }
-        symbols['global']['vars'][current_func] = {
+        constants[current_func] ={
+            'address': {}
+        }
+
+        if current_tipo != "void" :
+            symbols['global']['vars'][current_func] = {
             'address': getAddress(current_tipo, force_global=True),
             'type': current_tipo
         }
+
     else :
         print("funcion repetida " + current_func)
         sys.exit()
+  
 
 def p_r_registrar_main(p):
     '''
@@ -1058,8 +1044,51 @@ def p_r_registrar_parametro(p):
     }    
 
     
+## Funcion para ingresar a las pilas de variables y de tipos
+def p_r_push_Name(p):
+    '''
+    r_push_Name : 
+    '''
+    ## Se registra en las pilas de variables y de tipos
+    if(symbols[current_func]['vars'].get(p[-1]) is not None): 
+        ## Se registran en funciones locales
+        Pila_Names.append(symbols[current_func]['vars'].get(p[-1])['address'])
+        Pila_Types.append(symbols[current_func]['vars'].get(p[-1])['type'])
+         ## Se registran en el espacio global
+    elif(symbols['global']['vars'].get(p[-1]) is not None):
+        Pila_Names.append(symbols['global']['vars'].get(p[-1])['address'])
+        Pila_Types.append(symbols['global']['vars'].get(p[-1])['type'])
+         ## Se registran parametros en las funciones
+    elif(symbols[current_func]['params'].get(p[-1]) is not None):
+        Pila_Names.append(symbols[current_func]['params'].get(p[-1])['address'])
+        Pila_Types.append(symbols[current_func]['params'].get(p[-1])['type'])
+    else :
+        print("Error en la funcion " + "\""+ current_func +"\"" +" la variable " + "\"" + p[-1] + "\""+ " no esta definida")
+        sys.exit()
 
 
+## Regla para generar cuadruplo con igual
+def p_r_check_equal(p):
+    '''
+    r_check_equal :
+    '''
+    if len(Pila_Oper) > 0 :
+        if Pila_Oper[len(Pila_Oper)-1] == '=':
+            opDer = Pila_Names.pop()
+            typeDer = Pila_Types.pop() 
+            opIzq = Pila_Names.pop()
+            typeIzq = Pila_Types.pop()
+            operador = Pila_Oper.pop()
+            result_Type = cuboSemantico.typeOperator[typeIzq][typeDer][operador]
+            if result_Type is not None :
+                termporalResultado = getAddress(result_Type)
+                cuad = [operador, opDer,None,opIzq]
+                quadruples.append(cuad)
+                Pila_Names.append(termporalResultado)
+                Pila_Types.append(result_Type)
+            else:
+                print("Error, en el match de tipos")
+                sys.exit() 
 
 parser = yacc.yacc()
 
