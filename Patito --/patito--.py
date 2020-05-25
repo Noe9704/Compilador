@@ -931,8 +931,58 @@ def p_r_checkWhileC(p):
 
 def p_nocondicional(p):
     '''
-    nocondicional : FROM lista_ids EQUAL exp TO exp DO bloque
+    nocondicional : FROM r_checkFor lista_ids EQUAL r_push_operator exp TO exp r_push_operator DO r_checkForB bloque r_checkForC
     '''
+
+def p_r_checkFor(p):
+    '''
+    r_checkFor :
+    '''
+    Pila_Saltos.append(len(quadruples))
+
+def p_r_checkForB(p):
+    '''
+    r_checkForB :
+    '''
+    exp_Type = Pila_Types.pop()
+    ##exp_Name = Pila_Names.pop()
+    if exp_Type != "int" :
+        print("Error de tipo")
+        sys.exit()
+    else :      
+        opDer = Pila_Names.pop()
+        typeDer = Pila_Types.pop() 
+        opIzq = Pila_Names.pop()
+        typeIzq = Pila_Types.pop()
+        operador = "<"
+        result_Type = cuboSemantico.typeOperator[typeIzq][typeDer][operador]
+        termporalResultado = getAddress(result_Type)
+        cuad1 = [operador,opIzq,opDer,termporalResultado]
+        quadruples.append(cuad1)
+        cuad = ["GOTOF", None,None,len(quadruples)-1]   
+        quadruples.append(cuad)
+        Pila_Saltos.append(len(quadruples)-1)
+        operador2 = "+"
+        result_Type2 = cuboSemantico.typeOperator[typeIzq][typeDer][operador2]
+        termporalResultado2 = getAddress(result_Type2)
+        cuad2 = [operador2,opIzq,opIzq,termporalResultado2]
+        quadruples.append(cuad2)
+        operador3 = "="
+        cuad3 = [operador3,termporalResultado2,None,opIzq]
+        quadruples.append(cuad3)
+       
+        
+        
+
+def p_r_checkForC(p):
+    '''
+    r_checkForC :
+    '''
+    end = Pila_Saltos.pop()
+    regresa = Pila_Saltos.pop()
+    cuad = ["GOTO", None,None,regresa] 
+    quadruples.append(cuad)
+    fill(end,len(quadruples))  
 
 def p_empty(p):
     ''' 
