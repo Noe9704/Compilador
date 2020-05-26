@@ -19,6 +19,12 @@ constants = {
     }
 }
 
+    
+
+
+contParametros = 0
+currentERA = ""
+
 ##declaracion de variables para abrir simbolos
 current_tipo = ''
 current_func = 'global'
@@ -323,7 +329,7 @@ lex.lex()
 ## Regla gramatical 
 def p_program(p):
     '''
-    program : PROGRAM ID r_registrar_programa COLON auxVar auxFuncion MAIN r_registrar_main L_PARENT R_PARENT auxVar bloque
+    program : PROGRAM ID r_registrar_programa COLON auxVar auxFuncion MAIN r_registrar_main L_PARENT R_PARENT auxVar bloque r_EndProgram
     '''
     
     #stuff.insert(0, stuff[:])
@@ -347,6 +353,12 @@ def p_program(p):
     ##print(Pila_Names)
     #print(Pila_Oper)
 
+def p_r_EndProgram(p):
+    '''
+    r_EndProgram : 
+    '''
+    cuad = ["END",None,None,None]
+    quadruples.append(cuad)
 
 def p_auxVar(p):
     '''
@@ -404,8 +416,63 @@ def p_auxFuncion(p):
 
 def p_funcion(p):
     '''
-    funcion : FUNCION tipoFuncion ID r_registrar_func_name L_PARENT auxParametro R_PARENT COLON auxVar bloque
+    funcion : FUNCION tipoFuncion ID r_registrar_func_name L_PARENT auxParametro R_PARENT COLON auxVar bloque r_SaveTemporalVarsFunction
     '''
+
+
+def p_r_SaveTemporalVarsFunction(p):
+    '''
+    r_SaveTemporalVarsFunction : 
+    '''
+    global next_int, LOCAL_BASE
+    symbols[current_func]['Temporales'] = {'int': next_int-LOCAL_BASE - INT_BASE - len(symbols[current_func]['params']),
+                                           'float': next_float - LOCAL_BASE - FLOAT_BASE,
+                                           'char': next_char - LOCAL_BASE - CHAR_BASE,
+                                           'bool': next_bool - LOCAL_BASE - BOOL_BASE}
+    cuad = ["ENDPROC",None,None,None]
+    quadruples.append(cuad)
+
+
+def p_r_funcionERA(p):
+    '''
+    r_funcionERA : 
+    '''
+    global currentERA
+    funcName = p[-1]
+    currentERA = funcName
+    cuad = ["Era",None,None,funcName]
+    quadruples.append(cuad)
+
+
+def p_r_reiniciaContadorParametrosLlamadas(p):
+    '''
+    r_reiniciaContadorParametrosLlamadas : 
+    '''
+    global contParametros
+    contParametros = 0
+
+
+def p_r_funcionParametros(p):
+    '''
+    r_funcionParametros : 
+    '''
+    global contParametros
+    contParametros +=1 
+    functionName = Pila_Names.pop()
+    Pila_Types.pop()  
+    cuad = ["Param",functionName ,None,"par" + str(contParametros)]
+    quadruples.append(cuad)
+
+def p_r_funcionGOSUB(p):
+    '''
+    r_funcionGOSUB : 
+    '''
+    global currentERA
+    cuad = ["GoSub",None,None,currentERA]
+    currentERA = ""
+    quadruples.append(cuad)
+
+
 
 def p_tipoFuncion(p):
     '''
@@ -422,7 +489,7 @@ def p_auxParametro(p):
 
 def p_bloque(p):
     '''
-    bloque : L_KEY auxEstatuto R_KEY
+    bloque : L_KEY auxEstatuto R_KEY 
     '''
 
 def p_auxEstatuto(p):
@@ -730,13 +797,13 @@ def p_r_registrar_constante_float(p):
 
 def p_llamada(p):
     '''
-    llamada : ID L_PARENT auxLlamada R_PARENT
+    llamada : ID r_funcionERA L_PARENT auxLlamada R_PARENT r_funcionGOSUB r_reiniciaContadorParametrosLlamadas 
     '''
 
 def p_auxLlamada(p):
     '''
-    auxLlamada : exp
-                | exp COMA auxLlamada
+    auxLlamada : exp r_funcionParametros
+                | exp r_funcionParametros COMA auxLlamada
     '''
 
 def p_retorno(p):
@@ -962,6 +1029,7 @@ def p_r_checkForB(p):
         cuad = ["GOTOF", None,None,len(quadruples)-1]   
         quadruples.append(cuad)
         Pila_Saltos.append(len(quadruples)-1)
+        '''
         operador2 = "+"
         result_Type2 = cuboSemantico.typeOperator[typeIzq][typeDer][operador2]
         termporalResultado2 = getAddress(result_Type2)
@@ -970,6 +1038,7 @@ def p_r_checkForB(p):
         operador3 = "="
         cuad3 = [operador3,termporalResultado2,None,opIzq]
         quadruples.append(cuad3)
+        '''
        
         
         
@@ -1118,6 +1187,7 @@ def p_r_registrar_tipo(p):
     '''r_registrar_tipo : '''
     global current_tipo
     current_tipo = p[-1]
+    
 
 def p_r_registrar_parametro(p):
     '''
@@ -1128,7 +1198,8 @@ def p_r_registrar_parametro(p):
     symbols[current_func]['params'][current_param] = {
         'type':current_tipo,
         'address': getAddress(current_tipo)
-    }    
+    }
+  
 
     
 ## Funcion para ingresar a las pilas de variables y de tipos
