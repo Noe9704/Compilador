@@ -459,9 +459,16 @@ def p_r_funcionParametros(p):
     global contParametros
     contParametros +=1 
     functionName = Pila_Names.pop()
-    Pila_Types.pop()  
-    cuad = ["Param",functionName ,None,"par" + str(contParametros)]
-    quadruples.append(cuad)
+    Pila_Types.pop()
+    paramsFunction = symbols[currentERA]['params'].items()
+    if len(list((symbols[currentERA]['params'].items()))) >= contParametros :
+        cuad = ["Param",functionName ,None,"par" + str(contParametros)]
+        quadruples.append(cuad)
+
+    else :
+        print("Error, no  se han mandado la cantidad de argumentos que tiene la firma original de la funcion")
+        sys.exit()
+
 
 def p_r_funcionGOSUB(p):
     '''
