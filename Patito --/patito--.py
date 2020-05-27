@@ -329,7 +329,7 @@ lex.lex()
 ## Regla gramatical 
 def p_program(p):
     '''
-    program : PROGRAM ID r_registrar_programa COLON auxVar auxFuncion MAIN r_registrar_main L_PARENT R_PARENT auxVar bloque r_EndProgram
+    program : PROGRAM ID r_registrar_programa COLON auxVar auxFuncion r_GOTOMAIN MAIN r_registrar_main L_PARENT R_PARENT auxVar bloque r_EndProgram
     '''
     
     #stuff.insert(0, stuff[:])
@@ -441,17 +441,11 @@ def p_r_funcionERA(p):
     funcName = p[-1]
     currentERA = funcName
     print(currentERA)
-    cuad = ["Era",None,None,funcName]
+    cuad = ["Era",None,None,symbols[funcName]['start']+1]
     quadruples.append(cuad)
-
-
-def p_r_reiniciaContadorParametrosLlamadas(p):
-    '''
-    r_reiniciaContadorParametrosLlamadas : 
-    '''
-    global contParametros
-    contParametros = 0
-
+    # Pila_Names.append(symbols['global']['vars'][funcName]['address'])
+    # Pila_Types.append(symbols['global']['vars'][funcName]['type'])
+    # Pila_Oper.append("=")
 
 def p_r_funcionParametros(p):
     '''
@@ -460,8 +454,25 @@ def p_r_funcionParametros(p):
     global contParametros
     contParametros +=1 
     functionName = Pila_Names.pop()
-    Pila_Types.pop()
-    paramsFunction = symbols[currentERA]['params'].items()
+    typeT = Pila_Types.pop()
+    paramsFunction = list(symbols[currentERA]['params'])
+    #print("funcion parametro")
+    #print(paramsFunction[0])
+    #print("Dictionary")
+    #print(symbols[currentERA]['params'][paramsFunction[contParametros-1]]['type'])
+
+    if(contParametros <= len(paramsFunction)):
+        if(symbols[currentERA]['params'][paramsFunction[contParametros-1]]['type'] == typeT) :
+            cuad = ["Param",functionName ,None,"par" + str(contParametros)]
+            quadruples.append(cuad)
+        else:
+            print("Error, el tipo mandando no concuerda con el de la funcion")
+            sys.exit()
+    else:
+        print("Error, se ha mandado mas parametros de los necesarios en la funcion")
+        sys.exit()
+    
+    '''
     if len(list((symbols[currentERA]['params'].items()))) >= contParametros :
         cuad = ["Param",functionName ,None,"par" + str(contParametros)]
         quadruples.append(cuad)
@@ -469,7 +480,7 @@ def p_r_funcionParametros(p):
     else :
         print("Error, no  se han mandado la cantidad de argumentos que tiene la firma original de la funcion")
         sys.exit()
-
+    '''
 
 def p_r_funcionGOSUB(p):
     '''
@@ -477,7 +488,6 @@ def p_r_funcionGOSUB(p):
     '''
     global currentERA
     cuad = ["GoSub",None,None,currentERA]
-    currentERA = ""
     quadruples.append(cuad)
 
 def p_r_GOTOMAIN(p):
@@ -485,31 +495,8 @@ def p_r_GOTOMAIN(p):
     r_GOTOMAIN :
     '''
     cuad = ["GOTO",None,None,len(quadruples)]
-    quadruples.append(cuad)
-
-
-def p_r_asignaValorFuncion(p):
-    '''
-    r_asignaValorFuncion :
-    '''
-    global current_tipo
-    tipoFuncion = current_tipo
-    if len(Pila_Oper) > 0 :
-        if Pila_Oper[len(Pila_Oper)-1] == '=':
-            Pila_Names.pop()
-            Pila_Types.pop()
-            resultado = Pila_Names.pop()
-            tipo = Pila_Types.pop()
-            operador = Pila_Oper.pop() 
-            result_Type = cuboSemantico.typeOperator[tipo][tipoFuncion][operador]
-            if result_Type is not None :
-                termporalResultado = getAddress(result_Type)
-                cuad = [operador, termporalResultado,None,resultado]
-                quadruples.append(cuad)
-            else:
-                print("Error, en el match *, / de tipos")
-                sys.exit() 
-
+    #quadruples.appendleft(cuad)
+    quadruples.insert(0, cuad)
 
 
 def p_tipoFuncion(p):
@@ -838,6 +825,20 @@ def p_llamada(p):
     llamada : ID r_funcionERA L_PARENT auxLlamada R_PARENT r_funcionGOSUB r_reiniciaContadorParametrosLlamadas 
     '''
 
+def p_r_reiniciaContadorParametrosLlamadas(p):
+    '''
+    r_reiniciaContadorParametrosLlamadas : 
+    '''
+    global contParametros, currentERA
+    
+    if (contParametros < len(list(symbols[currentERA]['params']))) :
+        print("Error, muy pocos argumentos llamados.")
+        sys.exit()
+    else:
+        currentERA = ""
+        contParametros = 0
+
+
 def p_auxLlamada(p):
     '''
     auxLlamada : exp r_funcionParametros
@@ -848,6 +849,16 @@ def p_retorno(p):
     '''
     retorno : RETURN r_push_operator L_PARENT exp R_PARENT r_checkReturn SEMICOLON
     '''
+
+def p_r_returnAssignment(p):
+    '''
+    r_returnAssignment :
+    '''
+    # Pila_Names.append()
+    # Pila_Types.append(symbols['global']['vars'][funcName]['type'])
+    # Pila_Oper.append("=")
+    resultType  = "int"
+    cuad = ['=',symbols['global']['vars'][funcName]['address'],None, getAddress(resultType)]
 
 def p_r_checkReturn(p):
     '''
