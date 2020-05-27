@@ -442,6 +442,7 @@ def p_r_funcionERA(p):
     currentERA = funcName
     print(currentERA)
     cuad = ["Era",None,None,symbols[funcName]['start']+1]
+    symbols[funcName]['start'] = symbols[funcName]['start'] + 1
     quadruples.append(cuad)
     # Pila_Names.append(symbols['global']['vars'][funcName]['address'])
     # Pila_Types.append(symbols['global']['vars'][funcName]['type'])
@@ -489,6 +490,9 @@ def p_r_funcionGOSUB(p):
     global currentERA
     cuad = ["GoSub",None,None,currentERA]
     quadruples.append(cuad)
+    Pila_Names.append(symbols['global']['vars'][currentERA]['address'])
+    Pila_Types.append(symbols['global']['vars'][currentERA]['type'])
+
 
 def p_r_GOTOMAIN(p):
     '''
