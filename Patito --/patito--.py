@@ -440,6 +440,7 @@ def p_r_funcionERA(p):
     global currentERA
     funcName = p[-1]
     currentERA = funcName
+    print(currentERA)
     cuad = ["Era",None,None,funcName]
     quadruples.append(cuad)
 
@@ -478,6 +479,36 @@ def p_r_funcionGOSUB(p):
     cuad = ["GoSub",None,None,currentERA]
     currentERA = ""
     quadruples.append(cuad)
+
+def p_r_GOTOMAIN(p):
+    '''
+    r_GOTOMAIN :
+    '''
+    cuad = ["GOTO",None,None,len(quadruples)]
+    quadruples.append(cuad)
+
+
+def p_r_asignaValorFuncion(p):
+    '''
+    r_asignaValorFuncion :
+    '''
+    global current_tipo
+    tipoFuncion = current_tipo
+    if len(Pila_Oper) > 0 :
+        if Pila_Oper[len(Pila_Oper)-1] == '=':
+            Pila_Names.pop()
+            Pila_Types.pop()
+            resultado = Pila_Names.pop()
+            tipo = Pila_Types.pop()
+            operador = Pila_Oper.pop() 
+            result_Type = cuboSemantico.typeOperator[tipo][tipoFuncion][operador]
+            if result_Type is not None :
+                termporalResultado = getAddress(result_Type)
+                cuad = [operador, termporalResultado,None,resultado]
+                quadruples.append(cuad)
+            else:
+                print("Error, en el match *, / de tipos")
+                sys.exit() 
 
 
 
@@ -1189,6 +1220,7 @@ def p_r_registrar_main(p):
         'params': {},
         'vars': {}
     }
+
 
 def p_r_registrar_tipo(p):
     '''r_registrar_tipo : '''
