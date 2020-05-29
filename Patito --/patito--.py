@@ -20,7 +20,10 @@ constants = {
 }
 
     
-
+aux = False
+auxParamFuncion = False
+isFromFuntion = False
+valorTermporal = 0
 
 contParametros = 0
 currentERA = ""
@@ -437,13 +440,15 @@ def p_r_funcionERA(p):
     '''
     r_funcionERA : 
     '''
-    global currentERA
+    global currentERA,auxParamFuncion,isFromFuntion
+    isFromFuntion = True
     funcName = p[-1]
     currentERA = funcName
     print(currentERA)
     cuad = ["Era",None,None,symbols[funcName]['start']+1]
     symbols[funcName]['start'] = symbols[funcName]['start'] + 1
     quadruples.append(cuad)
+    auxParamFuncion = False
     # Pila_Names.append(symbols['global']['vars'][funcName]['address'])
     # Pila_Types.append(symbols['global']['vars'][funcName]['type'])
     # Pila_Oper.append("=")
@@ -452,7 +457,7 @@ def p_r_funcionParametros(p):
     '''
     r_funcionParametros : 
     '''
-    global contParametros
+    global contParametros,auxParamFuncion 
     contParametros +=1 
     functionName = Pila_Names.pop()
     typeT = Pila_Types.pop()
@@ -466,6 +471,8 @@ def p_r_funcionParametros(p):
         if(symbols[currentERA]['params'][paramsFunction[contParametros-1]]['type'] == typeT) :
             cuad = ["Param",functionName ,None,"par" + str(contParametros)]
             quadruples.append(cuad)
+            auxParamFuncion = False
+            
         else:
             print("Error, el tipo mandando no concuerda con el de la funcion")
             sys.exit()
@@ -477,7 +484,6 @@ def p_r_funcionParametros(p):
     if len(list((symbols[currentERA]['params'].items()))) >= contParametros :
         cuad = ["Param",functionName ,None,"par" + str(contParametros)]
         quadruples.append(cuad)
-
     else :
         print("Error, no  se han mandado la cantidad de argumentos que tiene la firma original de la funcion")
         sys.exit()
@@ -487,11 +493,24 @@ def p_r_funcionGOSUB(p):
     '''
     r_funcionGOSUB : 
     '''
-    global currentERA
+    global currentERA, aux, valorTermporal,auxParamFuncion,isFromFuntion
     cuad = ["GoSub",None,None,currentERA]
+    funcionParaRetorno = currentERA
     quadruples.append(cuad)
     Pila_Names.append(symbols['global']['vars'][currentERA]['address'])
     Pila_Types.append(symbols['global']['vars'][currentERA]['type'])
+    tipo =Pila_Types.pop()
+    nombreFuncion = Pila_Names.pop()
+    result_Type = cuboSemantico.typeOperator[tipo][tipo]["="]
+    termporalResultado = getAddress(result_Type)
+    cuad = ["=", nombreFuncion,None,termporalResultado]
+    quadruples.append(cuad)
+    Pila_Names.append(termporalResultado)
+    Pila_Types.append(result_Type)
+    aux = True
+    isFromFuntion = False
+    valorTermporal = termporalResultado
+    
 
 
 def p_r_GOTOMAIN(p):
@@ -561,6 +580,7 @@ def p_r_push_operator(p):
     '''
     Pila_Oper.append(p[-1])
 
+   
 
 
 def p_t(p):
@@ -572,46 +592,87 @@ def p_r_check_sum(p):
     '''
     r_check_sum :
     '''
+    global auxParamFuncion, isFromFuntion
     if len(Pila_Oper) > 0 :
         if Pila_Oper[len(Pila_Oper)-1] == '+' or Pila_Oper[len(Pila_Oper)-1] == '-':
-            opDer = Pila_Names.pop()
-            typeDer = Pila_Types.pop() 
-            opIzq = Pila_Names.pop()
-            typeIzq = Pila_Types.pop()
-            operador = Pila_Oper.pop()
-            result_Type = cuboSemantico.typeOperator[typeIzq][typeDer][operador]
-            if result_Type is not None :
-                termporalResultado = getAddress(result_Type)
-                cuad = [operador, opIzq,opDer,termporalResultado]
-                quadruples.append(cuad)
-                Pila_Names.append(termporalResultado)
-                Pila_Types.append(result_Type)
-            else:
-                print("Error, en el match *, / de tipos")
-                sys.exit() 
+            if auxParamFuncion != True and isFromFuntion:
+                opDer = Pila_Names.pop()
+                typeDer = Pila_Types.pop() 
+                opIzq = Pila_Names.pop()
+                typeIzq = Pila_Types.pop()
+                operador = Pila_Oper.pop()
+                result_Type = cuboSemantico.typeOperator[typeIzq][typeDer][operador]
+                if result_Type is not None :
+                    termporalResultado = getAddress(result_Type)
+                    cuad = [operador, opIzq,opDer,termporalResultado]
+                    quadruples.append(cuad)
+                    Pila_Names.append(termporalResultado)
+                    Pila_Types.append(result_Type)
+                    auxParamFuncion = True
+                else:
+                    print("Error, en el match *, / de tipos")
+                    sys.exit() 
+            elif isFromFuntion == False :
+                opDer = Pila_Names.pop()
+                typeDer = Pila_Types.pop() 
+                opIzq = Pila_Names.pop()
+                typeIzq = Pila_Types.pop()
+                operador = Pila_Oper.pop()
+                result_Type = cuboSemantico.typeOperator[typeIzq][typeDer][operador]
+                if result_Type is not None :
+                    termporalResultado = getAddress(result_Type)
+                    cuad = [operador, opIzq,opDer,termporalResultado]
+                    quadruples.append(cuad)
+                    Pila_Names.append(termporalResultado)
+                    Pila_Types.append(result_Type)
+                else:
+                    print("Error, en el match *, / de tipos")
+                    sys.exit() 
+
 
 
 def p_r_check_mult(p):
     '''
     r_check_mult :
     '''
+    global auxParamFuncion, isFromFuntion
     if len(Pila_Oper) > 0 :
         if Pila_Oper[len(Pila_Oper)-1] == '*' or Pila_Oper[len(Pila_Oper)-1] == '/':
-            opDer = Pila_Names.pop()
-            typeDer = Pila_Types.pop() 
-            opIzq = Pila_Names.pop()
-            typeIzq = Pila_Types.pop()
-            operador = Pila_Oper.pop()
-            result_Type = cuboSemantico.typeOperator[typeIzq][typeDer][operador]
-            if result_Type is not None :
-                termporalResultado = getAddress(result_Type)
-                cuad = [operador, opIzq,opDer,termporalResultado]
-                quadruples.append(cuad)
-                Pila_Names.append(termporalResultado)
-                Pila_Types.append(result_Type)
-            else:
-                print("Error, en el match +, - de tipos")
-                sys.exit() 
+            if auxParamFuncion != True and isFromFuntion:
+                opDer = Pila_Names.pop()
+                typeDer = Pila_Types.pop() 
+                opIzq = Pila_Names.pop()
+                typeIzq = Pila_Types.pop()
+                operador = Pila_Oper.pop()
+                result_Type = cuboSemantico.typeOperator[typeIzq][typeDer][operador]
+                if result_Type is not None :
+                    termporalResultado = getAddress(result_Type)
+                    cuad = [operador, opIzq,opDer,termporalResultado]
+                    quadruples.append(cuad)
+                    Pila_Names.append(termporalResultado)
+                    Pila_Types.append(result_Type)
+                    auxParamFuncion = True
+                else:
+                    print("Error, en el match *, / de tipos")
+                    sys.exit() 
+            elif isFromFuntion == False :
+                opDer = Pila_Names.pop()
+                typeDer = Pila_Types.pop() 
+                opIzq = Pila_Names.pop()
+                typeIzq = Pila_Types.pop()
+                operador = Pila_Oper.pop()
+                result_Type = cuboSemantico.typeOperator[typeIzq][typeDer][operador]
+                if result_Type is not None :
+                    termporalResultado = getAddress(result_Type)
+                    cuad = [operador, opIzq,opDer,termporalResultado]
+                    quadruples.append(cuad)
+                    Pila_Names.append(termporalResultado)
+                    Pila_Types.append(result_Type)
+                else:
+                    print("Error, en el match *, / de tipos")
+                    sys.exit() 
+
+
 
 def p_auxT(p):
     '''
@@ -868,17 +929,26 @@ def p_r_checkReturn(p):
     '''
     r_checkReturn :
     '''
+    global valorTermporal, aux,auxParamFuncion
     if len(Pila_Oper) > 0 :
         if Pila_Oper[len(Pila_Oper)-1] == 'return':
             opDer = Pila_Names.pop()
             Pila_Types.pop()
             operador = Pila_Oper.pop()
-            cuad = [operador, None,None,opDer]
-            quadruples.append(cuad)
+            
+            if(aux == True):
+                cuad = [operador,None,None,opDer]
+                quadruples.append(cuad)
+                aux = False
+            else : 
+                cuad = [operador, None,None,opDer]
+                quadruples.append(cuad)
+
+            
 
 def p_lectura(p):
     '''
-    lectura : READ r_push_operator  L_PARENT  auxLectura  R_PARENT r_check_Lectura SEMICOLON
+    lectura : READ r_push_operator L_PARENT auxLectura R_PARENT SEMICOLON
     '''
 
 def p_r_check_Lectura(o):
@@ -897,9 +967,15 @@ def p_r_check_Lectura(o):
 
 def p_auxLectura(p):
     '''
-    auxLectura : lista_ids 
-            | lista_ids  COMA auxLectura 
+    auxLectura : lista_ids r_check_Lectura
+            | lista_ids r_check_Lectura COMA r_pushOtherRead auxLectura 
     '''
+
+def p_r_pushOtherRead(p):
+    '''
+    r_pushOtherRead : 
+    '''
+    Pila_Oper.append("read")
 
 def p_escritura(p):
     '''
@@ -1082,7 +1158,6 @@ def p_r_checkForB(p):
         cuad = ["GOTOF", None,None,len(quadruples)-1]   
         quadruples.append(cuad)
         Pila_Saltos.append(len(quadruples)-1)
-        '''
         operador2 = "+"
         result_Type2 = cuboSemantico.typeOperator[typeIzq][typeDer][operador2]
         termporalResultado2 = getAddress(result_Type2)
@@ -1091,7 +1166,7 @@ def p_r_checkForB(p):
         operador3 = "="
         cuad3 = [operador3,termporalResultado2,None,opIzq]
         quadruples.append(cuad3)
-        '''
+        
        
         
         
@@ -1310,17 +1385,18 @@ parser = yacc.yacc()
 ##caso de prueba exitoso
 ##testFile.txt
 
-data = "testFile.txt"
-f = open(data,'r')
-s = f.read()
-
-parser.parse(s)
-
-if success == True:
-    print("El archivo se ha aceptado")
-    sys.exit()
-else:
-    print("El archivo tiene errores")
-    sys.exit()
-
-f.close()
+if len(sys.argv) is not 2:
+    print('Por favor manda un archivo.')
+    raise SyntaxError('Patito necesita de un archivo')
+else: 
+    data = sys.argv[1]
+  # Compile program.
+    with open(data, 'r', newline='\n') as file:
+        parser.parse(file.read())
+        object_code = {
+            'symbols': symbols,
+            'quadruples': quadruples,
+            'constants': constants
+        }
+        with open(data + 'o', 'w') as file:
+            file.write(str(object_code))
