@@ -339,7 +339,7 @@ def p_program(p):
     #pp.pprint(stuff)
     pp = pprint.PrettyPrinter(indent=4)
     pp.pprint(symbols)
-    pp.pprint(pila_Variables_Funciones)
+    #pp.pprint(pila_Variables_Funciones)
     # print(symbols)
     # quadruples.insert(0,quadruples[:])
     cont = 0
@@ -579,6 +579,8 @@ def p_estatuto(p):
 def p_asignacion(p):
     '''
     asignacion : lista_ids EQUAL r_push_operator exp r_check_equal SEMICOLON
+                | lista_ids EQUAL r_push_operator CTE_C r_registrar_constante_char r_check_equal SEMICOLON
+                | lista_ids EQUAL r_push_operator CTE_STRING r_registrar_constante_char r_check_equal SEMICOLON 
     '''
 
 def p_m(p):
@@ -902,6 +904,31 @@ def p_r_registrar_constante_float(p):
         dirr = constants[current_variable]['address']
         Pila_Names.append(dirr)
         Pila_Types.append('float')
+
+def p_r_registrar_constante_char(p):
+    '''
+    r_registrar_constante_char : 
+    '''
+    global constants, current_variable,CTE_BASE, constant_next_char
+    current_variable = p[-1]
+    aux = constant_next_char 
+
+    if constants.get(current_variable) is None:
+        if constant_next_char >= constant_bool_base :
+            print("Error, espacio de chars lleno.")
+            sys.exit()
+         
+        constants[current_variable] = {
+                   'address': aux,
+                   'type': 'char'
+        }
+        Pila_Names.append(aux)
+        Pila_Types.append('char')
+        constant_next_char += 1
+    else :
+        dirr = constants[current_variable]['address']
+        Pila_Names.append(dirr)
+        Pila_Types.append('char')
 
 
 def p_llamada(p):
@@ -1369,6 +1396,7 @@ def p_r_check_equal(p):
     '''
     r_check_equal :
     '''
+    print(p[-1])
     if len(Pila_Oper) > 0 :
         if Pila_Oper[len(Pila_Oper)-1] == '=':
             opDer = Pila_Names.pop()
@@ -1384,7 +1412,7 @@ def p_r_check_equal(p):
                 Pila_Names.append(termporalResultado)
                 Pila_Types.append(result_Type)
             else:
-                print("Error, en el match de tipos")
+                print("Error en "+ str(p[-1]) +", error en el match de tipos.")
                 sys.exit() 
 
 parser = yacc.yacc()
