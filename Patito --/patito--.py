@@ -936,16 +936,6 @@ def p_retorno(p):
     retorno : RETURN r_push_operator L_PARENT exp R_PARENT r_checkReturn SEMICOLON
     '''
 
-def p_r_returnAssignment(p):
-    '''
-    r_returnAssignment :
-    '''
-    # Pila_Names.append()
-    # Pila_Types.append(symbols['global']['vars'][funcName]['type'])
-    # Pila_Oper.append("=")
-    resultType  = "int"
-    cuad = ['=',symbols['global']['vars'][funcName]['address'],None, getAddress(resultType)]
-
 def p_r_checkReturn(p):
     '''
     r_checkReturn :
