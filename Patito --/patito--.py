@@ -15,9 +15,7 @@ symbols = {
 }
 
 constants = {
-    'global' :{
-        
-    }
+ 
 }
 
     
@@ -861,12 +859,12 @@ def p_r_registrar_constante_int(p):
     current_variable = p[-1]
     aux = constant_next_int 
 
-    if constants[current_func].get(current_variable) is None:
+    if constants.get(current_variable) is None:
         if constant_next_int >= constant_next_float :
             print("Error, espacio de constantes enteras lleno.")
             sys.exit()
                     
-        constants[current_func][current_variable] = {
+        constants[current_variable] = {
                     'address': aux,
                     'type': 'int'
         }
@@ -874,7 +872,7 @@ def p_r_registrar_constante_int(p):
         Pila_Types.append('int')
         constant_next_int += 1
     else :
-        dirr = constants[current_func][current_variable]['address']
+        dirr = constants[current_variable]['address']
         Pila_Names.append(dirr)
         Pila_Types.append('int')
     
@@ -888,12 +886,12 @@ def p_r_registrar_constante_float(p):
     current_variable = p[-1]
     aux = constant_next_float 
 
-    if constants[current_func].get(current_variable) is None:
+    if constants.get(current_variable) is None:
         if constant_next_float >= constant_next_char :
             print("Error, espacio de constantes float lleno.")
             sys.exit()
          
-        constants[current_func][current_variable] = {
+        constants[current_variable] = {
                    'address': aux,
                    'type': 'float'
         }
@@ -901,7 +899,7 @@ def p_r_registrar_constante_float(p):
         Pila_Types.append('float')
         constant_next_float += 1
     else :
-        dirr = constants[current_func][current_variable]['address']
+        dirr = constants[current_variable]['address']
         Pila_Names.append(dirr)
         Pila_Types.append('float')
 
@@ -1299,7 +1297,7 @@ def p_r_registrar_func_name(p):
             'params': {},
             'vars': {}
         }
-        constants[current_func] ={}
+        
 
         if current_tipo != "void" :
             symbols['global']['vars'][current_func] = {
