@@ -6,6 +6,7 @@ import sys
 import cuboSemantico
 import pprint
 
+
 symbols = {
     'name': '',
     'global': {
@@ -400,9 +401,29 @@ def p_lista_ids_asignacion(p):
 
 def p_casilla(p):
     '''
-    casilla : L_BRACKET casillaVar R_BRACKET
+    casilla : L_BRACKET r_push_operator casillaVar R_BRACKET
             | empty
     '''
+
+'''
+def p_r_VerificaTam(p):
+    if len(Pila_Oper) > 0 :
+        if Pila_Oper[len(Pila_Oper)-1] == '[' :
+            Pila_Oper.pop()
+            opName = Pila_Names.pop()
+            tipo = Pila_Types.pop()
+            cuad = ["ver",opName,1,len(quadruples)]
+            quadruples.append(cuad)
+            nuevoValor = opName + 1
+            temporal = memoria.inserta_Dir_Locales(nuevoValor,tipo)
+            ##ir a memoria por una direccion temporal dependiendo del tipo
+            cuad2 = ["+",opName,temporal,len(quadruples)]
+            quadruples.append(cuad2)
+            cuad3 = ["+", "temporal","nuevaDir",len(quadruples)]
+            quadruples.append(cuad3)
+'''
+
+
 
 def p_casillaVar(p):
     '''
@@ -1191,6 +1212,7 @@ def p_error(p):
     global success
     success = False
     print("Error de sintaxis en '%s'" % p)
+    sys.exit()
 
 
 ## rules
@@ -1385,7 +1407,7 @@ parser = yacc.yacc()
 ##caso de prueba exitoso
 ##testFile.txt
 
-if len(sys.argv) is not 2:
+if len(sys.argv) != 2:
     print('Por favor manda un archivo.')
     raise SyntaxError('Patito necesita de un archivo')
 else: 
