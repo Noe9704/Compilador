@@ -7,7 +7,7 @@ constants = {}
 
 memoriaGlobal = memoria.Memoria()
 memoriaConstante = memoria.Memoria()
-memoriaLocales = []
+memoriaLocales = [memoria.Memoria()]
 
 if len(sys.argv) != 2:
     print('Error, leyendo el objeto del archivo')
@@ -32,13 +32,16 @@ for key in constants.keys():
     memoriaConstante.inserta_Dir_Constantes(keyValue,keyType)
 
 
-
+'''
 print("Memoria Virtual")
 print(memoriaGlobal)
 print("Constantes")
 print(memoriaConstante)
+'''
 
 # quadruples = [["+",10001,10002,10003],["-",10004,10005,10006],["*",10007,10008,10009]]
+
+##example = [['GOTO', None, None, 3], ['+', 10001, 20000, 10002], ['=', 10002, None, 10000], ['ENDPROC', None, None, None], ['=', 20000, None, 10004], ['+', 10006, 20001, 10008], ['=', 10008, None, 10005], ['END', None, None, None]]
 
 def ejecuta(cuad,pos):
     currentERA = 'main'
@@ -46,6 +49,8 @@ def ejecuta(cuad,pos):
         return int(cuad[3])
 
     if(cuad[0] == 'ENDPROC'):
+        if len(memoriaLocales) > 1:
+            memoriaLocales.pop()
         return pos + 1 
 
     if cuad[0] == '+':
@@ -58,7 +63,7 @@ def ejecuta(cuad,pos):
 
         #valorIzq = opIzq # Traer datos de la direccion
         #valorDer = opDer
-        print(memoriaConstante.getValue(opIzq))
+        ##print(memoriaConstante.getValue(opIzq))
         if(type1 == 'int') :
             valorIzq = memoriaConstante.getValue(opIzq)
         elif(type1 == 'float') :
@@ -67,8 +72,8 @@ def ejecuta(cuad,pos):
             valorIzq = memoriaConstante.getValue(opIzq)
         elif(type1 == 'bool') :
             valorIzq = memoriaConstante.getValue(opIzq)
-        print("Valor")
-        print(valorIzq)
+        ##print("Valor")
+        ##print(valorIzq)
         #valorIzq = memoriaGlobal
 
         #nuevoResultado = valorIzq + valorDer # Operacion de los valores
@@ -86,7 +91,7 @@ def ejecuta(cuad,pos):
         ##contador
         ##return contador
         
-        print(quadruples[0])
+        ##print(quadruples[0])
     
     elif cuad[0] == '*':
         opIzq = cuad[1]
@@ -100,7 +105,7 @@ def ejecuta(cuad,pos):
         ##contador
         ##return contador
         
-        print(quadruples[0])
+        ##print(quadruples[0])
     elif cuad[0] == '/':
         opIzq = cuad[1]
         opDer = cuad[2]
@@ -113,7 +118,7 @@ def ejecuta(cuad,pos):
         ##contador
         ##return contador
         
-        print(quadruples[0])
+      
     elif cuad[0] == '<':
         opIzq = cuad[1]
         opDer = cuad[2]
@@ -127,7 +132,7 @@ def ejecuta(cuad,pos):
         ##contador
         ##return contador
         
-        print(quadruples[0])
+       
     elif cuad[0] == '>':
         opIzq = cuad[1]
         opDer = cuad[2]
@@ -140,7 +145,7 @@ def ejecuta(cuad,pos):
         quadruples.pop(0)
         ##contador
         ##return contador        
-        print(quadruples[0])
+       
 
     elif cuad[0] == '<=':
         opIzq = cuad[1]
@@ -154,7 +159,7 @@ def ejecuta(cuad,pos):
         quadruples.pop(0)
         ##contador
         ##return contador        
-        print(quadruples[0])
+      
 
     elif cuad[0] == '>=':
         opIzq = cuad[1]
@@ -168,7 +173,7 @@ def ejecuta(cuad,pos):
         quadruples.pop(0)
         ##contador
         ##return contador        
-        print(quadruples[0])
+      
 
     elif cuad[0] == '==':
         opIzq = cuad[1]
@@ -182,64 +187,70 @@ def ejecuta(cuad,pos):
         quadruples.pop(0)
         ##contador
         ##return contador        
-        print(quadruples[0])
+       
        
     elif cuad[0] == '=':
-        print("Estoy en '='")
-        opIzq = cuad[1] # Direccion de memoria
+        opIzq = cuad[1] 
         opDer = cuad[2] # Siempre es None por el igual
-
-        # Revisar que exista en tabla de constantes, locales, globales
-        # Asignar valor encontrado o direccion encontrada en valorIzq o valorDer
-
-
-
         ##resultado a memoria
-        valorIzq = 0
-        valorDer = 0
-
+        valorIzq = -1
+        valorDer = -1
         # Solo sacamos tipo1 porque el otro siempre es None
         type1=memoriaGlobal.getType(opIzq)
-
-        # Traer datos de la direccion
-        # Buscamos si no es global
-        if(type1 == 'int') :
+        print("OpIzq")
+        print(opIzq) 
+        if opIzq < 10000 :
+            valorIzq = memoriaGlobal.getValue(opIzq)
+        elif opIzq >= 10000 and opIzq < 20000:
+            valorIzq = memoriaLocales[-1].getValue(opIzq)
+            if valorIzq == -1:
+                keyAddress = opIzq
+                keyType = type1
+                memoriaLocales[-1].inserta_Dir_Locales(keyAddress,keyType)
+                valorIzq = memoriaLocales[-1].getValue(opIzq) 
+                     
+        elif opIzq >= 20000 and opIzq < 30000:
             valorIzq = memoriaConstante.getValue(opIzq)
-        elif(type1 == 'float') :
-            valorIzq = memoriaConstante.getValue(opIzq)
-        elif(type1 == 'char') :
-            valorIzq = memoriaConstante.getValue(opIzq)
-        elif(type1 == 'bool') :
-            valorIzq = memoriaConstante.getValue(opIzq)
-            
-        resultado = valorIzq
-
-
-        #valorIzq = opIzq # Traer datos de la direccion
-        #valorDer = opDer      
         return pos +1
-        
 
-
-
-
-    '''
     elif cuad[0] == 'write':
         resultado = cuad[3]
-        valorResultado = resultado ## se manda a memoria el memory.getValor(resultado)
+        if resultado < 10000 :
+            valor = memoriaGlobal.getValue(resultado)         
+        elif resultado >= 10000 and resultado < 20000:
+            valor = memoriaLocales[-1].getValue(resultado)      
+        elif resultado >= 20000 and resultado < 30000:
+            valor = memoriaConstante.getValue(resultado)
         
+        if(valor == -1):
+            print("Variable sin asignacion")
+            sys.exit()
+        else :
+            print(valor)
+        return pos + 1
         
-        print(cuadruplo[0])
-    '''
+
+    elif cuad[0] == "END":
+        print("Codigo ejecutado con exito! :)")
+        return pos + 1
+
+        
+    
 
 
-
+    
+        
+    
+    
 
 cont = 0
 while quadruples[cont][0] != 'END':
+    
     print(quadruples[cont])
     
+    
     cont = ejecuta(quadruples[cont],cont)
-    print(cont)
+    ##print(cont)
     #i = switch(quad[i], i)
+
      
