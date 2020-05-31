@@ -94,27 +94,27 @@ class Memoria:
             self.bools[direccion] = const
             return direccion
 
-    def inserta_Dir_Locales(self,var,tipo):
+    def inserta_Dir_Locales(self,var,tipo, value):
         global local_int, local_float, local_char, local_bool
         if tipo == "int":
-            direccion = local_int
+            direccion = var
             local_int += 1
-            self.ints[direccion] = var
+            self.ints[direccion] = value
             return direccion
         elif tipo == "float":
-            direccion = local_float
+            direccion = var
             local_float += 1
-            self.floats[direccion] = var
+            self.floats[direccion] = value
             return direccion
         elif tipo == "char":
-            direccion = local_char
+            direccion = var
             local_char += 1
-            self.chars[direccion] = var
+            self.chars[direccion] = value
             return direccion
         elif tipo == "bool":
-            direccion = local_bool
+            direccion = var
             local_bool += 1
-            self.bools[direccion] = var
+            self.bools[direccion] = value
             return direccion
     
     def inserta_Dir_temporales(self,var,tipo):
@@ -152,13 +152,13 @@ class Memoria:
         
 
     def getType(self,varAddress):
-        if (int(varAddress) / 1000) % 10 == 0:
+        if (int(varAddress) / 1000) % 10 < 1:
             return 'int'
-        elif (int(varAddress) / 1000) % 10 == 1:
+        elif (int(varAddress) / 1000) % 10 < 2:
             return 'float'
-        elif (int(varAddress) / 1000) % 10 == 2:
+        elif (int(varAddress) / 1000) % 10 < 3:
             return 'char'
-        elif (int(varAddress) / 1000) % 10 == 3:
+        elif (int(varAddress) / 1000) % 10 < 4:
             return 'bool'
     
     def getValue(self,address):
