@@ -52,22 +52,22 @@ class Memoria:
         if tipo == "int":
             direccion = global_int
             global_int += 1
-            self.ints[direccion] = None
+            self.ints[direccion] = var
             return direccion
         elif tipo == "float":
             direccion = global_float
             global_float += 1
-            self.floats[direccion] = None
+            self.floats[direccion] = var
             return direccion
         elif tipo == "char":
             direccion = global_char
             global_char += 1
-            self.char[direccion] = None
+            self.chars[direccion] = var
             return direccion
         elif tipo == "bool":
             direccion = global_bool
             global_bool += 1
-            self.bools[direccion] = None
+            self.bools[direccion] = var
             return direccion
 
     def inserta_Dir_Constantes(self, const,tipo):
@@ -75,7 +75,7 @@ class Memoria:
         if tipo == "int":
             direccion = constante_int
             constante_int += 1
-            print(constante_int)
+            ##print(constante_int)
             self.ints[direccion] = const
             return direccion
         elif tipo == "float":
@@ -99,22 +99,22 @@ class Memoria:
         if tipo == "int":
             direccion = local_int
             local_int += 1
-            self.int[direccion] = var
+            self.ints[direccion] = var
             return direccion
         elif tipo == "float":
             direccion = local_float
             local_float += 1
-            self.float[direccion] = var
+            self.floats[direccion] = var
             return direccion
         elif tipo == "char":
             direccion = local_char
             local_char += 1
-            self.char[direccion] = var
+            self.chars[direccion] = var
             return direccion
         elif tipo == "bool":
             direccion = local_bool
             local_bool += 1
-            self.bool[direccion] = var
+            self.bools[direccion] = var
             return direccion
     
     def inserta_Dir_temporales(self,var,tipo):
@@ -122,23 +122,34 @@ class Memoria:
         if tipo == "int":
             direccion = local_int
             local_int += 1
-            self.int[direccion] = var
+            self.ints[direccion] = var
             return direccion
         elif tipo == "float":
             direccion = local_float
             local_float += 1
-            self.float[direccion] = var
+            self.floats[direccion] = var
             return direccion
         elif tipo == "char":
             direccion = local_char
             local_char += 1
-            self.char[direccion] = var
+            self.chars[direccion] = var
             return direccion
         elif tipo == "bool":
             direccion = local_bool
             local_bool += 1
-            self.bool[direccion] = var
+            self.bools[direccion] = var
             return direccion
+
+    def upDateVal(self,address,valor):
+        if (int(address) / 1000) % 10 < 1:
+            self.ints[address] = valor
+        elif (int(address) / 1000) % 10 < 2:
+            self.floats[address] = valor
+        elif (int(address) / 1000) % 10 < 3:
+            self.chars[address] = valor
+        elif (int(address) / 1000) % 10 < 4:
+            self.bools[address] = valor
+        
 
     def getType(self,varAddress):
         if (int(varAddress) / 1000) % 10 == 0:
@@ -156,17 +167,20 @@ class Memoria:
                 if address == key :
                     return self.ints[key]
         elif (int(address) / 1000) % 10 < 2:
-            for key in floats:
+            for key in self.floats:
                 if address == key :
                     return self.floats[key]
         elif (int(address) / 1000) % 10 < 3:
-            for key in char:
+            for key in self.chars:
                 if address == key :
-                    return self.char[key]
+                    return self.chars[key]
         elif (int(address) / 1000) % 10 < 4:
-            for key in bool:
+            for key in self.bools:
                 if address == key :
-                    return self.bool[key]
+                    return self.bools[key]
+        else:
+            return -1
+
         
 #print(symbols)
 #print(quadruples)
@@ -174,6 +188,7 @@ class Memoria:
 """
 
 """
+'''
 def asigna(direccion,valor):
     if direccion < CTE_BASE and direccion > LOCAL_BASE :
         memoriaLocales[-1] = valor
@@ -184,8 +199,9 @@ def asigna(direccion,valor):
 def asignaParametros():
     pass
     
-
+'''
 ####Logica, no hacer mucho caso
+'''
 def run():
     if quadruples[-1] == "+":
         operand = quadruples[-1]
@@ -195,5 +211,5 @@ def run():
         quadruples[-1] = newValor
         ##Se debe actualizar la direccion 
 
-
+'''
 ############################
