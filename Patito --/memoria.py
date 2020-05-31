@@ -178,8 +178,6 @@ class Memoria:
             for key in self.bools:
                 if address == key :
                     return self.bools[key]
-        else:
-            return -1
 
         
 #print(symbols)

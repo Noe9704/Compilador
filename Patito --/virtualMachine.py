@@ -41,10 +41,6 @@ print("Locales")
 print(memoriaLocales[0])
 """
 
-# quadruples = [["+",10001,10002,10003],["-",10004,10005,10006],["*",10007,10008,10009]]
-
-##example = [['GOTO', None, None, 3], ['+', 10001, 20000, 10002], ['=', 10002, None, 10000], ['ENDPROC', None, None, None], ['=', 20000, None, 10004], ['+', 10006, 20001, 10008], ['=', 10008, None, 10005], ['END', None, None, None]]
-
 def ejecuta(cuad,pos):
     currentERA = 'main'
     if(cuad[0] == 'GOTO'): 
@@ -56,97 +52,378 @@ def ejecuta(cuad,pos):
         return pos + 1 
 
     if cuad[0] == '+':
-        memTem = memoria.Memoria()
-        opIzq = cuad[1] # Direccion de memoria 1
+        opIzq = cuad[1] 
         opDer = cuad[2]
+        resultado = cuad[3]
 
-        type1=memoriaGlobal.getType(opIzq)
-        type2=memoriaGlobal.getType(opDer)
+        ##resultado a memoria
+        valorIzq = -1
+        valorDer = -1
+        resultadoCuad = -1
 
-        #valorIzq = opIzq # Traer datos de la direccion
-        #valorDer = opDer
-        ##print(memoriaConstante.getValue(opIzq))
-        if(type1 == 'int') :
+        type1 = memoriaGlobal.getType(opIzq)
+        if opIzq < 10000 :
+            valorIzq = memoriaGlobal.getValue(opIzq)
+        elif opIzq >= 10000 and opIzq < 20000:
+            valorIzq = memoriaLocales[-1].getValue(opIzq)
+            if valorIzq == None:
+                keyAddress = opIzq
+                keyType = type1
+                memoriaLocales[-1].inserta_Dir_Locales(keyAddress,keyType, keyAddress)
+                valorIzq = memoriaLocales[-1].getValue(opIzq)                      
+        elif opIzq >= 20000 and opIzq < 30000:
             valorIzq = memoriaConstante.getValue(opIzq)
-        elif(type1 == 'float') :
-            valorIzq = memoriaConstante.getValue(opIzq)
-        elif(type1 == 'char') :
-            valorIzq = memoriaConstante.getValue(opIzq)
-        elif(type1 == 'bool') :
-            valorIzq = memoriaConstante.getValue(opIzq)
-        ##print("Valor")
-        ##print(valorIzq)
-        #valorIzq = memoriaGlobal
 
-        #nuevoResultado = valorIzq + valorDer # Operacion de los valores
-
-        #memoriasTemporales.append(memTem)
-    elif cuad[0] == '-':
-        opIzq = cuad[1]
-        opDer = cuad[2]
-
-        valorIzq = opIzq
-        valorDer = opDer
-        nuevoResultado = valorIzq - valorDer
-        ##actualiza el resultado del cuadruplo  con nuevoResultado
-        quadruples.pop(0)
-        ##contador
-        ##return contador
+        if opDer < 10000 :
+            valorDer = memoriaGlobal.getValue(opDer)
+        elif opDer >= 10000 and opDer < 20000:
+            valorDer = memoriaLocales[-1].getValue(opDer)
+            if valorDer == None:
+                keyAddress = opDer
+                keyType = type1
+                memoriaLocales[-1].inserta_Dir_Locales(keyAddress,keyType, keyAddress)
+                valorDer = memoriaLocales[-1].getValue(opDer)                      
+        elif opDer >= 20000 and opDer < 30000:
+            valorDer = memoriaConstante.getValue(opDer)
+        type2 = memoriaGlobal.getType(opDer)
         
-        ##print(quadruples[0])
-    
+        typeR = memoriaGlobal.getType(resultado)
+
+        if(typeR == "int"):
+            resultadoCuad = int(valorIzq) + int(valorDer )
+        elif(typeR == "float"):
+            resultadoCuad = float(valorIzq) + float(valorDer )
+
+        #print("res", resultadoCuad)
+        if resultado < 10000 : 
+            keyAddress = resultado
+            keyType = typeR
+            memoriaLocales[-1].inserta_Dir_Locales(keyAddress,keyType, resultadoCuad)
+        elif resultado >= 10000 and resultado < 20000:
+            keyAddress = resultado
+            keyType = typeR
+            memoriaLocales[-1].inserta_Dir_Locales(keyAddress,keyType, resultadoCuad)     
+        elif resultado >= 20000 and resultado < 30000:
+            keyAddress = resultado
+            keyType = typeR
+            memoriaLocales[-1].inserta_Dir_Locales(keyAddress,keyType, resultadoCuad)
+        
+        return pos +1
+##Resta
+    if cuad[0] == '-':
+        opIzq = cuad[1] 
+        opDer = cuad[2]
+        resultado = cuad[3]
+
+        ##resultado a memoria
+        valorIzq = -1
+        valorDer = -1
+        resultadoCuad = -1
+
+        type1 = memoriaGlobal.getType(opIzq)
+        if opIzq < 10000 :
+            valorIzq = memoriaGlobal.getValue(opIzq)
+        elif opIzq >= 10000 and opIzq < 20000:
+            valorIzq = memoriaLocales[-1].getValue(opIzq)
+            if valorIzq == None:
+                keyAddress = opIzq
+                keyType = type1
+                memoriaLocales[-1].inserta_Dir_Locales(keyAddress,keyType, keyAddress)
+                valorIzq = memoriaLocales[-1].getValue(opIzq)                      
+        elif opIzq >= 20000 and opIzq < 30000:
+            valorIzq = memoriaConstante.getValue(opIzq)
+
+        if opDer < 10000 :
+            valorDer = memoriaGlobal.getValue(opDer)
+        elif opDer >= 10000 and opDer < 20000:
+            valorDer = memoriaLocales[-1].getValue(opDer)
+            if valorDer == None:
+                keyAddress = opDer
+                keyType = type1
+                memoriaLocales[-1].inserta_Dir_Locales(keyAddress,keyType, keyAddress)
+                valorDer = memoriaLocales[-1].getValue(opDer)                      
+        elif opDer >= 20000 and opDer < 30000:
+            valorDer = memoriaConstante.getValue(opDer)
+        type2 = memoriaGlobal.getType(opDer)
+        
+        typeR = memoriaGlobal.getType(resultado)
+
+        if(typeR == "int"):
+            resultadoCuad = int(valorIzq) - int(valorDer )
+        elif(typeR == "float"):
+            resultadoCuad = float(valorIzq) - float(valorDer )
+
+        #print("res", resultadoCuad)
+        if resultado < 10000 : 
+            keyAddress = resultado
+            keyType = typeR
+            memoriaLocales[-1].inserta_Dir_Locales(keyAddress,keyType, resultadoCuad)
+        elif resultado >= 10000 and resultado < 20000:
+            keyAddress = resultado
+            keyType = typeR
+            memoriaLocales[-1].inserta_Dir_Locales(keyAddress,keyType, resultadoCuad)     
+        elif resultado >= 20000 and resultado < 30000:
+            keyAddress = resultado
+            keyType = typeR
+            memoriaLocales[-1].inserta_Dir_Locales(keyAddress,keyType, resultadoCuad)
+        
+        return pos +1
+## Mult
     elif cuad[0] == '*':
-        opIzq = cuad[1]
+        opIzq = cuad[1] 
         opDer = cuad[2]
+        resultado = cuad[3]
 
-        valorIzq = opIzq
-        valorDer = opDer
-        nuevoResultado = valorIzq * valorDer
-        ##actualiza el resultado del cuadruplo  con nuevoResultado
-        quadruples.pop(0)
-        ##contador
-        ##return contador
+        ##resultado a memoria
+        valorIzq = -1
+        valorDer = -1
+        resultadoCuad = -1
+
+        type1 = memoriaGlobal.getType(opIzq)
+        if opIzq < 10000 :
+            valorIzq = memoriaGlobal.getValue(opIzq)
+        elif opIzq >= 10000 and opIzq < 20000:
+            valorIzq = memoriaLocales[-1].getValue(opIzq)
+            if valorIzq == None:
+                keyAddress = opIzq
+                keyType = type1
+                memoriaLocales[-1].inserta_Dir_Locales(keyAddress,keyType, keyAddress)
+                valorIzq = memoriaLocales[-1].getValue(opIzq)                      
+        elif opIzq >= 20000 and opIzq < 30000:
+            valorIzq = memoriaConstante.getValue(opIzq)
+
+        if opDer < 10000 :
+            valorDer = memoriaGlobal.getValue(opDer)
+        elif opDer >= 10000 and opDer < 20000:
+            valorDer = memoriaLocales[-1].getValue(opDer)
+            if valorDer == None:
+                keyAddress = opDer
+                keyType = type1
+                memoriaLocales[-1].inserta_Dir_Locales(keyAddress,keyType, keyAddress)
+                valorDer = memoriaLocales[-1].getValue(opDer)                      
+        elif opDer >= 20000 and opDer < 30000:
+            valorDer = memoriaConstante.getValue(opDer)
+        type2 = memoriaGlobal.getType(opDer)
         
-        ##print(quadruples[0])
+        typeR = memoriaGlobal.getType(resultado)
+
+        if(typeR == "int"):
+            resultadoCuad = int(valorIzq) * int(valorDer )
+        elif(typeR == "float"):
+            resultadoCuad = float(valorIzq) * float(valorDer )
+
+        #print("res", resultadoCuad)
+        if resultado < 10000 : 
+            keyAddress = resultado
+            keyType = typeR
+            memoriaLocales[-1].inserta_Dir_Locales(keyAddress,keyType, resultadoCuad)
+        elif resultado >= 10000 and resultado < 20000:
+            keyAddress = resultado
+            keyType = typeR
+            memoriaLocales[-1].inserta_Dir_Locales(keyAddress,keyType, resultadoCuad)     
+        elif resultado >= 20000 and resultado < 30000:
+            keyAddress = resultado
+            keyType = typeR
+            memoriaLocales[-1].inserta_Dir_Locales(keyAddress,keyType, resultadoCuad)
+        
+        return pos +1
+
+## Div
     elif cuad[0] == '/':
-        opIzq = cuad[1]
+        opIzq = cuad[1] 
         opDer = cuad[2]
+        resultado = cuad[3]
 
-        valorIzq = opIzq
-        valorDer = opDer
-        nuevoResultado = valorIzq / valorDer
-        ##actualiza el resultado del cuadruplo  con nuevoResultado
-        quadruples.pop(0)
-        ##contador
-        ##return contador
+        ##resultado a memoria
+        valorIzq = -1
+        valorDer = -1
+        resultadoCuad = -1
+
+        type1 = memoriaGlobal.getType(opIzq)
+        if opIzq < 10000 :
+            valorIzq = memoriaGlobal.getValue(opIzq)
+        elif opIzq >= 10000 and opIzq < 20000:
+            valorIzq = memoriaLocales[-1].getValue(opIzq)
+            if valorIzq == None:
+                keyAddress = opIzq
+                keyType = type1
+                memoriaLocales[-1].inserta_Dir_Locales(keyAddress,keyType, keyAddress)
+                valorIzq = memoriaLocales[-1].getValue(opIzq)                      
+        elif opIzq >= 20000 and opIzq < 30000:
+            valorIzq = memoriaConstante.getValue(opIzq)
+
+        if opDer < 10000 :
+            valorDer = memoriaGlobal.getValue(opDer)
+        elif opDer >= 10000 and opDer < 20000:
+            valorDer = memoriaLocales[-1].getValue(opDer)
+            if valorDer == None:
+                keyAddress = opDer
+                keyType = type1
+                memoriaLocales[-1].inserta_Dir_Locales(keyAddress,keyType, keyAddress)
+                valorDer = memoriaLocales[-1].getValue(opDer)                      
+        elif opDer >= 20000 and opDer < 30000:
+            valorDer = memoriaConstante.getValue(opDer)
+        type2 = memoriaGlobal.getType(opDer)
         
-      
+        typeR = memoriaGlobal.getType(resultado)
+
+        if(typeR == "int"):
+            resultadoCuad = int(valorIzq) / int(valorDer )
+        elif(typeR == "float"):
+            resultadoCuad = float(valorIzq) / float(valorDer )
+
+        #print("res", resultadoCuad)
+        if resultado < 10000 : 
+            keyAddress = resultado
+            keyType = typeR
+            memoriaLocales[-1].inserta_Dir_Locales(keyAddress,keyType, resultadoCuad)
+        elif resultado >= 10000 and resultado < 20000:
+            keyAddress = resultado
+            keyType = typeR
+            memoriaLocales[-1].inserta_Dir_Locales(keyAddress,keyType, resultadoCuad)     
+        elif resultado >= 20000 and resultado < 30000:
+            keyAddress = resultado
+            keyType = typeR
+            memoriaLocales[-1].inserta_Dir_Locales(keyAddress,keyType, resultadoCuad)
+        
+        return pos +1
+        
+## LESSTHAN
     elif cuad[0] == '<':
-        opIzq = cuad[1]
+        opIzq = cuad[1] 
         opDer = cuad[2]
         resultado = cuad[3]
+
         ##resultado a memoria
-        valorIzq = 0
-        valorDer = 0
-        nuevoResultado = valorIzq < valorDer
-        ##actualiza el resultado del cuadruplo  con nuevoResultado
-        quadruples.pop(0)
-        ##contador
-        ##return contador
+        valorIzq = -1
+        valorDer = -1
+        resultadoCuad = -1
+
+        type1 = memoriaGlobal.getType(opIzq)
+        if opIzq < 10000 :
+            valorIzq = memoriaGlobal.getValue(opIzq)
+        elif opIzq >= 10000 and opIzq < 20000:
+            valorIzq = memoriaLocales[-1].getValue(opIzq)
+            if valorIzq == None:
+                keyAddress = opIzq
+                keyType = type1
+                memoriaLocales[-1].inserta_Dir_Locales(keyAddress,keyType, keyAddress)
+                valorIzq = memoriaLocales[-1].getValue(opIzq)                      
+        elif opIzq >= 20000 and opIzq < 30000:
+            valorIzq = memoriaConstante.getValue(opIzq)
+
+        if opDer < 10000 :
+            valorDer = memoriaGlobal.getValue(opDer)
+        elif opDer >= 10000 and opDer < 20000:
+            valorDer = memoriaLocales[-1].getValue(opDer)
+            if valorDer == None:
+                keyAddress = opDer
+                keyType = type1
+                memoriaLocales[-1].inserta_Dir_Locales(keyAddress,keyType, keyAddress)
+                valorDer = memoriaLocales[-1].getValue(opDer)                      
+        elif opDer >= 20000 and opDer < 30000:
+            valorDer = memoriaConstante.getValue(opDer)
+        type2 = memoriaGlobal.getType(opDer)
         
-       
+        typeR = memoriaGlobal.getType(resultado)
+        print("type", typeR)
+        
+        resultadoCuad = bool(int(valorIzq) < int(valorDer ))
+
+        """
+        if(typeR == "int"):
+            if(int(valorIzq) < int(valorDer )):
+                resultadoCuad = True
+            else:
+                resultadoCuad = False
+        elif(typeR == "float"):
+            if(float(valorIzq) < float(valorDer )):
+                resultadoCuad = True
+            else:
+                resultadoCuad = False
+        """
+        if resultado < 10000 : 
+            keyAddress = resultado
+            keyType = typeR
+            memoriaLocales[-1].inserta_Dir_Locales(keyAddress,keyType, resultadoCuad)
+        elif resultado >= 10000 and resultado < 20000:
+            keyAddress = resultado
+            keyType = typeR
+            memoriaLocales[-1].inserta_Dir_Locales(keyAddress,keyType, resultadoCuad)     
+        elif resultado >= 20000 and resultado < 30000:
+            keyAddress = resultado
+            keyType = typeR
+            memoriaLocales[-1].inserta_Dir_Locales(keyAddress,keyType, resultadoCuad)
+        
+        return pos +1
+## GREATERTHAN   
     elif cuad[0] == '>':
-        opIzq = cuad[1]
+        opIzq = cuad[1] 
         opDer = cuad[2]
         resultado = cuad[3]
+
         ##resultado a memoria
-        valorIzq = 0
-        valorDer = 0
-        nuevoResultado = valorIzq > valorDer
-        ##actualiza el resultado del cuadruplo  con nuevoResultado
-        quadruples.pop(0)
-        ##contador
-        ##return contador        
+        valorIzq = -1
+        valorDer = -1
+        resultadoCuad = -1
+
+        type1 = memoriaGlobal.getType(opIzq)
+        if opIzq < 10000 :
+            valorIzq = memoriaGlobal.getValue(opIzq)
+        elif opIzq >= 10000 and opIzq < 20000:
+            valorIzq = memoriaLocales[-1].getValue(opIzq)
+            if valorIzq == None:
+                keyAddress = opIzq
+                keyType = type1
+                memoriaLocales[-1].inserta_Dir_Locales(keyAddress,keyType, keyAddress)
+                valorIzq = memoriaLocales[-1].getValue(opIzq)                      
+        elif opIzq >= 20000 and opIzq < 30000:
+            valorIzq = memoriaConstante.getValue(opIzq)
+
+        if opDer < 10000 :
+            valorDer = memoriaGlobal.getValue(opDer)
+        elif opDer >= 10000 and opDer < 20000:
+            valorDer = memoriaLocales[-1].getValue(opDer)
+            if valorDer == None:
+                keyAddress = opDer
+                keyType = type1
+                memoriaLocales[-1].inserta_Dir_Locales(keyAddress,keyType, keyAddress)
+                valorDer = memoriaLocales[-1].getValue(opDer)                      
+        elif opDer >= 20000 and opDer < 30000:
+            valorDer = memoriaConstante.getValue(opDer)
+        type2 = memoriaGlobal.getType(opDer)
+        
+        typeR = memoriaGlobal.getType(resultado)
+        
+        resultadoCuad = bool(int(valorIzq) > int(valorDer ))
+
+        """
+        if(typeR == "int"):
+            if(int(valorIzq) < int(valorDer )):
+                resultadoCuad = True
+            else:
+                resultadoCuad = False
+        elif(typeR == "float"):
+            if(float(valorIzq) < float(valorDer )):
+                resultadoCuad = True
+            else:
+                resultadoCuad = False
+        """
+        #print("res", resultadoCuad)
+        if resultado < 10000 : 
+            keyAddress = resultado
+            keyType = typeR
+            memoriaLocales[-1].inserta_Dir_Locales(keyAddress,keyType, resultadoCuad)
+        elif resultado >= 10000 and resultado < 20000:
+            keyAddress = resultado
+            keyType = typeR
+            memoriaLocales[-1].inserta_Dir_Locales(keyAddress,keyType, resultadoCuad)     
+        elif resultado >= 20000 and resultado < 30000:
+            keyAddress = resultado
+            keyType = typeR
+            memoriaLocales[-1].inserta_Dir_Locales(keyAddress,keyType, resultadoCuad)
+        
+        return pos +1       
        
 
     elif cuad[0] == '<=':
@@ -201,16 +478,16 @@ def ejecuta(cuad,pos):
         valorDer = -1
         resultadoCuad = -1
         # Solo sacamos tipo1 porque el otro siempre es None
-        # type1=memoriaGlobal.getType(resultado)
+        type1=memoriaGlobal.getType(resultado)
 
         if opIzq < 10000 :
             valorIzq = memoriaGlobal.getValue(opIzq)
         elif opIzq >= 10000 and opIzq < 20000:
             valorIzq = memoriaLocales[-1].getValue(opIzq)
-            if valorIzq == -1:
+            if valorIzq == None:
                 keyAddress = opIzq
                 keyType = type1
-                memoriaLocales[-1].inserta_Dir_Locales(keyAddress,keyType)
+                memoriaLocales[-1].inserta_Dir_Locales(keyAddress,keyType, keyAddress)
                 valorIzq = memoriaLocales[-1].getValue(opIzq)                      
         elif opIzq >= 20000 and opIzq < 30000:
             valorIzq = memoriaConstante.getValue(opIzq)
@@ -218,21 +495,29 @@ def ejecuta(cuad,pos):
         if resultado < 10000 :
             resultadoCuad = memoriaGlobal.getValue(resultado)
         elif resultado >= 10000 and resultado < 20000:
+            '''
             resultadoCuad = memoriaLocales[-1].getValue(resultado)
             if resultadoCuad == None:
                 keyValue = valorIzq
                 keyAddress = resultado
                 keyType = memoriaLocales[-1].getType(resultado)
                 memoriaLocales[-1].inserta_Dir_Locales(keyAddress,keyType,keyValue)
-                resultadoCuad = memoriaLocales[-1].getValue(resultado)        
+                resultadoCuad = memoriaLocales[-1].getValue(resultado) 
+            else:
+                '''
+            keyValue = valorIzq
+            keyAddress = resultado
+            keyType = memoriaLocales[-1].getType(resultado)
+            memoriaLocales[-1].inserta_Dir_Locales(keyAddress,keyType,keyValue)
+            resultadoCuad = memoriaLocales[-1].getValue(resultado) 
         elif resultado >= 20000 and resultado < 30000:
             resultadoCuad = memoriaConstante.getValue(resultado)
         
-
         return pos +1
 
     elif cuad[0] == 'write':
         resultado = cuad[3]
+        #print("resultado",cuad)
         if resultado < 10000 :
             valor = memoriaGlobal.getValue(resultado)         
         elif resultado >= 10000 and resultado < 20000:
@@ -260,7 +545,6 @@ def ejecuta(cuad,pos):
         
     
     
-
 cont = 0
 while cont < len(quadruples):
     
@@ -270,3 +554,5 @@ while cont < len(quadruples):
     cont = ejecuta(quadruples[cont],cont)
     ##print(cont)
     #i = switch(quad[i], i)
+#print("Memoria Local")
+#print(memoriaLocales[0])
