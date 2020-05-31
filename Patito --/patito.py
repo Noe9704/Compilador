@@ -1038,7 +1038,8 @@ def p_r_check_Escritura_String(p):
     if len(Pila_Oper) > 0 :
             if Pila_Oper[len(Pila_Oper)-1] == 'write':
                 operador = Pila_Oper.pop()
-                cuad = [operador,None,None,p[-1]]
+                operadorDer = Pila_Names.pop()
+                cuad = [operador,p[-1],None,operadorDer]
                 quadruples.append(cuad)
                 
 
