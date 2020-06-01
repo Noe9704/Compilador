@@ -531,7 +531,14 @@ def ejecuta(cuad,pos):
         else :
             print(valor)
         return pos + 1
+    elif cuad[0] == 'read':
+        resultado = cuad[3]
+        valor = input()
         
+
+
+        
+        return pos + 1
 
     elif cuad[0] == "END":
         print("Codigo ejecutado con exito! :)")
