@@ -1037,7 +1037,6 @@ def p_r_check_Escritura_String(p):
     global constants, current_variable,CTE_BASE, constant_next_char
     current_variable = p[-1]
     aux = constant_next_char 
-
     if constants.get(current_variable) is None:
         if constant_next_char >= constant_bool_base :
             print("Error, espacio de chars lleno.")
@@ -1055,14 +1054,15 @@ def p_r_check_Escritura_String(p):
         Pila_Names.append(dirr)
         Pila_Types.append('char')
     if len(Pila_Oper) > 0 :
-            if Pila_Oper[len(Pila_Oper)-1] == 'write':
-                operador = Pila_Oper.pop()
-                operadorDer = Pila_Names.pop()
-                opIzq = Pila_Names.pop()
-                cuad = ["=",operadorDer,None,opIzq]
-                quadruples.append(cuad)
-                cuad2 = [operador,None,None,opIzq]
-                quadruples.append(cuad2)
+        if Pila_Oper[len(Pila_Oper)-1] == 'write':
+            operador = Pila_Oper.pop()
+            operadorDer = Pila_Names.pop()
+            #opIzq = Pila_Names.pop()
+            #cuad = ["=",operadorDer,None,opIzq]
+            #quadruples.append(cuad)
+            #cuad2 = [operador,None,None,opIzq]
+            cuad2 = [operador,None,None,operadorDer]
+            quadruples.append(cuad2)
 
                 
 
