@@ -52,22 +52,22 @@ class Memoria:
         if tipo == "int":
             direccion = global_int
             global_int += 1
-            self.ints[direccion] = var
+            self.ints[direccion] = None
             return direccion
         elif tipo == "float":
             direccion = global_float
             global_float += 1
-            self.floats[direccion] = var
+            self.floats[direccion] = None
             return direccion
         elif tipo == "char":
             direccion = global_char
             global_char += 1
-            self.chars[direccion] = var
+            self.chars[direccion] = None
             return direccion
         elif tipo == "bool":
             direccion = global_bool
             global_bool += 1
-            self.bools[direccion] = var
+            self.bools[direccion] = None
             return direccion
 
     def inserta_Dir_Constantes(self, const,tipo):

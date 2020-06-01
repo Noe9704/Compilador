@@ -9,6 +9,8 @@ memoriaGlobal = memoria.Memoria()
 memoriaConstante = memoria.Memoria()
 memoriaLocales = [memoria.Memoria()]
 
+ip = 0
+
 if len(sys.argv) != 2:
     print('Error, leyendo el objeto del archivo')
     raise SyntaxError('Necesitas enviar un archivo .txto correcto')
@@ -26,11 +28,11 @@ for key in symbols['global']['vars'].keys():
     keyType = symbols['global']['vars'][key]['type']
     memoriaGlobal.inserta_Dir_Globales(keyAddress,keyType)
 
+
 for key in constants.keys():
     keyValue = key
     keyType = constants[key]['type']
     memoriaConstante.inserta_Dir_Constantes(keyValue,keyType)
-
 
 """
 print("Memoria Virtual")
@@ -42,14 +44,16 @@ print(memoriaLocales[0])
 """
 
 def ejecuta(cuad,pos):
+    global ip
     currentERA = 'main'
     if(cuad[0] == 'GOTO'): 
         return int(cuad[3])
-
+#ENDPROC
     if(cuad[0] == 'ENDPROC'):
         if len(memoriaLocales) > 1:
             memoriaLocales.pop()
-        return pos + 1 
+            return ip
+        
 
     if cuad[0] == '+':
         opIzq = cuad[1] 
@@ -582,18 +586,18 @@ def ejecuta(cuad,pos):
         return pos +1           
        
 #EQUAL    
+#EQUAL    
     elif cuad[0] == '=':
         opIzq = cuad[1] 
         opDer = cuad[2] # Siempre es None por el igual
         resultado = cuad[3]
-
+        
         ##resultado a memoria
         valorIzq = -1
         valorDer = -1
         resultadoCuad = -1
         # Solo sacamos tipo1 porque el otro siempre es None
         type1=memoriaGlobal.getType(resultado)
-
         if opIzq < 10000 :
             valorIzq = memoriaGlobal.getValue(opIzq)
         elif opIzq >= 10000 and opIzq < 20000:
@@ -608,17 +612,8 @@ def ejecuta(cuad,pos):
 
         if resultado < 10000 :
             resultadoCuad = memoriaGlobal.getValue(resultado)
+            memoriaGlobal.upDateVal(resultado,valorIzq)
         elif resultado >= 10000 and resultado < 20000:
-            '''
-            resultadoCuad = memoriaLocales[-1].getValue(resultado)
-            if resultadoCuad == None:
-                keyValue = valorIzq
-                keyAddress = resultado
-                keyType = memoriaLocales[-1].getType(resultado)
-                memoriaLocales[-1].inserta_Dir_Locales(keyAddress,keyType,keyValue)
-                resultadoCuad = memoriaLocales[-1].getValue(resultado) 
-            else:
-                '''
             keyValue = valorIzq
             keyAddress = resultado
             keyType = memoriaLocales[-1].getType(resultado)
@@ -645,6 +640,7 @@ def ejecuta(cuad,pos):
         else :
             print(valor)
         return pos + 1
+
     elif cuad[0] == 'read':
         resultado = cuad[3]
         valor = input()
@@ -656,7 +652,7 @@ def ejecuta(cuad,pos):
         return pos + 1
     
     elif cuad[0] == "GOTOF":
-        print(cuad)
+        #print(cuad)
         opIzq = cuad[1] 
         opDer = cuad[2] # Siempre es None por el igual
         resultado = cuad[3] # Determinante del true o false
@@ -684,6 +680,17 @@ def ejecuta(cuad,pos):
             return resultado
         else:
             return pos + 1
+# ERA
+    elif cuad[0] == "ERA":
+        #print(cuad)
+        memoriaLocales.append(memoria.Memoria())
+
+        return pos + 1
+# GOSUB
+
+    elif cuad[0] == "GOSUB":
+        ip = pos
+        return symbols[cuad[3]]['start']
         
 
         
@@ -696,10 +703,7 @@ def ejecuta(cuad,pos):
     
 cont = 0
 while cont < len(quadruples):
-    
     #print(cont,quadruples[cont])
-    
-    
     cont = ejecuta(quadruples[cont],cont)
     ##print(cont)
     #i = switch(quad[i], i)

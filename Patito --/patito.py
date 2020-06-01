@@ -462,7 +462,7 @@ def p_r_funcionERA(p):
     funcName = p[-1]
     currentERA = funcName
     print(currentERA)
-    cuad = ["Era",None,None,symbols[funcName]['start']+1]
+    cuad = ["ERA",None,None,currentERA]
     symbols[funcName]['start'] = symbols[funcName]['start'] + 1
     quadruples.append(cuad)
     auxParamFuncion = False
@@ -511,7 +511,8 @@ def p_r_funcionGOSUB(p):
     r_funcionGOSUB : 
     '''
     global currentERA, aux, valorTermporal,auxParamFuncion,isFromFuntion
-    cuad = ["GoSub",None,None,currentERA]
+    # cuad = ["GOSUB",None,None,symbols[currentERA]['start']]
+    cuad = ["GOSUB",None,None,currentERA]
     funcionParaRetorno = currentERA
     quadruples.append(cuad)
     Pila_Names.append(symbols['global']['vars'][currentERA]['address'])
@@ -534,7 +535,7 @@ def p_r_GOTOMAIN(p):
     '''
     r_GOTOMAIN :
     '''
-    cuad = ["GOTO",None,None,len(quadruples)]
+    cuad = ["GOTO",None,None,len(quadruples)+1]
     #quadruples.appendleft(cuad)
     quadruples.insert(0, cuad)
 
@@ -1186,7 +1187,7 @@ def p_r_checkWhileC(p):
 
 def p_nocondicional(p):
     '''
-    nocondicional : FROM r_checkFor lista_ids EQUAL r_push_operator exp TO exp r_push_operator DO r_checkForB bloque r_checkForC
+    nocondicional : FROM r_checkFor lista_ids EQUAL r_push_operator exp r_check_equal TO exp r_ForB DO bloque r_ForInicia r_ForFinaliza
     '''
 
 def p_r_checkFor(p):
@@ -1195,50 +1196,65 @@ def p_r_checkFor(p):
     '''
     Pila_Saltos.append(len(quadruples))
 
-def p_r_checkForB(p):
+def p_r_ForInicia(p):
     '''
-    r_checkForB :
-    '''
-    exp_Type = Pila_Types.pop()
-    ##exp_Name = Pila_Names.pop()
-    if exp_Type != "int" :
-        print("Error de tipo")
-        sys.exit()
-    else :      
-        opDer = Pila_Names.pop()
-        typeDer = Pila_Types.pop() 
-        opIzq = Pila_Names.pop()
-        typeIzq = Pila_Types.pop()
-        operador = "<"
-        result_Type = cuboSemantico.typeOperator[typeIzq][typeDer][operador]
-        termporalResultado = getAddress(result_Type)
-        cuad1 = [operador,opIzq,opDer,termporalResultado]
-        quadruples.append(cuad1)
-        cuad = ["GOTOF", None,None,len(quadruples)-1]   
-        quadruples.append(cuad)
-        Pila_Saltos.append(len(quadruples)-1)
-        operador2 = "+"
-        result_Type2 = cuboSemantico.typeOperator[typeIzq][typeDer][operador2]
-        termporalResultado2 = getAddress(result_Type2)
-        cuad2 = [operador2,opIzq,opIzq,termporalResultado2]
-        quadruples.append(cuad2)
-        operador3 = "="
-        cuad3 = [operador3,termporalResultado2,None,opIzq]
-        quadruples.append(cuad3)
-        
-       
-        
-        
+    r_ForInicia :
+    '''   
+    global constants, current_variable,CTE_BASE, constant_next_int
+    current_variable = str(1)
+    aux = constant_next_int 
 
-def p_r_checkForC(p):
+    if constants.get(current_variable) is None:
+        if constant_next_int >= constant_next_float :
+            print("Error, espacio de constantes enteras lleno.")
+            sys.exit()
+                    
+        constants[current_variable] = {
+                    'address': aux,
+                    'type': 'int'
+        }
+        ##Pila_Names.append(aux)
+        ##Pila_Types.append('int')
+        constant_next_int += 1
+    else :
+        dirr = constants[current_variable]['address']
+        ##Pila_Names.append(dirr)
+        ##Pila_Types.append('int')
+
+
+
+def p_r_ForB(p):
     '''
-    r_checkForC :
+    r_ForB :
     '''
-    end = Pila_Saltos.pop()
-    regresa = Pila_Saltos.pop()
-    cuad = ["GOTO", None,None,regresa] 
+    cuad = quadruples[-1]
+    ##asignacion de la variable que contiene el ultimo valor del ultimo cuadrulo
+    valor = cuad[3]
+    opDer = Pila_Names.pop()
+    termporalResultado = getAddress("bool")
+    Pila_Names.append(termporalResultado)
+    cuadruplo = ["<",valor,opDer,termporalResultado]
+    quadruples.append(cuadruplo)
+    result = Pila_Names.pop()
+    cuad = ["GOTOF",result,None,len(quadruples)-1]
     quadruples.append(cuad)
-    fill(end,len(quadruples))  
+    Pila_Saltos.append(len(quadruples)-1)
+
+
+  
+
+def p_r_ForFinaliza(p):
+    '''
+    r_ForFinaliza :
+    '''
+
+    end = Pila_Saltos.pop()
+    resultado = Pila_Saltos.pop()
+    cuadSuma = ["+",quadruples[resultado + 1][1],constants.get(str(1))["address"],quadruples[resultado + 1][1]]
+    quadruples.append(cuadSuma)
+    cuad = ["GOTO",None,None,str(int(resultado) +1)]
+    quadruples.append(cuad)
+    fill(end,len(quadruples))
 
 def p_empty(p):
     ''' 
@@ -1419,7 +1435,7 @@ def p_r_check_equal(p):
     '''
     r_check_equal :
     '''
-    print(p[-1])
+    #print(p[-1])
     if len(Pila_Oper) > 0 :
         if Pila_Oper[len(Pila_Oper)-1] == '=':
             opDer = Pila_Names.pop()
@@ -1445,7 +1461,6 @@ parser = yacc.yacc()
 
 ##caso de prueba exitoso
 ##testFile.txt
-
 if len(sys.argv) != 2:
     print('Por favor manda un archivo.')
     raise SyntaxError('Patito necesita de un archivo')
