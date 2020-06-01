@@ -807,7 +807,6 @@ def p_z(p):
         | r_false_add_bottom L_PARENT exp R_PARENT r_false_quit_bottom
         | lista_ids
         | llamada
-        | empty
     '''
 
 def p_r_check_And(p):
@@ -952,6 +951,7 @@ def p_auxLlamada(p):
     '''
     auxLlamada : exp r_funcionParametros
                 | exp r_funcionParametros COMA auxLlamada
+                | empty
     '''
 
 def p_retorno(p):
