@@ -486,7 +486,7 @@ def p_r_funcionParametros(p):
 
     if(contParametros <= len(paramsFunction)):
         if(symbols[currentERA]['params'][paramsFunction[contParametros-1]]['type'] == typeT) :
-            cuad = ["Param",functionName ,None,"par" + str(contParametros)]
+            cuad = ["PARAM",functionName ,None,"par" + str(contParametros)]
             quadruples.append(cuad)
             auxParamFuncion = False
             

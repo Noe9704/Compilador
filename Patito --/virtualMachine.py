@@ -9,7 +9,8 @@ memoriaGlobal = memoria.Memoria()
 memoriaConstante = memoria.Memoria()
 memoriaLocales = [memoria.Memoria()]
 
-ip = 0
+ip = 0 # Sirve para regresar de la funcion
+paramPila = [] # Guardo los parametros de la funcion
 
 if len(sys.argv) != 2:
     print('Error, leyendo el objeto del archivo')
@@ -17,10 +18,10 @@ if len(sys.argv) != 2:
 else: 
     data = sys.argv[1]
     with open(data, 'r', newline='\n') as file:
-        input = eval(file.read())
-        symbols = input['symbols']
-        quadruples = input['quadruples']
-        constants = input['constants']
+        inputRead = eval(file.read())
+        symbols = inputRead['symbols']
+        quadruples = inputRead['quadruples']
+        constants = inputRead['constants']
         #run()
 
 for key in symbols['global']['vars'].keys():
@@ -52,7 +53,7 @@ def ejecuta(cuad,pos):
     if(cuad[0] == 'ENDPROC'):
         if len(memoriaLocales) > 1:
             memoriaLocales.pop()
-            return ip
+        return ip
         
 
     if cuad[0] == '+':
@@ -641,12 +642,6 @@ def ejecuta(cuad,pos):
             print(valor)
         return pos + 1
 
-    elif cuad[0] == 'read':
-        resultado = cuad[3]
-        valor = input()
-        
-        return pos + 1
-
     elif cuad[0] == "END":
         print("Codigo ejecutado con exito! :)")
         return pos + 1
@@ -680,6 +675,24 @@ def ejecuta(cuad,pos):
             return resultado
         else:
             return pos + 1
+#READ
+    elif cuad[0] == "read":
+        
+        var = input()
+        direccion = cuad[3]
+        if direccion < 10000 :
+            memoriaGlobal.upDateVal(direccion,var)
+        elif direccion >= 10000 and direccion < 20000:
+            valorIzq = memoriaLocales[-1].getValue(direccion)
+            if valorIzq == None:
+                keyAddress = direccion
+                keyType = memoriaLocales[-1].getType(direccion)
+                memoriaLocales[-1].inserta_Dir_Locales(keyAddress,keyType, var)
+            else :
+                memoriaLocales.upDateVal(direccion,var)   
+        
+        return pos + 1             
+
 # ERA
     elif cuad[0] == "ERA":
         #print(cuad)
@@ -689,23 +702,27 @@ def ejecuta(cuad,pos):
 # GOSUB
 
     elif cuad[0] == "GOSUB":
-        ip = pos
+        ip = pos + 1
         return symbols[cuad[3]]['start']
-        
+
+#PARAM
+    elif cuad[0] == "PARAM":
+        return pos + 1
+
+#Return
+    elif cuad[0] == "RETURN":
+        return pos + 1
 
         
     
-
-
-    
         
     
-    
+
 cont = 0
 while cont < len(quadruples):
     #print(cont,quadruples[cont])
     cont = ejecuta(quadruples[cont],cont)
     ##print(cont)
     #i = switch(quad[i], i)
-#print("Memoria Local")
-#print(memoriaLocales[0])
+print("Memoria Local")
+print(memoriaLocales[0])
