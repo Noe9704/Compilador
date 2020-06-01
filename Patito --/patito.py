@@ -403,7 +403,7 @@ def p_casilla(p):
             | empty
     '''
 
-'''
+
 def p_r_VerificaTam(p):
     if len(Pila_Oper) > 0 :
         if Pila_Oper[len(Pila_Oper)-1] == '[' :
@@ -413,14 +413,12 @@ def p_r_VerificaTam(p):
             cuad = ["ver",opName,1,len(quadruples)]
             quadruples.append(cuad)
             nuevoValor = opName + 1
-            temporal = memoria.inserta_Dir_Locales(nuevoValor,tipo)
+            ##temporal = memoria.inserta_Dir_Locales(nuevoValor,tipo)
             ##ir a memoria por una direccion temporal dependiendo del tipo
             cuad2 = ["+",opName,temporal,len(quadruples)]
             quadruples.append(cuad2)
             cuad3 = ["+", "temporal","nuevaDir",len(quadruples)]
             quadruples.append(cuad3)
-'''
-
 
 
 def p_casillaVar(p):
@@ -1035,12 +1033,36 @@ def p_r_check_Escritura_String(p):
     '''
     r_check_Escritura_String :
     '''
+    global constants, current_variable,CTE_BASE, constant_next_char
+    current_variable = p[-1]
+    aux = constant_next_char 
+
+    if constants.get(current_variable) is None:
+        if constant_next_char >= constant_bool_base :
+            print("Error, espacio de chars lleno.")
+            sys.exit()
+         
+        constants[current_variable] = {
+                   'address': aux,
+                   'type': 'char'
+        }
+        Pila_Names.append(aux)
+        Pila_Types.append('char')
+        constant_next_char += 1
+    else :
+        dirr = constants[current_variable]['address']
+        Pila_Names.append(dirr)
+        Pila_Types.append('char')
     if len(Pila_Oper) > 0 :
             if Pila_Oper[len(Pila_Oper)-1] == 'write':
                 operador = Pila_Oper.pop()
                 operadorDer = Pila_Names.pop()
-                cuad = [operador,p[-1],None,operadorDer]
+                opIzq = Pila_Names.pop()
+                cuad = ["=",operadorDer,None,opIzq]
                 quadruples.append(cuad)
+                cuad2 = [operador,None,None,opIzq]
+                quadruples.append(cuad2)
+
                 
 
 def p_auxEscritura(p):
