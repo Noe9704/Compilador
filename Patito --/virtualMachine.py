@@ -737,11 +737,11 @@ def ejecuta(cuad,pos):
             # Error aqui
             
             memoriaLocales[-1].inserta_Dir_Locales(address,type1,memoriaLocales[-2].getValue(address))
-            
             aux +=1
-
+        
+        #memoriaLocales[-1].inserta_Dir_Locales(address,type1,memoriaLocales[-2].getValue(address))
         #print("CurrentFunction", currentFunction[-1])
-        print("memoriaLocalesERA", memoriaLocales[-1])
+        #print("memoriaLocalesERA", memoriaLocales[-1])
         return pos + 1
 # GOSUB
 
@@ -776,12 +776,12 @@ def ejecuta(cuad,pos):
         whichParam = int(whichParam[splitParam:len(whichParam)]) -1
         valueParam = None
         
-        print("valueParam", valueParam)
+        #print("valueParam", valueParam)
         paramFunction = list(symbols[currentFunction[-1]]['params'])
         paramFunctionAddress =symbols[currentFunction[-1]]['params'][paramFunction[0]]['address']
         paramFunctionType =symbols[currentFunction[-1]]['params'][paramFunction[0]]['type']
 
-        print("MemoriaLocalParam", memoriaLocales[-2])
+        #print("MemoriaLocalParam-2", memoriaLocales[-2])
         if parametro < 10000:
             valueParam = memoriaGlobal.getValue(parametro)
         elif parametro >= 10000 and parametro < 20000:
@@ -791,12 +791,14 @@ def ejecuta(cuad,pos):
         elif parametro >= 20000 and parametro < 30000:
             valueParam = memoriaConstante.getValue(parametro)
 
-        print("MemoriaLocalParam", memoriaLocales[-1])
+        #print("MemoriaLocalParam", memoriaLocales[-1])
         ####
         # ERROR
+        if(valueParam == None):
+            valueParam = memoriaLocales[-2].getValue(parametro)
         memoriaLocales[-1].upDateVal(paramFunctionAddress, valueParam)
-
-        print("MemoriaLocalParam", memoriaLocales[-1])
+            
+        #print("MemoriaLocalParam", memoriaLocales[-1])
 
         return pos + 1
 
@@ -895,7 +897,7 @@ while cont < len(quadruples):
     #i = switch(quad[i], i)
     """
     breakCont += 1
-    if(breakCont > 30) :
+    if(breakCont > 50) :
         break
     """
     
