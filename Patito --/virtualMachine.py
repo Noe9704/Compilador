@@ -9,7 +9,7 @@ memoriaGlobal = memoria.Memoria()
 memoriaConstante = memoria.Memoria()
 memoriaLocales = [memoria.Memoria()]
 
-ip = [0] # Sirve para regresar de la funcion
+ip = [] # Sirve para regresar de la funcion
 currentFunction = []
 paramPila = [] # Guardo los parametros de la funcion
 returnArray = []
@@ -54,8 +54,8 @@ def ejecuta(cuad,pos):
         return int(cuad[3])
 #ENDPROC
     if(cuad[0] == 'ENDPROC'):
-        if len(memoriaLocales) > 1:
-            memoriaLocales.pop()
+       
+        memoriaLocales.pop()
 
         
         currentFunctionName = currentFunction.pop()
@@ -730,14 +730,18 @@ def ejecuta(cuad,pos):
         list(symbols[cuad[3]]['params'])
         aux = 0
         
-        while aux <= len(list(symbols[cuad[3]]['params'])) :
+        while aux < len(list(symbols[cuad[3]]['params'])) :
             name = list(symbols[cuad[3]]['params'])[0]
             address = symbols[cuad[3]]['params'][name]['address']
             type1 = symbols[cuad[3]]['params'][name]['type']
+            # Error aqui
             
             memoriaLocales[-1].inserta_Dir_Locales(address,type1,memoriaLocales[-2].getValue(address))
+            
             aux +=1
-        #print("ERA",memoriaLocales[-1])
+
+        #print("CurrentFunction", currentFunction[-1])
+        print("memoriaLocalesERA", memoriaLocales[-1])
         return pos + 1
 # GOSUB
 
@@ -770,24 +774,30 @@ def ejecuta(cuad,pos):
         whichParam = cuad[3]
         splitParam = whichParam.find("r") + 1
         whichParam = int(whichParam[splitParam:len(whichParam)]) -1
-        # print(whichParam)
         valueParam = None
         
+        print("valueParam", valueParam)
+        paramFunction = list(symbols[currentFunction[-1]]['params'])
+        paramFunctionAddress =symbols[currentFunction[-1]]['params'][paramFunction[0]]['address']
+        paramFunctionType =symbols[currentFunction[-1]]['params'][paramFunction[0]]['type']
+
+        print("MemoriaLocalParam", memoriaLocales[-2])
         if parametro < 10000:
             valueParam = memoriaGlobal.getValue(parametro)
         elif parametro >= 10000 and parametro < 20000:
-            valueParam = memoriaLocales[-1].getValue(parametro)
+            valueParam = memoriaLocales[-1].getValue(parametro) # Error aqui
+            if (valueParam == None) :
+                valueParam = memoriaLocales[-1].getValue(paramFunctionAddress)
         elif parametro >= 20000 and parametro < 30000:
             valueParam = memoriaConstante.getValue(parametro)
 
-        paramFunction = list(symbols[currentFunction[-1]]['params'])
-        aux =currentFunction[-1]
-        aux2=paramFunction[-1]
-        paramFunctionAddress =symbols[aux]['params'][aux2]['address']
-        paramFunctionType =symbols[aux]['params'][aux2]['type']
+        print("MemoriaLocalParam", memoriaLocales[-1])
+        ####
+        # ERROR
+        memoriaLocales[-1].upDateVal(paramFunctionAddress, valueParam)
 
-        memoriaLocales[-1].upDateVal(paramFunctionAddress,valueParam)
-        # print("PARAM",memoriaLocales[-1])
+        print("MemoriaLocalParam", memoriaLocales[-1])
+
         return pos + 1
 
 #Return
@@ -885,10 +895,10 @@ while cont < len(quadruples):
     #i = switch(quad[i], i)
     """
     breakCont += 1
-    if(breakCont > 1000) :
+    if(breakCont > 30) :
         break
     """
-
+    
 """
 print("Memoria Global")
 print(memoriaGlobal)
