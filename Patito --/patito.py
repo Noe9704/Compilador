@@ -157,7 +157,7 @@ def getAddress(tipo, force_global=False):
             return aux  ## Se retorna la direccion actual
 
 
-quadruples = []
+quadruples = [["GOTO",None,None,0]]
 
 ##Pilas cuadruplos
 Pila_Names = []
@@ -399,27 +399,9 @@ def p_lista_ids_asignacion(p):
 
 def p_casilla(p):
     '''
-    casilla : L_BRACKET r_push_operator casillaVar R_BRACKET
+    casilla : L_BRACKET casillaVar R_BRACKET
             | empty
     '''
-
-
-def p_r_VerificaTam(p):
-    if len(Pila_Oper) > 0 :
-        if Pila_Oper[len(Pila_Oper)-1] == '[' :
-            Pila_Oper.pop()
-            opName = Pila_Names.pop()
-            tipo = Pila_Types.pop()
-            cuad = ["ver",opName,1,len(quadruples)]
-            quadruples.append(cuad)
-            nuevoValor = opName + 1
-            ##temporal = memoria.inserta_Dir_Locales(nuevoValor,tipo)
-            ##ir a memoria por una direccion temporal dependiendo del tipo
-            cuad2 = ["+",opName,temporal,len(quadruples)]
-            quadruples.append(cuad2)
-            cuad3 = ["+", "temporal","nuevaDir",len(quadruples)]
-            quadruples.append(cuad3)
-
 
 def p_casillaVar(p):
     '''
@@ -463,7 +445,7 @@ def p_r_funcionERA(p):
     currentERA = funcName
     print(currentERA)
     cuad = ["ERA",None,None,currentERA]
-    symbols[funcName]['start'] = symbols[funcName]['start'] + 1
+    symbols[funcName]['start'] = symbols[funcName]['start']
     quadruples.append(cuad)
     auxParamFuncion = False
     # Pila_Names.append(symbols['global']['vars'][funcName]['address'])
@@ -535,9 +517,10 @@ def p_r_GOTOMAIN(p):
     '''
     r_GOTOMAIN :
     '''
-    cuad = ["GOTO",None,None,len(quadruples)+1]
+    #cuad = ["GOTO",None,None,len(quadruples)+1]
+    quadruples[0][3] = len(quadruples)
     #quadruples.appendleft(cuad)
-    quadruples.insert(0, cuad)
+    #quadruples.insert(0, cuad)
 
 
 def p_tipoFuncion(p):
@@ -1233,7 +1216,7 @@ def p_r_ForB(p):
     opDer = Pila_Names.pop()
     termporalResultado = getAddress("bool")
     Pila_Names.append(termporalResultado)
-    cuadruplo = ["<",valor,opDer,termporalResultado]
+    cuadruplo = ["<=",valor,opDer,termporalResultado]
     quadruples.append(cuadruplo)
     result = Pila_Names.pop()
     cuad = ["GOTOF",result,None,len(quadruples)-1]
@@ -1400,10 +1383,14 @@ def p_r_registrar_parametro(p):
     '''
     global symbols, current_param
     current_param = p[-1]
-    symbols[current_func]['params'][current_param] = {
-        'type':current_tipo,
-        'address': getAddress(current_tipo)
-    }
+    if(symbols['global']['vars'].get(current_param) is None):
+        symbols[current_func]['params'][current_param] = {
+            'type':current_tipo,
+            'address': getAddress(current_tipo)
+        }
+    else:
+        print("In the function "+current_func + ", the param "+"\""+ current_param + "\" is already a global variable.")
+        sys.exit()
   
 
     

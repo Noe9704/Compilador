@@ -9,8 +9,11 @@ memoriaGlobal = memoria.Memoria()
 memoriaConstante = memoria.Memoria()
 memoriaLocales = [memoria.Memoria()]
 
-ip = 0 # Sirve para regresar de la funcion
+ip = [0] # Sirve para regresar de la funcion
+currentFunction = []
 paramPila = [] # Guardo los parametros de la funcion
+returnArray = []
+
 
 if len(sys.argv) != 2:
     print('Error, leyendo el objeto del archivo')
@@ -45,7 +48,7 @@ print(memoriaLocales[0])
 """
 
 def ejecuta(cuad,pos):
-    global ip
+    global ip, paramPila, currentFunction, returnArray
     currentERA = 'main'
     if(cuad[0] == 'GOTO'): 
         return int(cuad[3])
@@ -53,7 +56,26 @@ def ejecuta(cuad,pos):
     if(cuad[0] == 'ENDPROC'):
         if len(memoriaLocales) > 1:
             memoriaLocales.pop()
-        return ip
+
+        
+        currentFunctionName = currentFunction.pop()
+        #print(currentFunctionName)
+        """
+        addressCurrentFunction = symbols['global']['vars'][currentFunctionName]['address']
+        typeCurrentFunction = symbols['global']['vars'][currentFunctionName]['type']
+        
+        value = returnArray.pop()
+        address = value[0]
+        values = value[1]
+
+
+        #print("addres",address)
+        #print("value",values)
+        #print("adc",addressCurrentFunction)
+        
+        memoriaGlobal.upDateVal(addressCurrentFunction,values)
+        """
+        return ip.pop()
         
 
     if cuad[0] == '+':
@@ -130,6 +152,8 @@ def ejecuta(cuad,pos):
             valorIzq = memoriaGlobal.getValue(opIzq)
         elif opIzq >= 10000 and opIzq < 20000:
             valorIzq = memoriaLocales[-1].getValue(opIzq)
+            #print("valorIZQ",valorIzq)
+            #print("memoriaLocalIZQ",memoriaLocales[-1])
             if valorIzq == None:
                 keyAddress = opIzq
                 keyType = type1
@@ -142,6 +166,7 @@ def ejecuta(cuad,pos):
             valorDer = memoriaGlobal.getValue(opDer)
         elif opDer >= 10000 and opDer < 20000:
             valorDer = memoriaLocales[-1].getValue(opDer)
+            
             if valorDer == None:
                 keyAddress = opDer
                 keyType = type1
@@ -158,19 +183,21 @@ def ejecuta(cuad,pos):
         elif(typeR == "float"):
             resultadoCuad = float(valorIzq) - float(valorDer )
 
+
         #print("res", resultadoCuad)
         if resultado < 10000 : 
             keyAddress = resultado
             keyType = typeR
-            memoriaLocales[-1].inserta_Dir_Locales(keyAddress,keyType, resultadoCuad)
+            memoriaGlobal[-1].inserta_Dir_Globales(keyAddress,keyType, resultadoCuad)
         elif resultado >= 10000 and resultado < 20000:
             keyAddress = resultado
             keyType = typeR
-            memoriaLocales[-1].inserta_Dir_Locales(keyAddress,keyType, resultadoCuad)     
+            memoriaLocales[-1].inserta_Dir_Locales(keyAddress, keyType, resultadoCuad)  
+            #print("memoriaLocalEnresta",memoriaLocales[-1])   
         elif resultado >= 20000 and resultado < 30000:
             keyAddress = resultado
             keyType = typeR
-            memoriaLocales[-1].inserta_Dir_Locales(keyAddress,keyType, resultadoCuad)
+            memoriaConstante[-1].inserta_Dir_Constantes(keyAddress,keyType, resultadoCuad)
         
         return pos +1
 ## Mult
@@ -585,8 +612,7 @@ def ejecuta(cuad,pos):
             memoriaLocales[-1].inserta_Dir_Locales(keyAddress,keyType, resultadoCuad)
         
         return pos +1           
-       
-#EQUAL    
+    
 #EQUAL    
     elif cuad[0] == '=':
         opIzq = cuad[1] 
@@ -627,9 +653,10 @@ def ejecuta(cuad,pos):
 
     elif cuad[0] == 'write':
         resultado = cuad[3]
-        #print("resultado",cuad)
+        # print("resultado",cuad)
         if resultado < 10000 :
-            valor = memoriaGlobal.getValue(resultado)         
+            valor = memoriaGlobal.getValue(resultado)
+            #print("Valor",valor)         
         elif resultado >= 10000 and resultado < 20000:
             valor = memoriaLocales[-1].getValue(resultado)    
         elif resultado >= 20000 and resultado < 30000:
@@ -696,22 +723,153 @@ def ejecuta(cuad,pos):
 # ERA
     elif cuad[0] == "ERA":
         #print(cuad)
+        #Funcion en la que estoy
+        currentFunction.append(cuad[3])
         memoriaLocales.append(memoria.Memoria())
 
+        list(symbols[cuad[3]]['params'])
+        aux = 0
+        
+        while aux <= len(list(symbols[cuad[3]]['params'])) :
+            name = list(symbols[cuad[3]]['params'])[0]
+            address = symbols[cuad[3]]['params'][name]['address']
+            type1 = symbols[cuad[3]]['params'][name]['type']
+            
+            memoriaLocales[-1].inserta_Dir_Locales(address,type1,memoriaLocales[-2].getValue(address))
+            aux +=1
+        #print("ERA",memoriaLocales[-1])
         return pos + 1
 # GOSUB
 
     elif cuad[0] == "GOSUB":
-        ip = pos + 1
+        ip.append(pos + 1)
+        """
+        iCont = 0
+        while iCont < len(paramPila) :
+            varAddress = paramPila[iCont][1]
+            type1 = memoriaLocales[-1].getType(varAddress)
+            valor = paramPila[iCont][0]
+            #print("curr",currentFunction[-1])
+            #Change value
+            newVar = list(symbols[currentFunction[-1]]['params'])[iCont]
+            newVarAddress =symbols[currentFunction[-1]]['params'][newVar]['address']
+            newVarType = symbols[currentFunction[-1]]['params'][newVar]['type']
+            if newVarAddress >= 10000 and newVarAddress < 20000:
+                memoriaLocales[-1].inserta_Dir_Locales(newVarAddress,newVarType,valor)
+            
+            iCont += 1
+            print("MEMORIALOCAL",memoriaLocales[-1])
+        paramPila = []
+        """
         return symbols[cuad[3]]['start']
 
 #PARAM
     elif cuad[0] == "PARAM":
+        # Nuevo Parametro
+        parametro = cuad[1]
+        whichParam = cuad[3]
+        splitParam = whichParam.find("r") + 1
+        whichParam = int(whichParam[splitParam:len(whichParam)]) -1
+        # print(whichParam)
+        valueParam = None
+        
+        if parametro < 10000:
+            valueParam = memoriaGlobal.getValue(parametro)
+        elif parametro >= 10000 and parametro < 20000:
+            valueParam = memoriaLocales[-1].getValue(parametro)
+        elif parametro >= 20000 and parametro < 30000:
+            valueParam = memoriaConstante.getValue(parametro)
+
+        paramFunction = list(symbols[currentFunction[-1]]['params'])
+        aux =currentFunction[-1]
+        aux2=paramFunction[-1]
+        paramFunctionAddress =symbols[aux]['params'][aux2]['address']
+        paramFunctionType =symbols[aux]['params'][aux2]['type']
+
+        memoriaLocales[-1].upDateVal(paramFunctionAddress,valueParam)
+        # print("PARAM",memoriaLocales[-1])
         return pos + 1
 
 #Return
-    elif cuad[0] == "RETURN":
+    elif cuad[0] == "return":
+
+        if cuad[3] >= 20000:
+            value = memoriaConstante.getValue(cuad[3])
+        elif cuad[3] >= 10000 and cuad[3] < 20000:
+            value = memoriaLocales[-1].getValue(cuad[3])
+        elif cuad[3] < 10000:
+            value = memoriaGlobal.getValue(cuad[3])
+
+        direccionFuncion = symbols['global']['vars'][currentFunction[-1]]['address']
+        memoriaGlobal.upDateVal(direccionFuncion,value)
+        #print("value",value)
+        #print("cuad",cuad[3])
+        """
+        print("Hola")
+        print("ReturnArray", returnArray)
+        returnArray.append([cuad[3],value])
+        """
+    
         return pos + 1
+#OR
+    elif cuad[0] == "|":
+        opIzq = cuad[1] 
+        opDer = cuad[2]
+        resultado = cuad[3]
+
+        ##resultado a memoria
+        valorIzq = -1
+        valorDer = -1
+        resultadoCuad = -1
+
+        type1 = memoriaGlobal.getType(opIzq)
+        if opIzq < 10000 :
+            valorIzq = memoriaGlobal.getValue(opIzq)
+        elif opIzq >= 10000 and opIzq < 20000:
+            valorIzq = memoriaLocales[-1].getValue(opIzq)
+            if valorIzq == None:
+                keyAddress = opIzq
+                keyType = type1
+                memoriaLocales[-1].inserta_Dir_Locales(keyAddress,keyType, keyAddress)
+                valorIzq = memoriaLocales[-1].getValue(opIzq)                      
+        elif opIzq >= 20000 and opIzq < 30000:
+            valorIzq = memoriaConstante.getValue(opIzq)
+
+        if opDer < 10000 :
+            valorDer = memoriaGlobal.getValue(opDer)
+        elif opDer >= 10000 and opDer < 20000:
+            valorDer = memoriaLocales[-1].getValue(opDer)
+            if valorDer == None:
+                keyAddress = opDer
+                keyType = type1
+                memoriaLocales[-1].inserta_Dir_Locales(keyAddress,keyType, keyAddress)
+                valorDer = memoriaLocales[-1].getValue(opDer)                      
+        elif opDer >= 20000 and opDer < 30000:
+            valorDer = memoriaConstante.getValue(opDer)
+        type2 = memoriaGlobal.getType(opDer)
+        
+        typeR = memoriaGlobal.getType(resultado)
+        
+        resultadoCuad = bool(bool(valorIzq) or bool(valorDer))
+
+        if resultado < 10000 : 
+            keyAddress = resultado
+            keyType = typeR
+            memoriaLocales[-1].inserta_Dir_Locales(keyAddress,keyType, resultadoCuad)
+        elif resultado >= 10000 and resultado < 20000:
+            keyAddress = resultado
+            keyType = typeR
+            memoriaLocales[-1].inserta_Dir_Locales(keyAddress,keyType, resultadoCuad)     
+        elif resultado >= 20000 and resultado < 30000:
+            keyAddress = resultado
+            keyType = typeR
+            memoriaLocales[-1].inserta_Dir_Locales(keyAddress,keyType, resultadoCuad)
+        
+        return pos +1           
+    
+#And
+    elif cuad[0] == "&" :
+        return pos +1
 
         
     
@@ -719,10 +877,21 @@ def ejecuta(cuad,pos):
     
 
 cont = 0
+breakCont = 0
 while cont < len(quadruples):
     #print(cont,quadruples[cont])
     cont = ejecuta(quadruples[cont],cont)
     ##print(cont)
     #i = switch(quad[i], i)
+    """
+    breakCont += 1
+    if(breakCont > 1000) :
+        break
+    """
+
+"""
+print("Memoria Global")
+print(memoriaGlobal)
 print("Memoria Local")
 print(memoriaLocales[0])
+"""
