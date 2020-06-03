@@ -3,7 +3,7 @@ tipo = typeOperator['int']['int']['+']
 if tipo is "bool":
     ERROR
 '''
-
+# Cubo semantico para conocer el resultado de operaciones
 typeOperator = {
     "int" : {
         "int" : {

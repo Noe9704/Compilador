@@ -1,3 +1,4 @@
+# No se utiliza
 
 class tabla(object):
     def __init__(self, dataType, value = None, param = False, dimension = 0, matriz = 0):

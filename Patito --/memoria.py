@@ -1,5 +1,6 @@
 # ------------------------------------------------------------
 # Luis Marcelo Flores Canales A01280943
+# Noé Flores Sifuentes A00949282
 # ------------------------------------------------------------
 
 import sys
@@ -16,7 +17,7 @@ LOCAL_BASE = 10000
 CTE_BASE = 20000
 MAX_BASE = 30000
 
-## Direcciones para guarda locales
+## Direcciones para guardar locales
 local_int = LOCAL_BASE + INT_BASE
 local_float = LOCAL_BASE + FLOAT_BASE
 local_char = LOCAL_BASE + CHAR_BASE
@@ -38,46 +39,50 @@ constante_bool = CTE_BASE + BOOL_BASE
 ## Clase memoria
 
 class Memoria:
+    ## Estructura de la clase
     def __init__(self):
         self.ints = {}
         self.floats = {}
         self.chars = {}
         self.bools = {}
     
+    ## Funcion que se utiliza solamente para imprimir la memoria
     def __repr__(self):  
         return "Integer:% s Float:% s Char:% s  bool:% s " % (self.ints, self.floats, self.chars,self.bools) 
 
+    ## Funcion para insertar variables GLOBALES en el bloque de memoria
     def inserta_Dir_Globales(self,var,tipo):
         global global_int, global_float, global_char, global_bool
-        if tipo == "int":
-            direccion = global_int
-            global_int += 1
-            self.ints[direccion] = None
-            return direccion
+        if tipo == "int": # Si es tipo int entra en la condicion
+            direccion = global_int # Se trae la ultima direccion disponible
+            global_int += 1 # Se le suma 1 para indicar que la memoria pasada a sido utilizada
+            self.ints[direccion] = var # Se asigna en ints[direccion] la variable traida
+            return direccion # Retorna la direccion
         elif tipo == "float":
             direccion = global_float
             global_float += 1
-            self.floats[direccion] = None
+            self.floats[direccion] = var
             return direccion
         elif tipo == "char":
             direccion = global_char
             global_char += 1
-            self.chars[direccion] = None
+            self.chars[direccion] = var
             return direccion
         elif tipo == "bool":
             direccion = global_bool
             global_bool += 1
-            self.bools[direccion] = None
+            self.bools[direccion] = var
             return direccion
 
+    ## Funcion para insertar variables CONSTANTES en el bloque de memoria
     def inserta_Dir_Constantes(self, const,tipo):
         global constante_int, constante_float, constante_char, constante_bool
-        if tipo == "int":
-            direccion = constante_int
-            constante_int += 1
+        if tipo == "int": # Si es tipo int entra en la condicion
+            direccion = constante_int # Se trae la ultima direccion disponible
+            constante_int += 1 # Se le suma 1 para indicar que la memoria pasada a sido utilizada
             ##print(constante_int)
-            self.ints[direccion] = const
-            return direccion
+            self.ints[direccion] = const # Se asigna en ints[direccion] la constante traida
+            return direccion # Retorna la direccion
         elif tipo == "float":
             direccion = constante_float
             constante_float += 1
@@ -94,13 +99,14 @@ class Memoria:
             self.bools[direccion] = const
             return direccion
 
+    ## Funcion para insertar variables LOCALES y TEMPORALES en el bloque de memoria
     def inserta_Dir_Locales(self,var,tipo, value):
         global local_int, local_float, local_char, local_bool
-        if tipo == "int":
-            direccion = var
-            local_int += 1
-            self.ints[direccion] = value
-            return direccion
+        if tipo == "int": # Si es tipo int entra en la condicion
+            direccion = var # Se trae la ultima direccion disponible
+            local_int += 1 # Se le suma 1 para indicar que la memoria pasada a sido utilizada
+            self.ints[direccion] = value # Se asigna en ints[direccion] la constante traida
+            return direccion # Retorna la direccion
         elif tipo == "float":
             direccion = var
             local_float += 1
@@ -116,7 +122,7 @@ class Memoria:
             local_bool += 1
             self.bools[direccion] = value
             return direccion
-    
+    ## No la utilizamos
     def inserta_Dir_temporales(self,var,tipo):
         global local_int, local_float, local_char, local_bool
         if tipo == "int":
@@ -140,9 +146,12 @@ class Memoria:
             self.bools[direccion] = var
             return direccion
 
+    ## Funcion para actualizar el valor de una direccion
     def upDateVal(self,address,valor):
+        ## La funcion recibe una direccion y con esta se puede determinar el tipo
+        ## Conociendo el tipo podemos saber en que seccion actualizar
         if (int(address) / 1000) % 10 < 1:
-            self.ints[address] = valor
+            self.ints[address] = valor ## Guardamos el nuevo valor en la direccion
         elif (int(address) / 1000) % 10 < 2:
             self.floats[address] = valor
         elif (int(address) / 1000) % 10 < 3:
@@ -150,8 +159,9 @@ class Memoria:
         elif (int(address) / 1000) % 10 < 4:
             self.bools[address] = valor
         
-
+    ## Funcion que obtiene el tipo de una direccion
     def getType(self,varAddress):
+        ## Se utiliza la direccion con una operacion para saber que tipo es
         if (int(varAddress) / 1000) % 10 < 1:
             return 'int'
         elif (int(varAddress) / 1000) % 10 < 2:
@@ -161,9 +171,11 @@ class Memoria:
         elif (int(varAddress) / 1000) % 10 < 4:
             return 'bool'
     
+    ## Funcion para obtener el valor de una direccion
     def getValue(self,address):
+        ## Con la direccion obtenida obtenemos que tipo es
         if (int(address) / 1000) % 10 < 1:
-            for key in self.ints :
+            for key in self.ints : ## Hacemos un for para recorrer toda la clase y encontrar la llave
                 if address == key :
                     return self.ints[key]
         elif (int(address) / 1000) % 10 < 2:
