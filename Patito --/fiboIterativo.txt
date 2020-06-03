@@ -1,0 +1,38 @@
+
+program patito:
+
+funcion int fiboIterativo(int n):
+var int : actual,ant1,ant2,k;
+{
+   ant1 = 1;
+   ant2 = 1;
+
+   if((n == 1) | (n == 2)) so{
+      actual = 1;
+
+   }
+   else{
+      if(n == 0)so{
+         actual = 0;
+         
+      }
+   }
+   write(0);
+   write(1);
+   write(1);
+   from k = 3 to n do  {
+      actual = ant1 + ant2;
+      ant2 = ant1;
+      ant1 = actual;
+      write(actual);
+   }
+}
+
+main()
+var int : x, num;
+{
+   write("Escribe el numero que quieres de la sucesion");
+   read(x);
+   write("El numero que corresponde a ese indice de la sucesion es:");
+   fiboIterativo(x);
+}

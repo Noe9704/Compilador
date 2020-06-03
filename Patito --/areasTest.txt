@@ -1,0 +1,33 @@
+program patito:
+
+main()
+var int :  x, valor,valor2,areaCuad;
+var float : base, altura,areaTrian,PI,radio, areaCirc;
+{
+  write("Favor de escribir un numero para operacion");
+  read(x);
+  if(x == 1)so{
+     write("escribe la longitud de uno de los lados de un cadrado");
+     read(valor);
+     areaCuad = valor * valor;
+     write("El area del cuadrado es:",areaCuad);
+  }
+  else{
+     if (x == 2)so{
+        write("Escribe la base del triangulo");
+        read(base);
+        write("Escribe la altura del triangulo");
+        read(altura);
+        areaTrian = ((base * altura) / 2.0);
+        write("El area del triangulo es", areaTrian);
+     }
+     if(x == 3) so{
+        PI = 3.1416;
+        write("favor de escribir el radio del circulo");
+        read(radio);
+        radio = radio * radio;
+        areaCirc = PI * radio;
+        write("El area del circulo es", areaCirc);
+     }
+  }
+}

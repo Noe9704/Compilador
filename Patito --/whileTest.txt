@@ -1,0 +1,20 @@
+program patito:
+
+funcion int prueba(int n):
+var int : actual,ant1,ant2,k;          
+{
+   actual = 1;
+   while(actual <= n)do{
+      write("hola mundo");
+
+      actual = actual + 1;
+   }
+}
+
+main()
+var int : x, num;
+{
+   write("Escribe la cantidad de veces que quieres que se escriba el mensaje2:");
+   read(x);
+   prueba(x);
+}

@@ -1,0 +1,9 @@
+program patito:
+
+main()
+var int : x;
+{
+
+    write("hola patito");
+
+}
