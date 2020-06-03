@@ -1,4 +1,9 @@
-# Grámatica
+# ------------------------------------------------------------
+# Luis Marcelo Flores Canales A01280943
+# Noé Flores Sifuentes A00949282
+# ------------------------------------------------------------
+
+## Grámatica
 
 import ply.lex as lex
 import ply.yacc as yacc
@@ -6,7 +11,7 @@ import sys
 import cuboSemantico
 import pprint
 
-
+## Se inicializa la tabla de simbolos
 symbols = {
     'name': '',
     'global': {
@@ -14,20 +19,22 @@ symbols = {
     }
 }
 
+## Se inicializa la tabla de constantes
 constants = {
  
 }
 
-    
+## Declaracion de variables
 aux = False
 auxParamFuncion = False
 isFromFuntion = False
 valorTermporal = 0
 
+## Declaracion de variables para el control de funciones
 contParametros = 0
 currentERA = ""
 
-##declaracion de variables para abrir simbolos
+## Declaracion de variables para abrir simbolos
 current_tipo = ''
 current_func = 'global'
 current_variable =''
@@ -42,7 +49,6 @@ BOOL_BASE = 3000
 ##Cantidad total de direcciones por tipo
 ADDRESS_SPACE = 1000
 
-
 # direcciones locales y globales
 GLOBAL_BASE = 0
 LOCAL_BASE = 10000
@@ -54,7 +60,6 @@ global_next_float = GLOBAL_BASE + FLOAT_BASE
 global_next_char = GLOBAL_BASE + CHAR_BASE
 global_bool_base = GLOBAL_BASE + BOOL_BASE
 global_next_bool = GLOBAL_BASE + BOOL_BASE
-
 
 constant_next_int = CTE_BASE + INT_BASE
 constant_next_float = CTE_BASE + FLOAT_BASE
@@ -77,10 +82,7 @@ def newFunction():
     next_char = LOCAL_BASE + CHAR_BASE
     bool_base = LOCAL_BASE + BOOL_BASE
     next_bool = LOCAL_BASE + BOOL_BASE
-"""
-def getAddressAux():
-    pass
-"""    
+  
 ## Funcion para asignar direcciones de memoria
 def getAddress(tipo, force_global=False):
     ## Asignar direcciones a variables globales y a funciones
@@ -156,7 +158,7 @@ def getAddress(tipo, force_global=False):
             next_bool += 1 ## Actualiza la direccion 
             return aux  ## Se retorna la direccion actual
 
-
+# Se inicializa los cuadruplos con un GOTO
 quadruples = [["GOTO",None,None,0]]
 
 ##Pilas cuadruplos
@@ -167,7 +169,6 @@ pila_Variables_Globales = []
 pila_Variables_Generales = []
 pila_Variables_Funciones = []
 Pila_Saltos = []
-
 
 ## Ejemplo de la estructura de la tabla de simbolos
 '''symbols[current_func]['vars'][p[-1]] = {
@@ -218,7 +219,7 @@ Pila_Saltos = []
 ## Variable para comprobar si el archivo se acepto correctamente
 success = True
 
-##Declaration of tokens
+## Declaracion de tokens
 tokens = [
     'ID',
     'COLON',
@@ -251,7 +252,7 @@ tokens = [
     'QUESTION'    
     ]
 
-##Reserved words
+## Palabras reservadas
 reserverd = {
     'program' : 'PROGRAM',
     'funcion' : 'FUNCION',
@@ -275,9 +276,7 @@ reserverd = {
     
 }
 
-
-
-##tokens symbols
+## Symbolos
 t_ignore = ' \t\n'
 t_COLON = r'\:'
 t_COMA = r'\,'
@@ -311,13 +310,11 @@ t_CTE_C = r'(\'[^\']*\')'
 
 tokens = tokens + list(reserverd.values())
 
-
 ## Funcion para declarar ID con expresiones regulares
 def t_ID(t):
     r'[a-zA-Z][a-zA-Z0-9]*'
     t.type = reserverd.get(t.value,'ID')
     return t
-
 
 ## Funcion para detectar simbolos no validos
 def t_error(t):
@@ -328,7 +325,8 @@ def t_error(t):
  
 lex.lex()
 
-## Regla gramatical 
+## Regla gramaticales
+## Regla para definir un programa
 def p_program(p):
     '''
     program : PROGRAM ID r_registrar_programa COLON auxVar auxFuncion r_GOTOMAIN MAIN r_registrar_main L_PARENT R_PARENT auxVar bloque r_EndProgram
@@ -338,106 +336,110 @@ def p_program(p):
     #pp = pprint.PrettyPrinter(indent=4)
     #pp.pprint(stuff)
     pp = pprint.PrettyPrinter(indent=4)
-    pp.pprint(symbols)
+    #pp.pprint(symbols)
     #pp.pprint(pila_Variables_Funciones)
     # print(symbols)
     # quadruples.insert(0,quadruples[:])
+    """
     cont = 0
     for x in quadruples :
         print(cont,end="\t")
         cont = cont + 1
         pp.pprint(x)
-        
+    """  
     ##pp.pprint(Pila_Names)
-    print("Constantes")
-    pp.pprint(constants)
+    #print("Constantes")
+    #pp.pprint(constants)
     #print(quadruples)
     ##print(Pila_Names)
     #print(Pila_Oper)
 
+#  Declara la palabra var 
 def p_auxVar(p):
     '''
     auxVar : VAR var auxVar 
             | empty
     '''
-
+# Declara el tipo con el nombre de variable
 def p_var(p):
     '''
     var : tipo COLON lista_ids_asignacion auxLista_idsVar_asignacion SEMICOLON
         | tipo COLON lista_ids_asignacion auxLista_idsVar_asignacion SEMICOLON var
     '''
-
+# Declara el tipo
 def p_tipo(p):
     '''
     tipo : INT r_registrar_tipo
         | FLOAT r_registrar_tipo
         | CHAR r_registrar_tipo
     ''' 
-
+# Declara la variable
 def p_lista_ids(p):
     '''
     lista_ids : ID r_push_Name casilla casilla 
     '''
-
+# 
 def p_auxLista_idsVar_asignacion(p):
     '''
     auxLista_idsVar_asignacion : COMA lista_ids_asignacion auxLista_idsVar_asignacion
             | empty  
     ''' 
 
+# Declara la variable para la asignacion
 def p_lista_ids_asignacion(p):
     '''
     lista_ids_asignacion : ID r_registrar_variable casilla casilla 
    '''
 
+# Declara el espacio de las casillas
 def p_casilla(p):
     '''
     casilla : L_BRACKET casillaVar R_BRACKET
             | empty
     '''
-
+# Declara si lo que hay dentro de la casilla es un in o un id
 def p_casillaVar(p):
     '''
     casillaVar : CTE_I
                 | ID
                 | exp 
     '''
-
+# Sirve para declarar varias funciones
 def p_auxFuncion(p):
     '''
     auxFuncion : funcion auxFuncion
             | empty
     '''
-
+# Declara la funcion
 def p_funcion(p):
     '''
     funcion : FUNCION tipoFuncion ID r_registrar_func_name L_PARENT auxParametro R_PARENT COLON auxVar bloque r_SaveTemporalVarsFunction
     '''
-
+# Declara el tipo de funcion
 def p_tipoFuncion(p):
     '''
     tipoFuncion : tipo
                 | VOID r_registrar_tipo
     '''
-
+# Declara los parametros de la funcion
 def p_auxParametro(p):
     '''
     auxParametro : tipo ID r_registrar_parametro
                 | tipo ID r_registrar_parametro COMA auxParametro
                 | empty
     '''
-
+# Declara el bloque
 def p_bloque(p):
     '''
     bloque : L_KEY auxEstatuto R_KEY 
     '''
-
+# Sirve para tener varios estatutos
 def p_auxEstatuto(p):
     '''
     auxEstatuto : estatuto auxEstatuto
                 | empty
     '''
-
+# Sirve para declarar estatutos
 def p_estatuto(p):
     '''
     estatuto : asignacion
@@ -448,31 +450,31 @@ def p_estatuto(p):
             | decision
             | repeticion
     '''
-
+# Sirve para asignar valores
 def p_asignacion(p):
     '''
     asignacion : lista_ids EQUAL r_push_operator exp r_check_equal SEMICOLON
                 | lista_ids EQUAL r_push_operator CTE_C r_registrar_constante_char r_check_equal SEMICOLON
                 | lista_ids EQUAL r_push_operator CTE_STRING r_registrar_constante_char r_check_equal SEMICOLON 
     '''
-
+# Auxiliar
 def p_m(p):
     '''
     m : t auxM r_check_sum
     '''
-
+# Auxiliar suma
 def p_auxM(p):
     '''
     auxM : PLUS r_push_operator m
             | MINUS r_push_operator m
             | empty
     '''
-
+# Auxiliar
 def p_t(p):
     '''
     t : z auxT r_check_mult
     '''
-
+# Auxiliar de simbolos aritmeticos
 def p_auxT(p):
     '''
     auxT : MULT r_push_operator t
@@ -482,12 +484,12 @@ def p_auxT(p):
         | QUESTION t
         | empty
     '''
-
+# Auxiliar
 def p_f(p):
     '''
     f : m auxF r_check_Comparison
     '''
-
+# Auxiliar de simbolos
 def p_auxF(p):
     '''
     auxF : LESSTHAN r_push_operator f
@@ -497,29 +499,29 @@ def p_auxF(p):
         | EQUALX2 r_push_operator f
         | empty
     '''
-
+# Auxiliar de exp
 def p_exp(p):
     '''
     exp : x auxExp r_check_OR
     '''
-
+# Auxiliar or
 def p_auxExp(p):
     '''
     auxExp : OR r_push_operator exp
         | empty
     '''
-
+# Auxiliar
 def p_x(p):
     '''
     x : f auxX r_check_And
     '''
-
+# Auxiliar and
 def p_auxX(p):
     '''
     auxX : AND r_push_operator f
         | empty
     '''
-
+# Auxiliar para constantes
 def p_z(p):
     '''
     z : var_cte 
@@ -527,64 +529,64 @@ def p_z(p):
         | lista_ids
         | llamada
     '''
-
+# Axuliar para constantes enteros o en float
 def p_var_cte(p):
     '''
     var_cte : CTE_I r_registrar_constante_int
             | CTE_F r_registrar_constante_float
     '''
-
+# Regla para llamada
 def p_llamada(p):
     '''
     llamada : ID r_funcionERA L_PARENT auxLlamada R_PARENT r_funcionGOSUB r_reiniciaContadorParametrosLlamadas 
     '''
-
+# Regla para mandar parametros
 def p_auxLlamada(p):
     '''
     auxLlamada : exp r_funcionParametros
                 | exp r_funcionParametros COMA auxLlamada
                 | empty
     '''
-
+# Regla del return
 def p_retorno(p):
     '''
     retorno : RETURN r_push_operator L_PARENT exp R_PARENT r_checkReturn SEMICOLON
     '''            
-
+# Regla de lectura
 def p_lectura(p):
     '''
     lectura : READ r_push_operator L_PARENT auxLectura R_PARENT SEMICOLON
     '''       
-
+# Regla para varias lecturas
 def p_auxLectura(p):
     '''
     auxLectura : lista_ids r_check_Lectura
             | lista_ids r_check_Lectura COMA r_pushOtherRead auxLectura 
     '''
-
+# Regla para escribir
 def p_escritura(p):
     '''
     escritura : WRITE r_push_operator L_PARENT auxEscritura R_PARENT SEMICOLON
     '''
-
+# Auxiliar para escribir
 def p_auxEscritura(p):
     '''
     auxEscritura : auxString 
                  | auxExpEscritura 
     '''
-
+# Regla del string
 def p_auxString(p):
     '''
     auxString : CTE_STRING r_check_Escritura_String
               | CTE_STRING r_check_Escritura_String COMA r_pushOtherWrite auxEscritura 
     '''
-
+# Regla auxiliar del string
 def p_auxExpEscritura(p):
     '''
     auxExpEscritura : exp r_check_Escritura 
                     | exp r_check_Escritura COMA r_pushOtherWrite auxEscritura 
     '''
-
+# Regla del if
 def p_decision(p):
     '''
     decision : IF L_PARENT exp R_PARENT r_checkIF SO bloque auxDecision r_checkIFB
@@ -594,28 +596,29 @@ def p_decision(p):
 def fill(cuadr, salto):
     quadruples[cuadr][3] = salto
 
+# Regla de decision
 def p_auxDecision(p):
     '''
     auxDecision : r_checkElse ELSE bloque
                 | empty
     '''
-
+# Regla de repeticion
 def p_repeticion(p):
     '''
     repeticion : condicional
                 | nocondicional
     '''
-
+# Regla del while
 def p_condicional(p):
     '''
     condicional : WHILE r_checkWhile L_PARENT exp R_PARENT r_checkWhileB DO bloque r_checkWhileC
     '''
-
+# Regla del for
 def p_nocondicional(p):
     '''
     nocondicional : FROM r_checkFor lista_ids EQUAL r_push_operator exp r_check_equal TO exp r_ForB DO bloque r_ForInicia r_ForFinaliza
     '''
-
+# Regla para empty
 def p_empty(p):
     ''' 
     empty : 
@@ -629,7 +632,7 @@ def p_error(p):
     sys.exit()
 
 
-## Reglas
+## Reglas de puntos neuralgicos
 def p_r_registrar_programa(p):
     '''
     r_registrar_programa :
@@ -645,7 +648,7 @@ def p_r_registrar_variable(p):
     global symbols, current_variable, pila_Variables_Globales, pila_Variables_Generales, pila_Variables_Funciones
     aux_Funcion = ''
     current_variable = p[-1]
-
+    # Si se obtiene un None quiere decir que no existe y hay que registrarlo
     if symbols[current_func].get(current_variable) is None:
         if(current_func == 'global'):
             pila_Variables_Globales.append(current_variable)
@@ -677,7 +680,7 @@ def p_r_registrar_variable(p):
         print("Error")
 
 
-
+# 
 def duplicados_Tupla(listaTupla):     
     flag = False
     listaAuxiliar = []   
@@ -709,6 +712,7 @@ def variable_comun(listaA,listaB):
                 resultado = True
     return resultado
 
+# Registra el nombre de una funcion
 def p_r_registrar_func_name(p):
     '''
     r_registrar_func_name : 
@@ -735,7 +739,7 @@ def p_r_registrar_func_name(p):
         print("funcion repetida " + current_func)
         sys.exit()
   
-
+# Guarda las variables temporales generadas por una funcion
 def p_r_SaveTemporalVarsFunction(p):
     '''
     r_SaveTemporalVarsFunction : 
@@ -748,7 +752,7 @@ def p_r_SaveTemporalVarsFunction(p):
     cuad = ["ENDPROC",None,None,None]
     quadruples.append(cuad)
 
-
+# Registra la funcion actual 
 def p_r_funcionERA(p):
     '''
     r_funcionERA : 
@@ -757,7 +761,7 @@ def p_r_funcionERA(p):
     isFromFuntion = True
     funcName = p[-1]
     currentERA = funcName
-    print(currentERA)
+    #print(currentERA)
     cuad = ["ERA",None,None,currentERA]
     symbols[funcName]['start'] = symbols[funcName]['start']
     quadruples.append(cuad)
@@ -766,6 +770,7 @@ def p_r_funcionERA(p):
     # Pila_Types.append(symbols['global']['vars'][funcName]['type'])
     # Pila_Oper.append("=")
 
+# Registra el funcionamiento de los parametros
 def p_r_funcionParametros(p):
     '''
     r_funcionParametros : 
@@ -801,7 +806,7 @@ def p_r_funcionParametros(p):
         print("Error, no  se han mandado la cantidad de argumentos que tiene la firma original de la funcion")
         sys.exit()
     '''
-
+# Inserta el cuadruplo de GOSUB
 def p_r_funcionGOSUB(p):
     '''
     r_funcionGOSUB : 
@@ -826,7 +831,7 @@ def p_r_funcionGOSUB(p):
     valorTermporal = termporalResultado
     
 
-
+# Guarda la posicion del main
 def p_r_GOTOMAIN(p):
     '''
     r_GOTOMAIN :
@@ -836,6 +841,7 @@ def p_r_GOTOMAIN(p):
     #quadruples.appendleft(cuad)
     #quadruples.insert(0, cuad)
 
+# Registra el main
 def p_r_registrar_main(p):
     '''
     r_registrar_main : 
@@ -847,13 +853,13 @@ def p_r_registrar_main(p):
         'vars': {}
     }
 
-
+# Guarda el tipo de las variables
 def p_r_registrar_tipo(p):
     '''r_registrar_tipo : '''
     global current_tipo
     current_tipo = p[-1]
     
-
+# Registra los parametros
 def p_r_registrar_parametro(p):
     '''
     r_registrar_parametro :
@@ -868,7 +874,7 @@ def p_r_registrar_parametro(p):
     else:
         print("In the function "+current_func + ", the param "+"\""+ current_param + "\" is already a global variable.")
         sys.exit()
-  
+# Agrega el cuadruplo del fin del programa  
 def p_r_EndProgram(p):
     '''
     r_EndProgram : 
@@ -898,13 +904,14 @@ def p_r_push_Name(p):
     else :
         print("Error en la funcion " + "\""+ current_func +"\"" +" la variable " + "\"" + p[-1] + "\""+ " no esta definida")
         sys.exit()
-
+# Se registran los operadores
 def p_r_push_operator(p):
     '''
     r_push_operator : 
     '''
     Pila_Oper.append(p[-1])
 
+# Registra los tipos en la suma
 def p_r_check_sum(p):
     '''
     r_check_sum :
@@ -946,7 +953,7 @@ def p_r_check_sum(p):
                     print("Error, en el match *, / de tipos")
                     sys.exit() 
 
-
+# Revisa los tipos en la comparacion
 def p_r_check_Comparison(p):
     '''
     r_check_Comparison : 
@@ -984,7 +991,7 @@ def p_r_check_Comparison(p):
                 print("Error, en el match de tipos de comparacion")
                 sys.exit() 
 
-
+# Revisa los tipos en el or
 def p_r_check_OR(p):
     '''
     r_check_OR : 
@@ -1007,6 +1014,7 @@ def p_r_check_OR(p):
                 print("Error, en el match de tipos")
                 sys.exit() 
 
+#Revisa los tipos en la mult
 def p_r_check_mult(p):
     '''
     r_check_mult :
@@ -1048,7 +1056,7 @@ def p_r_check_mult(p):
                     print("Error, en el match *, / de tipos")
                     sys.exit() 
 
-
+# Revisa los tipos del and
 def p_r_check_And(p):
     '''
     r_check_And : 
@@ -1070,19 +1078,19 @@ def p_r_check_And(p):
             else:
                 print("Error, en el match de tipos")
                 sys.exit() 
-
+# Agrega el fondo falso
 def p_r_false_add_bottom(p):
     '''
     r_false_add_bottom :
     '''
     Pila_Oper.append("B")
-
+#Quita el fondo falso
 def p_r_false_quit_bottom(p):
     '''
     r_false_quit_bottom :
     '''
     Pila_Oper.pop()
-
+# Registra constantes
 def p_r_registrar_constante_int(p):
     '''
     r_registrar_constante_int : 
@@ -1160,7 +1168,7 @@ def p_r_registrar_constante_char(p):
         Pila_Names.append(dirr)
         Pila_Types.append('char')
 
-
+# Reinicia el contador de parametros
 def p_r_reiniciaContadorParametrosLlamadas(p):
     '''
     r_reiniciaContadorParametrosLlamadas : 
@@ -1174,7 +1182,7 @@ def p_r_reiniciaContadorParametrosLlamadas(p):
         currentERA = ""
         contParametros = 0
 
-
+# Checa el return
 def p_r_checkReturn(p):
     '''
     r_checkReturn :
@@ -1194,7 +1202,7 @@ def p_r_checkReturn(p):
                 cuad = [operador, None,None,opDer]
                 quadruples.append(cuad)
 
-
+# Checa la lectura
 def p_r_check_Lectura(o):
     '''
     r_check_Lectura :
@@ -1207,7 +1215,7 @@ def p_r_check_Lectura(o):
             cuad = [operador, None,None,opDer]
             quadruples.append(cuad)
     
-   
+# Revisa cuantos valores va a leer  
 def p_r_pushOtherRead(p):
     '''
     r_pushOtherRead : 
@@ -1215,7 +1223,7 @@ def p_r_pushOtherRead(p):
     Pila_Oper.append("read")
 
 
-
+# Checa la escritura
 def p_r_check_Escritura(p):
     '''
     r_check_Escritura : 
@@ -1227,6 +1235,7 @@ def p_r_check_Escritura(p):
             operador = Pila_Oper.pop()
             cuad = [operador, None,None,opDer]
             quadruples.append(cuad)
+
 
 def p_r_check_Escritura_String(p):
     '''
@@ -1262,7 +1271,7 @@ def p_r_check_Escritura_String(p):
             cuad2 = [operador,None,None,operadorDer]
             quadruples.append(cuad2)
 
-
+# Poder hacer varios writes en el mismo renglon
 def p_r_pushOtherWrite(p):
     '''
     r_pushOtherWrite : 
@@ -1425,17 +1434,13 @@ def p_r_check_equal(p):
 
 parser = yacc.yacc()
 
-##caso de prueba en el que falla
-##testFile2.txt
-
-##caso de prueba exitoso
-##testFile.txt
+# Revisa que se envie un archivo
 if len(sys.argv) != 2:
     print('Por favor manda un archivo.')
     raise SyntaxError('Patito necesita de un archivo')
 else: 
     data = sys.argv[1]
-  # Compile program.
+  # Compila el programa.
     with open(data, 'r', newline='\n') as file:
         parser.parse(file.read())
         object_code = {
