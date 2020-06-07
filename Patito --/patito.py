@@ -393,14 +393,14 @@ def p_lista_ids_asignacion(p):
 
 def p_casilla_asignacion(p):
     '''
-    casilla : L_BRACKET casillaVar R_BRACKET
+    p_casilla_asignacion : L_BRACKET casillaVarAsignacion R_BRACKET
             | empty
     '''
 
 # Declara el espacio de las casillas
 def p_casilla(p):
     '''
-    casilla : L_BRACKET casillaVarAsignacion R_BRACKET
+    casilla : L_BRACKET casillaVar R_BRACKET
             | empty
     '''
 
