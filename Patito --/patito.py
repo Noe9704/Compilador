@@ -388,14 +388,27 @@ def p_auxLista_idsVar_asignacion(p):
 # Declara la variable para la asignacion
 def p_lista_ids_asignacion(p):
     '''
-    lista_ids_asignacion : ID r_registrar_variable casilla casilla 
+    lista_ids_asignacion : ID r_registrar_variable casilla_asignacion casilla_asignacion 
    '''
+
+def p_casilla_asignacion(p):
+    '''
+    casilla : L_BRACKET casillaVar R_BRACKET
+            | empty
+    '''
 
 # Declara el espacio de las casillas
 def p_casilla(p):
     '''
-    casilla : L_BRACKET casillaVar R_BRACKET
+    casilla : L_BRACKET casillaVarAsignacion R_BRACKET
             | empty
+    '''
+
+def p_casillaVarAsignacion(p):
+    '''
+    casillaVarAsignacion : CTE_I
+                | ID
+                | exp 
     '''
 # Declara si lo que hay dentro de la casilla es un in o un id
 def p_casillaVar(p):
