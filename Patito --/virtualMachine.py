@@ -46,6 +46,12 @@ for key in constants.keys():
     keyValue = key
     keyType = constants[key]['type']
     memoriaConstante.inserta_Dir_Constantes(keyValue,keyType)
+"""
+print("Memoria Global")
+print(memoriaGlobal)
+print("Memoria Constantes")
+print(constants)
+"""
 
 # Funcion para recorrer los cuadruplos
 def ejecuta(cuad,pos):
@@ -618,6 +624,35 @@ def ejecuta(cuad,pos):
         opDer = cuad[2] # Siempre es None por el igual
         resultado = cuad[3]
         
+
+        # Condicion Arreglos
+        if(opDer != None):
+            valorCasilla = memoriaLocales[-1].getValue(opDer) # Obtengo el valor que hay en la direccion opDer
+            direccionBase = int(opIzq) + int(valorCasilla) # Sumo el valor a la direccion, para saber la casilla correspondiente
+            resultado = direccionBase # Direccion de variable en arr[variable]
+            valorIzq = memoriaLocales[-1].getValue(resultado)
+            #print(memoriaLocales[-1])
+            #print(valorIzq)
+            if resultado < 10000 :
+                resultadoCuad = memoriaGlobal.getValue(resultado)
+                memoriaGlobal.upDateVal(resultado,valorIzq)
+            elif resultado >= 10000 and resultado < 20000:
+                keyValue = valorIzq
+                keyAddress = resultado
+                keyType = memoriaLocales[-1].getType(resultado)
+                #print("3 datos",keyValue,keyAddress,keyType)
+                memoriaLocales[-1].inserta_Dir_Locales(keyAddress,keyType,keyValue)
+                #print("memoria local",memoriaLocales[-1])
+                resultadoCuad = memoriaLocales[-1].getValue(resultado) 
+                #print("resultcuad",resultadoCuad)
+                memoriaLocales[-1].upDateVal(cuad[3],valorIzq)
+            elif resultado >= 20000 and resultado < 30000:
+                resultadoCuad = memoriaConstante.getValue(resultado)
+                memoriaConstante.upDateVal(cuad[3],valorIzq)
+
+
+            return pos + 1
+
         ##resultado a memoria
         valorIzq = -1
         valorDer = -1
@@ -918,6 +953,36 @@ def ejecuta(cuad,pos):
             memoriaLocales[-1].inserta_Dir_Locales(keyAddress,keyType, resultadoCuad)
         
         return pos +1 
+# VERIFICA
+    elif cuad[0] == "VER" :
+        lInferior = cuad[1]
+        lSuperior = cuad[3]
+
+        valorlInferior = memoriaLocales[-1].getValue(lInferior)
+        valorlSuperior = lSuperior
+
+        if(valorlInferior == None):
+            lSuperior = cuad[2]
+            key_list = list(constants.keys()) 
+            val_list = list(constants.values()) 
+            aux = 0
+            for x in val_list:
+                if x['address'] == lInferior:
+                    valorlInferior = key_list[aux]
+                aux = aux + 1
+            
+        """
+        print(valorlInferior,valorlSuperior)
+        print("Memoria Local")
+        print(memoriaLocales[-1])
+        """
+        if int(valorlInferior) > int(valorlSuperior):
+            print("Error en los limites de un arreglo.")
+            sys.exit()
+        
+
+        return pos + 1
+
 
         
 # Contador para recorrer los caudrulos

@@ -471,7 +471,7 @@ def p_r_checkArray(p):
                 cuad2 = ["+", valorCasilla,arrName,termporalResultado]
                 quadruples.append(cuad2)
                 Pila_Names.append(termporalResultado)
-                cuad3 = ["=", valorCasilla , valorCasilla, termporalResultado]
+                cuad3 = ["=", valorCasilla , arrName, termporalResultado]
                 quadruples.append(cuad3)
                 dimensionesGlobales.append(dimensionGlobal)
                 Pila_Oper.pop()
