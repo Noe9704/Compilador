@@ -169,6 +169,12 @@ pila_Variables_Globales = []
 pila_Variables_Generales = []
 pila_Variables_Funciones = []
 Pila_Saltos = []
+pila_Valor_Casilla = []
+
+##dimension en declaracion de variables
+direccionDimension = 0
+dimension = []
+dimensionesGlobales = []
 
 ## Ejemplo de la estructura de la tabla de simbolos
 '''symbols[current_func]['vars'][p[-1]] = {
@@ -336,7 +342,7 @@ def p_program(p):
     #pp = pprint.PrettyPrinter(indent=4)
     #pp.pprint(stuff)
     pp = pprint.PrettyPrinter(indent=4)
-    #pp.pprint(symbols)
+    pp.pprint(symbols)
     #pp.pprint(pila_Variables_Funciones)
     # print(symbols)
     # quadruples.insert(0,quadruples[:])
@@ -348,9 +354,9 @@ def p_program(p):
         pp.pprint(x)
     """  
     ##pp.pprint(Pila_Names)
-    #print("Constantes")
-    #pp.pprint(constants)
-    #print(quadruples)
+    print("Constantes")
+    pp.pprint(constants)
+    pp.pprint(quadruples)
     ##print(Pila_Names)
     #print(Pila_Oper)
 
@@ -376,7 +382,7 @@ def p_tipo(p):
 # Declara la variable
 def p_lista_ids(p):
     '''
-    lista_ids : ID r_push_Name casilla casilla 
+    lista_ids : ID r_push_Name casilla  casilla 
     '''
 # 
 def p_auxLista_idsVar_asignacion(p):
@@ -388,35 +394,103 @@ def p_auxLista_idsVar_asignacion(p):
 # Declara la variable para la asignacion
 def p_lista_ids_asignacion(p):
     '''
-    lista_ids_asignacion : ID r_registrar_variable casilla_asignacion casilla_asignacion 
+    lista_ids_asignacion : ID casilla_asignacion casilla_asignacion r_registrar_variable
    '''
 
 def p_casilla_asignacion(p):
     '''
-    p_casilla_asignacion : L_BRACKET casillaVarAsignacion R_BRACKET
+    casilla_asignacion : L_BRACKET casillaVarAsignacion R_BRACKET r_Trae_Dimendion
             | empty
     '''
 
 # Declara el espacio de las casillas
 def p_casilla(p):
     '''
-    casilla : L_BRACKET casillaVar R_BRACKET
+    casilla : L_BRACKET r_push_operator casillaVar R_BRACKET r_checkArray
             | empty
     '''
 
+
+def p_r_Trae_Dimendion(p):
+    '''
+    r_Trae_Dimendion : 
+    '''  
+    global dimension, direccionDimension
+    operador = p[-1]
+    dimension.append(current_variable)
+    direccionDimension = dimension[-1]
+    dimensionesGlobales.append(current_variable)
+
 def p_casillaVarAsignacion(p):
     '''
-    casillaVarAsignacion : CTE_I
+    casillaVarAsignacion : CTE_I r_registrar_constante_int
                 | ID
                 | exp 
     '''
 # Declara si lo que hay dentro de la casilla es un in o un id
 def p_casillaVar(p):
     '''
-    casillaVar : CTE_I
-                | ID
+    casillaVar : CTE_I r_registrar_constante_int r_sumValorCasilla
+                | ID r_push_Name
                 | exp 
     '''
+
+def p_r_checkArray(p):
+    '''
+    r_checkArray :
+    '''
+    global auxParamFuncion, isFromFuntion,dimensionesGlobales
+    if len(Pila_Oper) > 0 :
+        if Pila_Oper[len(Pila_Oper)-1] == '[' :
+            if len(pila_Valor_Casilla )> 0 :
+                longitudCasilla = pila_Valor_Casilla.pop()
+                arrName = Pila_Names.pop()
+                valorCasilla = Pila_Names.pop() + int(longitudCasilla)
+                tipo1 = Pila_Types.pop()
+                tipo2 = Pila_Types.pop()
+                dimensionGlobal = dimensionesGlobales.pop()
+                cuad = ["VER",arrName,dimensionGlobal,valorCasilla]
+                quadruples.append(cuad)
+                Pila_Names.append(valorCasilla)
+                dimensionesGlobales.append(dimensionGlobal)
+                Pila_Oper.pop()
+            else:
+                arrName = Pila_Names.pop()
+                valorCasilla = Pila_Names.pop()
+                tipo1 = Pila_Types.pop()
+                tipo2 = Pila_Types.pop()
+                dimensionGlobal = dimensionesGlobales.pop()
+                cuad = ["VER",valorCasilla,dimensionGlobal,arrName]
+                quadruples.append(cuad)
+                Pila_Names.append(valorCasilla)
+                result_Type = cuboSemantico.typeOperator["int"]["int"]["+"]
+                termporalResultado = getAddress(result_Type)
+                ## valor casilla = direccion de la base del arreglo
+                ##arrName = valor dentro de la casilla
+                            
+                cuad2 = ["+", valorCasilla,arrName,termporalResultado]
+                quadruples.append(cuad2)
+                Pila_Names.append(termporalResultado)
+                cuad3 = ["=", valorCasilla , valorCasilla, termporalResultado]
+                quadruples.append(cuad3)
+                dimensionesGlobales.append(dimensionGlobal)
+                Pila_Oper.pop()
+
+
+
+
+
+
+def p_r_sumValorCasilla(p):
+    '''
+    r_sumValorCasilla : 
+    '''
+    global pila_Valor_Casilla
+    numeroCasilla = p[-2]
+    pila_Valor_Casilla.append(numeroCasilla)
+
+    
+
 # Sirve para declarar varias funciones
 def p_auxFuncion(p):
     '''
@@ -658,9 +732,10 @@ def p_r_registrar_variable(p):
     '''
     r_registrar_variable :
     '''
-    global symbols, current_variable, pila_Variables_Globales, pila_Variables_Generales, pila_Variables_Funciones
+    global symbols, current_variable, pila_Variables_Globales, pila_Variables_Generales, pila_Variables_Funciones,direccionDimension
+    global next_int,dimensionesGlobales
     aux_Funcion = ''
-    current_variable = p[-1]
+    current_variable = p[-3]
     # Si se obtiene un None quiere decir que no existe y hay que registrarlo
     if symbols[current_func].get(current_variable) is None:
         if(current_func == 'global'):
@@ -686,8 +761,15 @@ def p_r_registrar_variable(p):
             sys.exit()            
         symbols[current_func]['vars'][current_variable] = {
                    'type':current_tipo,
-                   'address':getAddress(current_tipo)
+                   'address':getAddress(current_tipo),
+                   'dimension':direccionDimension
         }
+        if int(direccionDimension) != 0:
+            next_int = next_int + int(direccionDimension) -1
+            ##append(direccionDimension)
+            direccionDimension = 0
+        else:
+            next_int + 1
        
     else :
         print("Error")
