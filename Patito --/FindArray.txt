@@ -1,0 +1,25 @@
+program patito:
+
+funcion int buscaElemento(int n):
+var int : k,arr[5],y;
+{
+   arr[0] = 8;
+   arr[1] = 4;
+   arr[2] = 6;
+   arr[3] = 2;
+   arr[4] = 3;
+
+   k = 0;
+   while(k < 5)do{
+      if(arr[k] == n)so{
+         write(k);
+      }
+      k = k + 1;
+   }
+
+}
+
+main()
+{
+  buscaElemento(6);
+}
