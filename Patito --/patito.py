@@ -25,10 +25,10 @@ constants = {
 }
 
 ## Declaracion de variables
-aux = False
-auxParamFuncion = False
-isFromFuntion = False
-valorTermporal = 0
+aux = False ##ya no se usa
+auxParamFuncion = False ## dar prioridad al momento de generar operaciones dentro de un parametro
+isFromFuntion = False ## saber si la operacion viene del llamado de una funcion
+valorTermporal = 0 ## No se usa
 
 ## Declaracion de variables para el control de funciones
 contParametros = 0
@@ -173,8 +173,8 @@ pila_Valor_Casilla = []
 
 ##dimension en declaracion de variables
 direccionDimension = 0
-dimension = []
-dimensionesGlobales = []
+dimension = [] ##meter a pila con la declaracion de dimensiones
+dimensionesGlobales = [] ##
 
 ## Ejemplo de la estructura de la tabla de simbolos
 '''symbols[current_func]['vars'][p[-1]] = {
