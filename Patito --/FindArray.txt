@@ -1,4 +1,5 @@
 program patito:
+var int : flag;
 
 funcion int buscaElemento(int n):
 var int : k,arr[5],y;
@@ -12,7 +13,8 @@ var int : k,arr[5],y;
    k = 0;
    while(k < 5)do{
       if(arr[k] == n)so{
-         write(k);
+         write("Tu elemento se encuetra en la posicion:",k);
+         flag = 0;
       }
       k = k + 1;
    }
@@ -20,6 +22,13 @@ var int : k,arr[5],y;
 }
 
 main()
+var int : elemento;
 {
-  buscaElemento(6);
+   flag = 1;
+   write("Escribe un elemento");
+   read(elemento);
+   buscaElemento(elemento);
+   if(flag == 1) so {
+      write("Tu elemento no se encuentra en el arreglo :c");
+   }
 }
