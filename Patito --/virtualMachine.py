@@ -763,13 +763,16 @@ def ejecuta(cuad,pos):
         aux = 0
         
         while aux < len(list(symbols[cuad[3]]['params'])) :
-            name = list(symbols[cuad[3]]['params'])[0]
+            name = list(symbols[cuad[3]]['params'])[aux]
             address = symbols[cuad[3]]['params'][name]['address']
             type1 = symbols[cuad[3]]['params'][name]['type']
-            
+            #print("address",address)
             memoriaLocales[-1].inserta_Dir_Locales(address,type1,memoriaLocales[-2].getValue(address))
+
             aux +=1
         
+        #print("MemoriaActual",memoriaLocales[-1])
+        #print("MemoriaPasada",memoriaLocales[-2])
         return pos + 1
 
     # Funcion GOSUB
@@ -805,21 +808,24 @@ def ejecuta(cuad,pos):
         valueParam = None
         # Guardamos los datos del parametro de la funcion
         paramFunction = list(symbols[currentFunction[-1]]['params'])
-        paramFunctionAddress =symbols[currentFunction[-1]]['params'][paramFunction[0]]['address']
-        paramFunctionType =symbols[currentFunction[-1]]['params'][paramFunction[0]]['type']
+        paramFunctionAddress =symbols[currentFunction[-1]]['params'][paramFunction[whichParam]]['address']
+        paramFunctionType =symbols[currentFunction[-1]]['params'][paramFunction[whichParam]]['type']
+
+        #print("Address del cuadruplo", parametro)
+        #print("Address Param", paramFunctionAddress)
         # Obtenemos el valor del parametro
         if parametro < 10000:
             valueParam = memoriaGlobal.getValue(parametro)
         elif parametro >= 10000 and parametro < 20000:
-            valueParam = memoriaLocales[-1].getValue(parametro) 
+            valueParam = memoriaLocales[-2].getValue(parametro) 
             if (valueParam == None) :
                 valueParam = memoriaLocales[-1].getValue(paramFunctionAddress)
         elif parametro >= 20000 and parametro < 30000:
             valueParam = memoriaConstante.getValue(parametro)
 
         # Lo asignamos, si no esta en esta memoria, lo buscamos en el bloque de memoria pasado
-        if(valueParam == None):
-            valueParam = memoriaLocales[-2].getValue(parametro)
+        #if(valueParam == None):
+        #    valueParam = memoriaLocales[-2].getValue(parametro)
         memoriaLocales[-1].upDateVal(paramFunctionAddress, valueParam)
             
 
